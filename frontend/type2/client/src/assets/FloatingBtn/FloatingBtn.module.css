@@ -1,0 +1,17 @@
+.btn_area{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #6f6f6f;
+
+    position: fixed;
+    bottom:15%;
+    right: 3%;
+}
+
+.btn_area:hover{
+    cursor: pointer;
+}
