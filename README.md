@@ -1,5 +1,4 @@
 # frontend/type1
-    - test
     - npx create-react-app client
     - cd client
     - npm i --save-dev react-app-rewired
