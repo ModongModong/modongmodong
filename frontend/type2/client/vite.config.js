@@ -5,7 +5,15 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: '../../../backend/server/src/main/resources/static',  // 빌드 결과물이 생성될 위치
+    outDir: '../../../backend/server/src/main/resources/static', // 빌드 결과물이 생성될 위치
   },
-
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080', // 백엔드 서버 URL
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''), // '/api' 경로를 제거
+      },
+    },
+  },
 })

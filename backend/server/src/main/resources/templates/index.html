@@ -1,1 +1,27 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"/><link rel="icon" href="/favicon.ico"/><meta name="viewport" content="width=device-width,initial-scale=1"/><meta name="theme-color" content="#000000"/><meta name="description" content="Web site created using create-react-app"/><link rel="apple-touch-icon" href="/logo192.png"/><link rel="manifest" href="/manifest.json"/><title>React App</title><script defer="defer" src="/bundle.js"></script><link href="/static/css/main.f855e6bc.css" rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run this app.</noscript><div id="root"></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>홈</title>
+</head>
+<body>
+홈
+<!-- 로그아웃 등장 -->
+<div sec:authorize="isAuthenticated()">
+    <!-- 인증된 사용자만 볼수 있는 콘텐츠 -->
+    <!-- 사용자명의 실데이터가 이메일 -> name은 이메일로 체크되야함 -->
+    Welcome <span sec:authentication="name"></span>
+    <a href="/logout">로그아웃</a>
+</div>
+<div sec:authorize="isAnonymous()">
+    <!-- 인증되지 않은 유저에게 노출된다 -->
+    <a href="/login">로그인</a>
+</div>
+<!-- 특정 Role이 있다면 -> 차후 JWT 예제 노션으로 제공 -->
+<dvi sec:authorize="hasRole('ROLE_ADMIN')">
+    <!-- 관리자만 노출되는 화면 -->
+    <!-- 현재는 Role 부여 x, 노출 않됨 -->
+    Admin panel
+</dvi>
+</body>
+</html>
