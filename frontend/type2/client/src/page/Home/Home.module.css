@@ -1,0 +1,57 @@
+.logo{
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.logo h3 {
+    font-size: 36px;
+    margin: 10px 0;
+}
+
+.post{
+    margin-bottom: 50px;
+}
+
+.top_area {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.title{
+    flex: 1;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.content{
+    margin-bottom: 20px;
+    padding: 15px;
+    color: #6f6f6f;
+    background-color: #f4f4f4;
+}
+
+.bottom_area{
+    display: flex;
+}
+
+.like{
+    display: flex;
+    margin-right: 10px;
+}
+
+.like svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.comment{
+    display: flex;
+    flex: 1;
+}
+
+.comment svg{
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
