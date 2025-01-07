@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-container {
+    background-color: #ddd;
+    padding: 40px; /* 패딩을 늘려 내부 공간 확대 */
+    border-radius: 12px; /* 테두리 둥글기 조금 더 강조 */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* 그림자 더 강조 */
+    width: 400px; /* 가로 크기 확대 */
+    text-align: center;
+}
+
+.login-container h2 {
+    font-weight: bold;
+    font-size: 24px; /* 제목 크기 키움 */
+    margin-bottom: 30px;
+}
+
+.login-container input {
+    margin-bottom: 20px;
+    padding: 10px; /* 입력 필드의 높이를 키움 */
+    font-size: 16px; /* 텍스트 크기 확대 */
+}
+
+.btn-login {
+    background-color: #000000;
+    color: #ffffff;
+    width: 100%;
+    padding: 12px; /* 버튼 높이 키움 */
+    font-size: 16px; /* 버튼 텍스트 크기 확대 */
+    margin-top: 15px;
+}
+
+.btn-login:hover {
+    background-color: #333333;
+}
+
+.btn-naver {
+    background-color: #03c75a;
+    color: #ffffff;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+.btn-naver:hover {
+    background-color: #02a74a;
+}
+
+.btn-kakao {
+    background-color: #fee500;
+    color: #000000;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    margin-top: 15px;
+}
+
+.btn-kakao:hover {
+    background-color: #e8d000;
+}
+
+.signup-link {
+    display: block;
+    margin-top: 25px;
+    color: #6c757d;
+    font-size: 16px; /* 회원가입 링크 크기 확대 */
+}
+
+.signup-link:hover {
+    text-decoration: underline;
+}
