@@ -1,0 +1,157 @@
+.top_area{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+
+    position: relative;
+}
+
+.top_area p{
+    flex-grow: 1;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 600;
+}
+
+.top_area svg{
+    cursor: pointer;
+}
+
+.kebab_icon{
+    padding: 5px;
+}
+
+.content_area{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+}
+
+.content{
+    background-color: #f4f4f4;
+    height: 30vh;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.comment_area{
+    display: flex;
+}
+
+.icon_area{
+    display: flex;
+}
+
+.heart_icon{
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+.heart_icon svg{
+    margin-right: 5px;
+}
+.comment_icon{
+    display:flex;
+    align-items: center;
+    flex: 1;
+}
+
+.comment_icon svg{
+    margin-right: 5px;
+}
+
+.favorite_icon{
+    cursor: pointer;
+}
+
+.favorite_icon svg{
+    width: 30px;
+    height: 30px;
+}
+
+.comment_area {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #888888;
+    margin-bottom: 15px;
+}
+
+.comment_area .top_area{
+    display: flex;
+}
+
+.nickname_area{
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    margin-top: 10px;
+}
+.nickname_area svg{
+    width: 20px;
+    height: 20px;
+}
+.nickname_area p {
+    flex: 1;
+}
+
+.thums_up_area {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.comment_rud_area{
+    display: flex;
+    align-items: center;
+    background-color: #ffdad7;
+    border-radius: 6px;
+}
+
+.comment_rud_area p {
+    flex: 1;
+    margin-left: 10px;
+}
+
+.comment_rud_area svg{
+    width: 26px;
+    height: 26px;
+    margin: 5px 7px;
+    cursor: pointer;
+}
+
+/*게시글 수정 버튼 팝업(모달)*/
+.kebab_menu_area{
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.post_edit_btn,
+.post_delete_btn {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    margin-bottom: 5px;
+    text-align: left;
+    background-color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+.post_edit_btn{
+    background-color: #6cff61;
+}
+
+.post_delete_btn{
+    background-color: #ff6f61;
+}
