@@ -1,6 +1,6 @@
-package org.example.server.login.controller;
+package org.example.server.controller;
 
-import org.example.server.login.util.AuthUtil;
+import org.example.server.util.AuthUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
