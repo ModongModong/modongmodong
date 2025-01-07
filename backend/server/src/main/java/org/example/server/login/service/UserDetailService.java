@@ -1,7 +1,6 @@
-package org.example.server.service;
+package org.example.server.login.service;
 
-import lombok.Setter;
-import org.example.server.repository.UserRepository;
+import org.example.server.login.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
