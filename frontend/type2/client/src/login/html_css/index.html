@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 화면</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="login-container">
+    <h1>모동모동</h1>
+    <div class="input-group">
+        <label for="userID">아이디</label>
+        <input type="text" id="userID" placeholder="아이디를 입력하세요">
+    </div>
+
+    <div class="input-group">
+        <label for="password">비밀번호</label>
+        <input type="password" id="password" placeholder="비밀번호를 입력하세요">
+    </div>
+
+    <button id="login-button">로그인</button>
+    <div class="social-login">
+        <button id="naver-login"><span>N</span> 네이버 로그인</button>
+        <button id="kakao-login"><span>💬</span> 카카오 로그인</button>
+    </div>
+
+    <div id="signup-link">
+        <a href="/signup">회원가입</a>
+    </div>
+</div>
+
+<!-- 외부 JavaScript 파일 연결 -->
+<script type="module" src="../js/login.js"></script>
+
+</body>
+</html>
