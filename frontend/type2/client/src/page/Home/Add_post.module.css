@@ -1,0 +1,46 @@
+.post_add_area{
+    margin-bottom: 50px;
+}
+
+.top_area{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.top_area svg:hover{
+    cursor: pointer;
+}
+
+.top_area p{
+    flex-grow: 1;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 600;
+}
+
+.content{
+    background-color: #f4f4f4;
+    height: 50vh;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.add_btn{
+    border:none;
+    box-shadow:none;
+    overflow:visible;
+    cursor:pointer;
+
+    padding: 10px 20px;
+    background: #ff6f61;
+    border-radius: 2rem;
+    font-weight: 500;
+    font-size: 22px;
+}
+
+.btn_area{
+    display: flex;
+    justify-content: flex-end;
+}
