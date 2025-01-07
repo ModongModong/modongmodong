@@ -1,8 +1,8 @@
-package org.example.server.service;
+package org.example.server.login.service;
 
-import org.example.server.dto.UserDto;
-import org.example.server.entity.User;
-import org.example.server.repository.UserRepository;
+import org.example.server.login.dto.UserDto;
+import org.example.server.login.entity.User;
+import org.example.server.login.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

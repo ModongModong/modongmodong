@@ -1,9 +1,9 @@
-package org.example.server.controller;
+package org.example.server.login.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.server.dto.UserDto;
-import org.example.server.service.UserService;
+import org.example.server.login.dto.UserDto;
+import org.example.server.login.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;

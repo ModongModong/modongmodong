@@ -1,4 +1,4 @@
-package org.example.server.entity;
+package org.example.server.login.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

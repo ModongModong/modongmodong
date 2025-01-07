@@ -1,4 +1,4 @@
-package org.example.server.dto;
+package org.example.server.login.dto;
 
 import lombok.Getter;
 import lombok.Setter;

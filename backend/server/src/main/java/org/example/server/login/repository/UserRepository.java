@@ -1,6 +1,6 @@
-package org.example.server.repository;
+package org.example.server.login.repository;
 
-import org.example.server.entity.User;
+import org.example.server.login.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
