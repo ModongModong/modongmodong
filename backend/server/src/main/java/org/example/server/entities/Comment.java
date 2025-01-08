@@ -31,6 +31,6 @@ public class Comment {
     @Column
     private Integer dislikeNum = 0;
 
-    @Column(name = "comment_counter")
-    private Integer commentCounter;
+    @Column(name = "comment_count")
+    private Integer commentCount;
 }
