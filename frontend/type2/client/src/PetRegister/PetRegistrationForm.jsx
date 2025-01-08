@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './PetRegisteration.module.css';
 import Goback_icon from "../assets/icons/goback_icon.jsx";
+import PetRegErrorPopup from './PetRegErrorPopup';
 
 function PetRegistrationForm() {
     const [petData, setPetData] = useState({
@@ -15,9 +16,16 @@ function PetRegistrationForm() {
         disease: ''
     });
 
-    // 입력
+    const [errorMessages, setErrorMessages] = useState([]);
+
+    // 뒤로가기
+    const handleGoBack = () => {
+        window.history.back();
+    };
+
+    // 입력 처리
     const handleChange = (e) => {
-        const {name, value} = e.target;
+        const { name, value } = e.target;
         setPetData((prevData) => ({
             ...prevData,
             [name]: value,
@@ -27,16 +35,37 @@ function PetRegistrationForm() {
     // 폼 제출
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log('Pet Data Submitted:', petData);
-        // 여기서 API를 호출하여 반려동물 데이터를 저장할 수 있습니다.
+        // 유효성검사
+        const errors = [];
+
+        if (!petData.name) errors.push(<span><span className={styles.highlight}>반려동물 이름</span>을 입력하세요</span>);
+        if (!petData.age) errors.push(<span><span className={styles.highlight}>나이</span>를 입력하세요</span>);
+        if (!petData.gender) errors.push(<span><span className={styles.highlight}>성별</span>을 선택하세요</span>);
+        if (!petData.neuteuring_yn) errors.push(<span><span className={styles.highlight}>중성화 여부</span>를 선택하세요</span>);
+        if (!petData.animal_number) errors.push(<span><span className={styles.highlight}>등록번호</span>를 입력하세요</span>);
+        if (!petData.type) errors.push(<span><span className={styles.highlight}>품종</span>을 입력하세요</span>);
+        if (!petData.weight) errors.push(<span><span className={styles.highlight}>체중</span>을 입력하세요</span>);
+        if (!petData.surgery) errors.push(<span><span className={styles.highlight}>수술 이력</span>을 입력하세요</span>);
+        if (!petData.disease) errors.push(<span><span className={styles.highlight}>질병</span>을 입력하세요</span>);
+
+        if (errors.length > 0) {
+            setErrorMessages(errors);  // 오류 메시지 상태 업데이트
+        } else {
+            console.log('Pet Data Submitted:', petData);
+        }
     };
 
     return (
         <div className={styles.container}>
-            {/*뒤로가기버튼*/}
-            <button className={styles.arrowBack} onClick={() => window.history.back()}>
-                <Goback_icon/>
+            {/* 뒤로가기 버튼 */}
+            <button className={styles.arrowBack} onClick={handleGoBack}>
+                <Goback_icon />
             </button>
+
+            {/* 오류메시지 팝업 */}
+            {errorMessages.length > 0 && (
+                <PetRegErrorPopup messages={errorMessages} onClose={() => setErrorMessages([])} />
+            )}
 
             {/* 폼 */}
             <form onSubmit={handleSubmit}>
@@ -47,7 +76,6 @@ function PetRegistrationForm() {
                         name="name"
                         value={petData.name}
                         onChange={handleChange}
-                        required
                         className={styles.input}
                     />
                 </label>
@@ -59,7 +87,6 @@ function PetRegistrationForm() {
                         name="age"
                         value={petData.age}
                         onChange={handleChange}
-                        required
                         className={styles.input}
                     />
                 </label>
@@ -73,7 +100,6 @@ function PetRegistrationForm() {
                                 name="gender"
                                 value="M"
                                 onChange={handleChange}
-                                required
                                 className={styles.radio}
                             /> 남
                             <input
@@ -81,7 +107,6 @@ function PetRegistrationForm() {
                                 name="gender"
                                 value="F"
                                 onChange={handleChange}
-                                required
                                 className={styles.radio}
                             /> 여
                         </div>
@@ -95,7 +120,6 @@ function PetRegistrationForm() {
                                 name="neuteuring_yn"
                                 value="Y"
                                 onChange={handleChange}
-                                required
                                 className={styles.radio}
                             /> 예
                             <input
@@ -103,7 +127,6 @@ function PetRegistrationForm() {
                                 name="neuteuring_yn"
                                 value="N"
                                 onChange={handleChange}
-                                required
                                 className={styles.radio}
                             /> 아니오
                         </div>
@@ -117,7 +140,6 @@ function PetRegistrationForm() {
                         name="animal_number"
                         value={petData.animal_number}
                         onChange={handleChange}
-                        required
                         className={styles.input}
                     />
                 </label>
@@ -129,7 +151,6 @@ function PetRegistrationForm() {
                         name="type"
                         value={petData.type}
                         onChange={handleChange}
-                        required
                         className={styles.input}
                     />
                 </label>
@@ -141,7 +162,6 @@ function PetRegistrationForm() {
                         name="weight"
                         value={petData.weight}
                         onChange={handleChange}
-                        required
                         className={styles.input}
                     />
                 </label>
@@ -153,7 +173,6 @@ function PetRegistrationForm() {
                         name="surgery"
                         value={petData.surgery}
                         onChange={handleChange}
-                        required
                         className={styles.input}
                     />
                 </label>
@@ -165,12 +184,11 @@ function PetRegistrationForm() {
                         name="disease"
                         value={petData.disease}
                         onChange={handleChange}
-                        required
                         className={styles.input}
                     />
                 </label>
 
-            {/*폼 제출 버튼*/}
+                {/* 폼 제출 버튼 */}
                 <div className={styles.buttonContainer}>
                     <button type="submit" className={styles.submitButton}>
                         반려동물 등록 완료

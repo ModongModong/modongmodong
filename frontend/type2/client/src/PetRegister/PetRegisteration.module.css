@@ -77,3 +77,8 @@
     border: none;
     cursor: pointer;
 }
+
+.highlight {
+    font-weight: bold;
+    color: #FF4747;
+}

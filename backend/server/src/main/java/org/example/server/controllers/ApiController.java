@@ -1,5 +1,6 @@
-package org.example.server;
+package org.example.server.controllers;
 
+import org.example.server.EchoDto;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
