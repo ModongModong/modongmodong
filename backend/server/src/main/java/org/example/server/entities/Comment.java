@@ -30,4 +30,7 @@ public class Comment {
 
     @Column
     private Integer dislikeNum = 0;
+
+    @Column(name = "comment_counter")
+    private Integer commentCounter;
 }
