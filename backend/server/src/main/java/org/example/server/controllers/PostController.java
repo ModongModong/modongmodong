@@ -26,6 +26,12 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
+    @GetMapping("/{postId}")
+    public ResponseEntity<PostResponseDto> getPostById(@PathVariable Long postId) {
+        // 서비스에서 해당 게시물을 가져옴
+        PostResponseDto post = postService.getPostById(postId);
+        return ResponseEntity.ok(post);
+    }
     // 글 작성
     @PostMapping
     public ResponseEntity<PostResponseDto> createPost(@Valid @RequestBody PostRequestDto request) {
@@ -48,5 +54,12 @@ public class PostController {
         // 글 삭제 처리
         postService.deletePost(postId);
         return ResponseEntity.noContent().build();
+    }
+
+    // 좋아요 증가
+    @PostMapping("/{postId}/like")
+    public ResponseEntity<PostResponseDto> increaseLike(@PathVariable Long postId) {
+        PostResponseDto updatedPost = postService.increaseLike(postId);
+        return ResponseEntity.ok(updatedPost);
     }
 }

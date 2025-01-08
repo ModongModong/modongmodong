@@ -8,8 +8,8 @@ import lombok.Getter;
 public class CommentResponseDto {
     private Long commentId;
     private Long postId;
-    private Long userPk;
+    private Long userId;
     private String content;
-    private Integer likeNum;
+    private Integer commentLikeNum;
     private Integer dislikeNum;
 }
