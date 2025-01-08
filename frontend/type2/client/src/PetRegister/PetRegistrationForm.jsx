@@ -18,6 +18,11 @@ function PetRegistrationForm() {
 
     const [errorMessages, setErrorMessages] = useState([]);
 
+    // 뒤로가기
+    const handleGoBack = () => {
+        window.history.back();
+    };
+
     // 입력 처리
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -53,7 +58,7 @@ function PetRegistrationForm() {
     return (
         <div className={styles.container}>
             {/* 뒤로가기 버튼 */}
-            <button className={styles.arrowBack} onClick={() => window.history.back()}>
+            <button className={styles.arrowBack} onClick={handleGoBack}>
                 <Goback_icon />
             </button>
 
