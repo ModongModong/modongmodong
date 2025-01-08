@@ -11,6 +11,10 @@
     margin-bottom: 40px;
 }
 
+.search_area svg{
+    cursor: pointer;
+}
+
 .title_area{
     display: block;
     flex: 1;

@@ -2,6 +2,7 @@ import styles from "./Home.module.css"
 import HeartIcon from "../../assets/icons/heart_icon.jsx";
 import CommentIcon from "../../assets/icons/comment_icon.jsx";
 import FloatingBtn from "../../assets/FloatingBtn/Floating_btn.jsx";
+import {Link} from "react-router-dom";
 
 function Home(){
     const postList = [
@@ -64,7 +65,7 @@ function Home(){
             </div>
             {postList.map((item) => {
                 return (
-                    <div className={styles.post} id={item.postId}>
+                    <Link to={`/post/${item.postId}`} className={styles.post} id={item.postId}>
                         <div className={styles.top_area}>
                             <p className={styles.title}>{item.title}</p>
                             <p>{item.userId}</p>
@@ -85,7 +86,7 @@ function Home(){
                             </div>
                             <p>{item.create_date}</p>
                         </div>
-                    </div>
+                    </Link>
                 )
             })}
             <FloatingBtn/>

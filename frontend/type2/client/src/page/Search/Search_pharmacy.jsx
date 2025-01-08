@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import KakaoMap from "../../hooks/map/Bring_kakao_map.jsx";
 import SearchResultsSidebar from "./Search_results_sidebar.jsx";
 import KeywordBtn from "./Keyword_btn.jsx";
+import {useNavigate} from "react-router-dom";
 
 const SEARCH_KEYWORD = [
     { id: 1, value: "동물병원", emoji: "🩺" },
@@ -17,6 +18,7 @@ function SearchPharmacy() {
     const [activeKeywordId, setActiveKeywordId] = useState();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [openMarkerId, setOpenMarkerId] = useState(null);
+    const navigate = useNavigate();
     const [state, setState] = useState({
         center: {
             lat: 37.574187,
@@ -25,6 +27,11 @@ function SearchPharmacy() {
         errMsg: null,
         isLoading: true,
     });
+
+    //뒤로가기 버튼
+    const goBack = () => {
+        navigate(-1);
+    };
 
     // 현재 사용자 위치 받아오기
     useEffect(() => {
@@ -136,7 +143,9 @@ function SearchPharmacy() {
     return (
         <div className={styles.search_wrapper}>
             <div className={styles.search_area}>
-                <GobackIcon/>
+                <div onClick={goBack}>
+                    <GobackIcon/>
+                </div>
                 <div className={styles.title_area}>
                     <h3>내 주변 병원 / 용품점 찾기</h3>
                 </div>
