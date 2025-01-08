@@ -17,64 +17,91 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
-    // 글 목록 조회
+    // 모든 게시물 조회
     public Page<PostResponseDto> getAllPosts(Pageable pageable) {
-        // Page<Post>를 Page<PostResponseDto>로 매핑
         return postRepository.findAll(pageable).map(post -> PostResponseDto.builder()
                 .postId(post.getPostId())
-                .userPk(post.getUserPk())
+                .userId(post.getUserId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .timestamp(post.getTimestamp().toString())
-                .likeNum(post.getLikeNum())
-                .commentCounter(post.getCommentCounter())
+                .timestamp(post.getTimestamp())
+                .postLikeNum(post.getPostLikeNum())
+                .commentCount(post.getCommentCount())
                 .build());
     }
+   // 게시물 상세 보기
+    public PostResponseDto getPostById(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+        return PostResponseDto.builder()
+                .postId(post.getPostId())
+                .userId(post.getUserId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .timestamp(post.getTimestamp())
+                .postLikeNum(post.getPostLikeNum())
+                .commentCount(post.getCommentCount())
+                .build();
+    }
 
-    // 글 작성
+    // 글 쓰기
     public PostResponseDto createPost(PostRequestDto request) {
-        // Post 엔티티 생성 및 저장
         Post post = new Post();
-        post.setUserPk(request.getUserPk());
+        post.setUserId(request.getUserId());
         post.setTitle(request.getTitle());
         post.setContent(request.getContent());
         post.setTimestamp(LocalDateTime.now());
         post = postRepository.save(post);
 
-        // PostResponseDto로 변환하여 반환
         return PostResponseDto.builder()
                 .postId(post.getPostId())
-                .userPk(post.getUserPk())
+                .userId(post.getUserId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .timestamp(post.getTimestamp().toString())
-                .likeNum(post.getLikeNum())
-                .commentCounter(post.getCommentCounter())
+                .timestamp(post.getTimestamp())
+                .postLikeNum(post.getPostLikeNum())
+                .commentCount(post.getCommentCount())
                 .build();
     }
 
-    // 글 수정
+
+    // 글수정
     public PostResponseDto updatePost(Long postId, PostRequestDto request) {
-        // postId에 해당하는 글 찾기
         Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
         post.setTitle(request.getTitle());
         post.setContent(request.getContent());
         post = postRepository.save(post);
 
-        // PostResponseDto로 변환하여 반환
         return PostResponseDto.builder()
                 .postId(post.getPostId())
-                .userPk(post.getUserPk())
+                .userId(post.getUserId())
                 .title(post.getTitle())
                 .content(post.getContent())
-                .timestamp(post.getTimestamp().toString())
-                .likeNum(post.getLikeNum())
-                .commentCounter(post.getCommentCounter())
+                .timestamp(post.getTimestamp())
+                .postLikeNum(post.getPostLikeNum())
+                .commentCount(post.getCommentCount())
                 .build();
     }
 
     // 글 삭제
     public void deletePost(Long postId) {
         postRepository.deleteById(postId);
+    }
+
+    // 좋아요 개수
+    public PostResponseDto increaseLike(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+        post.setPostLikeNum(post.getPostLikeNum() + 1);
+        postRepository.save(post);
+        return PostResponseDto.builder()
+                .postId(post.getPostId())
+                .userId(post.getUserId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .timestamp(post.getTimestamp())
+                .postLikeNum(post.getPostLikeNum())
+                .commentCount(post.getCommentCount())
+                .build();
     }
 }

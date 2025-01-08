@@ -14,23 +14,23 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "comment_id")
     private Long commentId;
 
-    @Column(nullable = false)
-    private Long postId;
+    @ManyToOne
+    @JoinColumn(name = "post_id", nullable = false)
+    private Post post;
 
-    @Column(nullable = false)
-    private Long userPk;
 
-    @Column(length = 255)
+    @Column(name = "user_pk", nullable = false)
+    private Long userId;
+
+    @Column(name = "content", length = 255)
     private String content;
 
-    @Column
-    private Integer likeNum = 0;
+    @Column(name = "comment_like_num", nullable = false)
+    private Integer commentLikeNum = 0;
 
-    @Column
+    @Column(name = "dislike_num", nullable = false)
     private Integer dislikeNum = 0;
-
-    @Column(name = "comment_count")
-    private Integer commentCount;
 }
