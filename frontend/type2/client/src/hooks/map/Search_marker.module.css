@@ -1,0 +1,16 @@
+.overlay{
+    color: black;
+    position: absolute;
+    top: -64px;
+    left: -50%;
+    background: #fff;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    transform: translateX(-50%);
+    z-index: 100;
+}
+
+.overlay a:hover {
+    color: #f64330;
+}

@@ -1,0 +1,14 @@
+.keyword_btn{
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 10px 15px;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.keyword_btn.active{
+    background: #ff6f61;
+    color: #fff;
+    border: 1px solid #f64330;
+}
