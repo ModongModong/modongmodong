@@ -19,6 +19,7 @@ import {useNavigate} from "react-router-dom";
 
 function PostDetail(){
     const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [isFavorite, setIsFavorite] = useState(false);
     const [isLike, setIsLike] = useState(false);
     const [isDislike, setIsDislike] = useState(false);
@@ -55,7 +56,13 @@ function PostDetail(){
         }
 
     }
+    const openDeleteModal = () => {
+        setIsModalOpen(true);
+    };
 
+    const closeDeleteModal = () => {
+        setIsModalOpen(false);
+    };
     const toggleDislike = () => {
         if (isDislike) {
             setIsDislike(false);
@@ -84,7 +91,9 @@ function PostDetail(){
                 {isKebabMenuOpen && (
                     <div className={styles.kebab_menu_area}>
                         <button className={styles.post_edit_btn}>수정하기</button>
-                        <button className={styles.post_delete_btn}>삭제하기</button>
+                        <button className={styles.post_delete_btn}
+                                onClick={openDeleteModal}
+                        >삭제하기</button>
                     </div>
                 )}
             </div>
@@ -122,6 +131,27 @@ function PostDetail(){
                     <DeleteIcon/>
                 </div>
             </div>
+
+            {isModalOpen && (
+                <div className={styles.modal_overlay}>
+                    <div className={styles.modal}>
+                        <p>게시글을 삭제하시겠습니까?</p>
+                        <div className={styles.modal_buttons}>
+                            <button
+                                className={styles.confirm_btn}
+                            >
+                                네!
+                            </button>
+                            <button
+                                className={styles.cancel_btn}
+                                onClick={closeDeleteModal}
+                            >
+                                아니요!
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     )
 }
