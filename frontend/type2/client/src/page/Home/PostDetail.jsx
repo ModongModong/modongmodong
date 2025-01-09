@@ -19,14 +19,14 @@ import axios from "axios";
 
 
 function PostDetail(){
-    const [postDetail, setPostDetail] = useState(null);
+    const [postDetail, setPostDetail] = useState([]);
     const [error, setError] = useState(null);
     const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
     const [isFavorite, setIsFavorite] = useState(false);
     const [isLike, setIsLike] = useState(false);
     const [isDislike, setIsDislike] = useState(false);
-    const [likeCount, setLikeCount] = useState(5); // 초기 좋아요 수
-    const [dislikeCount, setDislikeCount] = useState(10); // 초기 싫어요 수
+    const [likeCount, setLikeCount] = useState();
+    const [dislikeCount, setDislikeCount] = useState();
     const navigate = useNavigate();
     const { postId } = useParams();
 
@@ -37,11 +37,13 @@ function PostDetail(){
 
     //상세 게시글 불러오기
     useEffect(() => {
+        console.log(postId);
+
         const fetchPostDetail = async () => {
             try{
-                const res = await axios.get(`/api/posts/${postId}`);
-                console.log(res.data.content)
-                setPostDetail(res.data.content);
+                const res = await axios.get(`/api/posts/${postId}`)
+                console.log(res.data)
+                setPostDetail(res.data);
             } catch(err) {
                alert(err);
             }
@@ -55,6 +57,7 @@ function PostDetail(){
       try{
           await axios.delete(`/api/posts/${postId}`);
           alert("게시글이 삭제되었습니다")
+          navigate("/");
       }catch{
           alert("에러가 발생했어요ㅠ")
       }
