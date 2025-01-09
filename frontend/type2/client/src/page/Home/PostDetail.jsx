@@ -13,22 +13,51 @@ import {
     FaRegThumbsDown,
     FaThumbsDown,
 } from "react-icons/fa";
-import {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useNavigate, useParams} from "react-router-dom";
+import axios from "axios";
 
 
 function PostDetail(){
+    const [postDetail, setPostDetail] = useState(null);
+    const [error, setError] = useState(null);
     const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [isFavorite, setIsFavorite] = useState(false);
     const [isLike, setIsLike] = useState(false);
     const [isDislike, setIsDislike] = useState(false);
     const [likeCount, setLikeCount] = useState(5); // 초기 좋아요 수
     const [dislikeCount, setDislikeCount] = useState(10); // 초기 싫어요 수
     const navigate = useNavigate();
+    const { postId } = useParams();
 
+    //뒤로가기버튼
     const goBack = () => {
         navigate(-1);
+    };
+
+    //상세 게시글 불러오기
+    useEffect(() => {
+        const fetchPostDetail = async () => {
+            try{
+                const res = await axios.get(`/api/posts/${postId}`);
+                console.log(res.data.content)
+                setPostDetail(res.data.content);
+            } catch(err) {
+               alert(err);
+            }
+        };
+        fetchPostDetail();
+    }, []);
+
+
+    //게시글 삭제
+    const deletePost = async () => {
+      try{
+          await axios.delete(`/api/posts/${postId}`);
+          alert("게시글이 삭제되었습니다")
+      }catch{
+          alert("에러가 발생했어요ㅠ")
+      }
     };
 
     const toggleKebabMenu = () => {
@@ -56,13 +85,7 @@ function PostDetail(){
         }
 
     }
-    const openDeleteModal = () => {
-        setIsModalOpen(true);
-    };
 
-    const closeDeleteModal = () => {
-        setIsModalOpen(false);
-    };
     const toggleDislike = () => {
         if (isDislike) {
             setIsDislike(false);
@@ -84,29 +107,30 @@ function PostDetail(){
                 <div onClick={goBack}>
                     <GobackIcon/>
                 </div>
-                <p>게시글 제목</p>
+                <p>{postDetail.title}</p>
                 <div className={styles.kebab_icon} onClick={toggleKebabMenu}>
                     <KebabIcon/>
                 </div>
                 {isKebabMenuOpen && (
                     <div className={styles.kebab_menu_area}>
                         <button className={styles.post_edit_btn}>수정하기</button>
-                        <button className={styles.post_delete_btn}
-                                onClick={openDeleteModal}
-                        >삭제하기</button>
+                        <button
+                            className={styles.post_delete_btn}
+                            onClick={deletePost}>삭제하기
+                        </button>
                     </div>
                 )}
             </div>
             <div className={styles.content_area}>
-                <div className={styles.content}>게시글 내용</div>
+                <div className={styles.content}>{postDetail.content}</div>
                 <div className={styles.icon_area}>
                     <div className={styles.heart_icon}>
                     <HeartIcon/>
-                        <p>11</p>
+                        <p>{postDetail.postLikeNum}</p>
                     </div>
                     <div className={styles.comment_icon}>
                         <CommentIcon/>
-                        <p>8</p>
+                        <p>{postDetail.commentCount}</p>
                     </div>
                     <div className={styles.favorite_icon} onClick={toggleFavorite}>
                         {isFavorite ? <FaStar/> : <FaRegStar/>}
@@ -131,27 +155,6 @@ function PostDetail(){
                     <DeleteIcon/>
                 </div>
             </div>
-
-            {isModalOpen && (
-                <div className={styles.modal_overlay}>
-                    <div className={styles.modal}>
-                        <p>게시글을 삭제하시겠습니까?</p>
-                        <div className={styles.modal_buttons}>
-                            <button
-                                className={styles.confirm_btn}
-                            >
-                                네!
-                            </button>
-                            <button
-                                className={styles.cancel_btn}
-                                onClick={closeDeleteModal}
-                            >
-                                아니요!
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
         </>
     )
 }

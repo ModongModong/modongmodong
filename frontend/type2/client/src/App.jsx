@@ -17,7 +17,7 @@ function App() {
                <Route path="/recommend" element={<NsRecommendation />} />
                <Route path="/" element={<Home/>} />
                <Route path="/post" element={<AddPost/>} />
-               <Route path="/post/:id" element={<PostDetail/>} />
+               <Route path="/post/:postId" element={<PostDetail/>} />
            </Routes>
            <Navigation/>
        </>

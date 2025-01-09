@@ -3,60 +3,73 @@ import HeartIcon from "../../assets/icons/heart_icon.jsx";
 import CommentIcon from "../../assets/icons/comment_icon.jsx";
 import FloatingBtn from "../../assets/FloatingBtn/Floating_btn.jsx";
 import {Link} from "react-router-dom";
+import {useEffect, useState} from "react";
+import axios from "axios";
 
 function Home(){
-    const postList = [
-        {   postId:1,
-            userId: 1,
-            title:"게시글제목1",
-            content:"게시글내용1",
-            view_count:11,
-            comment_count: 30,
-            like_count:8,
-            create_date:"2025-01-01",
-            update_date:"2025-01-02"
-        },
-        {   postId:2,
-            userId: 2,
-            title:"게시글제목2",
-            content:"게시글내용2",
-            view_count:77,
-            comment_count: 5,
-            like_count:50,
-            create_date:"2025-01-01",
-            update_date:"2025-01-02"
-        },
-        {   postId:3,
-            userId: 3,
-            title:"게시글제목3",
-            content:"게시글내용3",
-            view_count:0,
-            comment_count: 0,
-            like_count:0,
-            create_date:"2025-01-01",
-            update_date:"2025-01-02"
-        },
-        {   postId:4,
-            userId: 4,
-            title:"게시글제목4",
-            content:"게시글내용4",
-            view_count:34,
-            comment_count: 2,
-            like_count:11,
-            create_date:"2025-01-01",
-            update_date:"2025-01-02"
-        },
-        {   postId: 5,
-            userId: 5,
-            title:"게시글제목5",
-            content:"게시글내용5",
-            view_count:999,
-            comment_count: 2,
-            like_count:500,
-            create_date:"2025-01-01",
-            update_date:"2025-01-02"
-        },
-    ]
+    const [postList, setPostList] = useState([]);
+    const [error, setError] = useState(null);
+    // const postList = [
+    //     {   postId:1,
+    //         userId: 1,
+    //         title:"게시글제목1",
+    //         content:"게시글내용1",
+    //         commentCount: 30,
+    //         postLikeNum:8,
+    //         timestamp:"2025-01-01",
+    //     },
+    //     {   postId:2,
+    //         userId: 2,
+    //         title:"게시글제목2",
+    //         content:"게시글내용2",
+    //         commentCount: 5,
+    //         postLikeNum:50,
+    //         timestamp:"2025-01-01",
+    //     },
+    //     {   postId:3,
+    //         userId: 3,
+    //         title:"게시글제목3",
+    //         content:"게시글내용3",
+    //         commentCount: 0,
+    //         postLikeNum:0,
+    //         timestamp:"2025-01-02"
+    //     },
+    //     {   postId:4,
+    //         userId: 4,
+    //         title:"게시글제목4",
+    //         content:"게시글내용4",
+    //         commentCount: 2,
+    //         postLikeNum:11,
+    //         timestamp:"2025-01-01",
+    //     },
+    //     {   postId: 5,
+    //         userId: 5,
+    //         title:"게시글제목5",
+    //         content:"게시글내용5",
+    //         commentCount: 2,
+    //         postLikeNum:500,
+    //         timestamp:"2025-01-01",
+    //     },
+    // ]
+
+    useEffect(() => {
+        const fetchPosts = async () => {
+            try{
+                const res = await axios.get("/api/posts");
+                console.log(res.data.content);
+                setPostList(res.data.content);
+            }catch(err){
+                console.error("Error occurred:", JSON.stringify(err, null, 2));
+                setError({err});
+            }
+        };
+        fetchPosts();
+    }, []);
+
+    if (error) {
+        alert({error});
+    }
+
     return (
         <>
             <div className={styles.logo}>
@@ -78,13 +91,13 @@ function Home(){
                         <div className={styles.bottom_area}>
                             <div className={styles.like}>
                                 <HeartIcon/>
-                                <p>{item.like_count}</p>
+                                <p>{item.postLikeNum}</p>
                             </div>
                             <div className={styles.comment}>
                                 <CommentIcon/>
-                                <p>{item.comment_count}</p>
+                                <p>{item.commentCount}</p>
                             </div>
-                            <p>{item.create_date}</p>
+                            <p>{item.timestamp}</p>
                         </div>
                     </Link>
                 )

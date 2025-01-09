@@ -7,5 +7,12 @@ export default defineConfig({
   build: {
     outDir: '../../../backend/server/src/main/resources/static',  // 빌드 결과물이 생성될 위치
   },
-
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+      },
+    },
+  },
 })
