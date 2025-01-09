@@ -15,14 +15,14 @@ function AddPost(){
     };
 
     const handleSubmit = async () => {
-      if(!title||content){
+      if(!title||!content){
           alert("제목과 내용을 모두 입력해주세요");
           return;
       }
 
       try{
           const res = await axios.post("/api/posts",{
-              userId:1,
+              userId:99,
               title,
               content,
           })
