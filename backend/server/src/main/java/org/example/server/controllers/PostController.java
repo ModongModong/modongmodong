@@ -27,7 +27,7 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<PostResponseDto> getPostById(@PathVariable Long postId) {
+    public ResponseEntity<PostResponseDto> getPostById(@PathVariable("postId")Long postId) {
         // 서비스에서 해당 게시물을 가져옴
         PostResponseDto post = postService.getPostById(postId);
         return ResponseEntity.ok(post);
@@ -42,7 +42,7 @@ public class PostController {
 
     // 글 수정
     @PutMapping("/{postId}")
-    public ResponseEntity<PostResponseDto> updatePost(@PathVariable Long postId, @Valid @RequestBody PostRequestDto request) {
+    public ResponseEntity<PostResponseDto> updatePost(@PathVariable("postId") Long postId, @Valid @RequestBody PostRequestDto request) {
         // 글 수정 후 응답
         PostResponseDto updatedPost = postService.updatePost(postId, request);
         return ResponseEntity.ok(updatedPost);
@@ -50,7 +50,7 @@ public class PostController {
 
     // 글 삭제
     @DeleteMapping("/{postId}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long postId) {
+    public ResponseEntity<Void> deletePost(@PathVariable("postId")Long postId) {
         // 글 삭제 처리
         postService.deletePost(postId);
         return ResponseEntity.noContent().build();
@@ -58,8 +58,15 @@ public class PostController {
 
     // 좋아요 증가
     @PostMapping("/{postId}/like")
-    public ResponseEntity<PostResponseDto> increaseLike(@PathVariable Long postId) {
+    public ResponseEntity<PostResponseDto> increaseLike(@PathVariable("postId") Long postId) {
         PostResponseDto updatedPost = postService.increaseLike(postId);
+        return ResponseEntity.ok(updatedPost);
+    }
+
+    // 좋아요 취소
+    @DeleteMapping("/{postId}/like")
+    public ResponseEntity<PostResponseDto> decreaseLike(@PathVariable("postId")Long postId) {
+        PostResponseDto updatedPost = postService.decreaseLike(postId);
         return ResponseEntity.ok(updatedPost);
     }
 }

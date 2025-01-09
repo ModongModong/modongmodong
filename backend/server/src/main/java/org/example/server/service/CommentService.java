@@ -61,7 +61,18 @@ public class CommentService {
         commentRepository.save(comment);
         return toResponseDto(comment);
     }
+    // 좋아요 취소
+    public CommentResponseDto decreaseLike(Long id) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
 
+        if (comment.getCommentLikeNum() > 0) {
+            comment.setCommentLikeNum(comment.getCommentLikeNum() - 1);
+            commentRepository.save(comment);
+        }
+
+        return toResponseDto(comment);
+    }
     // 싫어요 증가
     public CommentResponseDto increaseDislike(Long id) {
         Comment comment = commentRepository.findById(id)
@@ -70,7 +81,18 @@ public class CommentService {
         commentRepository.save(comment);
         return toResponseDto(comment);
     }
+    // 싫어요 취소
+    public CommentResponseDto decreaseDislike(Long id) {
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Comment not found"));
 
+        if (comment.getDislikeNum() > 0) {
+            comment.setDislikeNum(comment.getDislikeNum() - 1);
+            commentRepository.save(comment);
+        }
+
+        return toResponseDto(comment);
+    }
     // 댓글 수정
     public CommentResponseDto updateComment(Long id, CommentRequestDto request) {
 
