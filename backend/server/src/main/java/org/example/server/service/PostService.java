@@ -104,4 +104,25 @@ public class PostService {
                 .commentCount(post.getCommentCount())
                 .build();
     }
+    // 좋아요 취소
+    public PostResponseDto decreaseLike(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        if (post.getPostLikeNum() > 0) { // 좋아요 개수가 0보다 클 때만 감소
+            post.setPostLikeNum(post.getPostLikeNum() - 1);
+            postRepository.save(post);
+        }
+
+        return PostResponseDto.builder()
+                .postId(post.getPostId())
+                .userId(post.getUserId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .timestamp(post.getTimestamp())
+                .postLikeNum(post.getPostLikeNum())
+                .commentCount(post.getCommentCount())
+                .build();
+    }
+
 }

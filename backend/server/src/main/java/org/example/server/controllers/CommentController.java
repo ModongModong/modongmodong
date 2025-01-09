@@ -26,29 +26,42 @@ public class CommentController {
 
     // 특정 게시물의 댓글 목록 조회
     @GetMapping("/post/{postId}")
-    public ResponseEntity<List<CommentResponseDto>> getCommentsByPostId(@PathVariable Long postId) {
+    public ResponseEntity<List<CommentResponseDto>> getCommentsByPostId(@PathVariable("postId")Long postId) {
         List<CommentResponseDto> comments = commentService.getCommentsByPostId(postId);
         return ResponseEntity.ok(comments);
     }
 
     // 좋아요 증가
     @PostMapping("/{id}/like")
-    public ResponseEntity<CommentResponseDto> increaseLike(@PathVariable Long id) {
-        CommentResponseDto updatedComment = commentService.increaseLike(id);
-        return ResponseEntity.ok(updatedComment);
+    public CommentResponseDto increaseLike(@PathVariable("id") Long id) {
+        return commentService.increaseLike(id);
     }
+
+
+    // 좋아요 취소
+    @DeleteMapping("/{id}/like")
+    public CommentResponseDto decreaseLike(@PathVariable("id") Long id) {
+        return commentService.decreaseLike(id);
+    }
+
 
     // 싫어요 증가
     @PostMapping("/{id}/dislike")
-    public ResponseEntity<CommentResponseDto> increaseDislike(@PathVariable Long id) {
-        CommentResponseDto updatedComment = commentService.increaseDislike(id);
-        return ResponseEntity.ok(updatedComment);
+    public CommentResponseDto increaseDislike(@PathVariable("id") Long id) {
+        return commentService.increaseDislike(id);
     }
+
+    // 싫어요 취소
+    @DeleteMapping("/{id}/dislike")
+    public CommentResponseDto decreaseDislike(@PathVariable("id") Long id) {
+        return commentService.decreaseDislike(id);
+    }
+
 
     // 댓글 수정
     @PutMapping("/{id}")
     public ResponseEntity<CommentResponseDto> updateComment(
-            @PathVariable Long id,
+            @PathVariable("id") Long id,
             @RequestBody CommentRequestDto request) {
         CommentResponseDto updatedComment = commentService.updateComment(id, request);
         return ResponseEntity.ok(updatedComment);
@@ -56,7 +69,7 @@ public class CommentController {
 
     // 댓글 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteComment(@PathVariable("id") Long id) {
         commentService.deleteComment(id);
         return ResponseEntity.noContent().build();
     }
