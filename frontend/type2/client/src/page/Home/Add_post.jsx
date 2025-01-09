@@ -1,11 +1,20 @@
 import Goback_icon from "../../assets/icons/goback_icon.jsx";
 import styles from "./Add_post.module.css"
+import {useNavigate} from "react-router-dom";
 
 function AddPost(){
+    const navigate = useNavigate();
+
+    const goBack = () => {
+        navigate(-1);
+    };
+
     return (
         <div className={styles.post_add_area}>
             <div className={styles.top_area}>
-                <Goback_icon/>
+                <div onClick={goBack}>
+                    <Goback_icon/>
+                </div>
                 <p>게시글 제목 입력하기</p>
             </div>
             <div className={styles.content}>

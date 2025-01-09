@@ -14,6 +14,7 @@ import {
     FaThumbsDown,
 } from "react-icons/fa";
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 
 function PostDetail(){
@@ -23,6 +24,11 @@ function PostDetail(){
     const [isDislike, setIsDislike] = useState(false);
     const [likeCount, setLikeCount] = useState(5); // 초기 좋아요 수
     const [dislikeCount, setDislikeCount] = useState(10); // 초기 싫어요 수
+    const navigate = useNavigate();
+
+    const goBack = () => {
+        navigate(-1);
+    };
 
     const toggleKebabMenu = () => {
         setIsKebabMenuOpen((prev) => !prev);
@@ -68,7 +74,9 @@ function PostDetail(){
     return (
         <>
             <div className={styles.top_area}>
-                <GobackIcon/>
+                <div onClick={goBack}>
+                    <GobackIcon/>
+                </div>
                 <p>게시글 제목</p>
                 <div className={styles.kebab_icon} onClick={toggleKebabMenu}>
                     <KebabIcon/>

@@ -4,14 +4,21 @@ import Home from "./page/Home/Home.jsx";
 import AddPost from "./page/Home/Add_post.jsx";
 import PostDetail from "./page/Home/PostDetail.jsx";
 import SearchPharmacy from "./page/Search/Search_pharmacy.jsx";
+import NsRecommendation from "./NsRecommendation/NsRecommendation.jsx";
+import MyPage from "./MyPage/MyPage.jsx";
+import {Route, Routes} from "react-router-dom";
 
 function App() {
     return (
        <>
-           {/*<PostDetail/>*/}
-           {/*<AddPost/>*/}
-           <Home/>
-           {/*<SearchPharmacy/>*/}
+           <Routes>
+               <Route path="/search" element={<SearchPharmacy/>} />
+               <Route path="/mypage" element={<MyPage />} />
+               <Route path="/recommend" element={<NsRecommendation />} />
+               <Route path="/" element={<Home/>} />
+               <Route path="/post" element={<AddPost/>} />
+               <Route path="/post/:id" element={<PostDetail/>} />
+           </Routes>
            <Navigation/>
        </>
     );

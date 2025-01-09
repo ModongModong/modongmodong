@@ -1,12 +1,12 @@
-import GobackIcon from "../icons/goback_icon.jsx";
 import styles from "./FloatingBtn.module.css"
 import Add_icon from "../icons/add_icon.jsx";
+import {Link} from "react-router-dom";
 
 function FloatingBtn(){
     return (
-        <div className={styles.btn_area}>
+        <Link to="/post" className={styles.btn_area}>
             <Add_icon/>
-        </div>
+        </Link>
     )
 }
 
