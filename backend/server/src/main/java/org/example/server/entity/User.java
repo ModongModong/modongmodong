@@ -28,10 +28,16 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
+
+    @Column(name = "nickname", nullable = false, unique = false)
+    private String nickname;
+
+
     @Builder
-    public User(String email, String password, String auth) {
+    public User(String email, String password, String confirmPassword, String nickname, String auth) {
         this.email = email;
         this.password = password;
+        this.nickname = nickname;
     }
 
     @Override
@@ -48,6 +54,8 @@ public class User implements UserDetails {
     public String getPassword() {
         return password;
     }
+
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

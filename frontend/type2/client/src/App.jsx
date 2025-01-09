@@ -1,17 +1,19 @@
-import './App.css';
-import Navigation from "./common/Navigation/Navigation.jsx";
-import Home from "./page/Home/Home.jsx";
-import AddPost from "./page/Home/Add_post.jsx";
-import PostDetail from "./page/Home/PostDetail.jsx";
+//import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Login from "./login/jsx/login.jsx";
+import Signup from "./login/jsx/signup.jsx";
+import Main from "./page/Home/Home.jsx";
 
 function App() {
     return (
-       <>
-           {/*<PostDetail/>*/}
-           {/*<AddPost/>*/}
-           <Home/>
-           <Navigation/>
-       </>
+        <Router>
+            <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/main" element={<Main />} />
+            </Routes>
+        </Router>
     );
 }
 
