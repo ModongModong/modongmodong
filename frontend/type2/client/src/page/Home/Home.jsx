@@ -36,7 +36,7 @@ function Home(){
             </div>
             {postList.map((item) => {
                 return (
-                    <Link to={`/post/${item.postId}`} className={styles.post} id={item.postId}>
+                    <Link to={`/post/${item.postId}`} className={styles.post} key={item.postId}>
                         <div className={styles.top_area}>
                             <p className={styles.title}>{item.title}</p>
                             <p>{item.userId}</p>
