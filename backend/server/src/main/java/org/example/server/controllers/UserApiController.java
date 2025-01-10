@@ -7,6 +7,7 @@ import org.example.server.dto.AddUserRequest;
 import org.example.server.dto.AddUserResponse;
 import org.example.server.dto.LoginRequest;
 import org.example.server.dto.LoginResponse;
+import org.example.server.entities.User;
 import org.example.server.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,9 +43,13 @@ public class UserApiController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest request,HttpServletRequest httpRequest) {
         try {
-            userService.login(request.getEmail(), request.getPassword());
+            // 사용자 검증
+            User user = userService.login(request.getEmail(), request.getPassword());
+
+            // 세션에 사용자 정보 저장
+            httpRequest.getSession().setAttribute("user", user);
 
             return ResponseEntity.ok(
                     LoginResponse.builder()
@@ -62,6 +67,18 @@ public class UserApiController {
         }
     }
 
+    // 로그인한 유저 정보 조회
+    @GetMapping("/myinfo")
+    public ResponseEntity<?> getMyInfo(HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute("user");
+
+        if (user == null) {
+            return ResponseEntity.status(401).body("로그인되지 않았습니다.");
+        }
+
+        // 유저 정보 반환
+        return ResponseEntity.ok(user);
+    }
 
 
     @GetMapping("/logout")
