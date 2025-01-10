@@ -46,39 +46,41 @@ function Home(){
     }
 
     return (
-        <>
+        <div className={styles.post_list_wrapper}>
             <div className={styles.logo}>
                 <h3>모동모동</h3>
                 <p>모두의 동물 정보!</p>
             </div>
             {postList.map((item) => {
                 return (
-                    <Link to={`/post/${item.postId}`} className={styles.post} key={item.postId}>
-                        <div className={styles.top_area}>
-                            <p className={styles.title}>{item.title}</p>
-                            <p>{item.userId}</p>
-                        </div>
-                        <div className={styles.content}>
-                            <p>
-                                {item.content}
-                            </p>
-                        </div>
-                        <div className={styles.bottom_area}>
-                            <div className={styles.like}>
-                                <HeartIcon/>
-                                <p>{item.postLikeNum}</p>
-                            </div>
-                            <div className={styles.comment}>
-                                <CommentIcon/>
-                                <p>{item.commentCount}</p>
-                            </div>
-                            <p>{timeAgo(item.timestamp)}</p>
-                        </div>
-                    </Link>
+                   <div className={styles.post_wrapper} key={item.postId}>
+                       <Link to={`/post/${item.postId}`} className={styles.post} >
+                           <div className={styles.top_area}>
+                               <p className={styles.title}>{item.title}</p>
+                               <p>{item.userId}</p>
+                           </div>
+                           <div className={styles.content}>
+                               <p>
+                                   {item.content}
+                               </p>
+                           </div>
+                           <div className={styles.bottom_area}>
+                               <div className={styles.like}>
+                                   <HeartIcon/>
+                                   <p>{item.postLikeNum}</p>
+                               </div>
+                               <div className={styles.comment}>
+                                   <CommentIcon/>
+                                   <p>{item.commentCount}</p>
+                               </div>
+                               <p>{timeAgo(item.timestamp)}</p>
+                           </div>
+                       </Link>
+                   </div>
                 )
             })}
             <FloatingBtn/>
-        </>
+        </div>
     )
 }
 

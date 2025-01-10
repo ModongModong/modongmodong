@@ -1,3 +1,8 @@
+.post_list_wrapper{
+    margin: 20px;
+    overflow: hidden;
+}
+
 .logo{
     text-align: center;
     margin-bottom: 40px;
@@ -6,10 +11,12 @@
 .logo h3 {
     font-size: 36px;
     margin: 10px 0;
+    color: #ff6f61;
+    font-weight: 600;
 }
-
-.post{
-    margin-bottom: 50px;
+.post_wrapper{
+    border-bottom: 1px solid #888888;
+    margin-bottom: 40px;
 }
 
 .top_area {
@@ -19,8 +26,8 @@
 
 .title{
     flex: 1;
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 18px;
+    font-weight: 600;
 }
 
 .content{
@@ -30,8 +37,13 @@
     background-color: #f4f4f4;
 }
 
+.content p{
+    font-size: 14px;
+}
+
 .bottom_area{
     display: flex;
+    margin-bottom: 15px;
 }
 
 .like{
