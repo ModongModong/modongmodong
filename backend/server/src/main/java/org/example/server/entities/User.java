@@ -11,12 +11,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.io.Serializable; //
 
 @Table(name = "Users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
+    private static final long serialVersionUID = 1L; // 직렬화 UID 추가
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_pk", updatable = false)
@@ -74,4 +77,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
