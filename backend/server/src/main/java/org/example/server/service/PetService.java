@@ -3,7 +3,7 @@ package org.example.server.service;
 import org.example.server.dto.PetRequestDto;
 import org.example.server.dto.PetResponseDto;
 import org.example.server.entities.Pet;
-import org.example.server.repository.PetRepository;;
+import org.example.server.repository.PetRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
