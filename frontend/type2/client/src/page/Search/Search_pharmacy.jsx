@@ -1,6 +1,5 @@
 import styles from "./Search_pharmacy.module.css";
 import GobackIcon from "../../assets/icons/goback_icon.jsx";
-import MiniSearchIcon from "../../assets/icons/mini_search_icon.jsx";
 import { useEffect, useState } from "react";
 import KakaoMap from "../../hooks/map/Bring_kakao_map.jsx";
 import SearchResultsSidebar from "./Search_results_sidebar.jsx";
