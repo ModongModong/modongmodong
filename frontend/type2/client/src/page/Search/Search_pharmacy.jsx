@@ -9,7 +9,8 @@ import {useNavigate} from "react-router-dom";
 
 const SEARCH_KEYWORD = [
     { id: 1, value: "동물병원", emoji: "🩺" },
-    { id: 2, value: "반려동물용품점", emoji: "💊" }
+    { id: 2, value: "반려동물용품점", emoji: "💊" },
+    { id: 3, value: "24시 동물병원", emoji:"🚨"}
 ];
 
 function SearchPharmacy() {
