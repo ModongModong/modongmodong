@@ -10,6 +10,23 @@ function Home(){
     const [postList, setPostList] = useState([]);
     const [error, setError] = useState(null);
 
+    function timeAgo(timestamp) {
+        const now = new Date();
+        const postTime = new Date(timestamp);
+        const diffInMs = now - postTime;
+        const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+
+        if (diffInMinutes < 60) {
+            return `${diffInMinutes}분 전`;
+        } else if (diffInMinutes < 1440) {
+            const diffInHours = Math.floor(diffInMinutes / 60);
+            return `${diffInHours}시간 전`;
+        } else {
+            const diffInDays = Math.floor(diffInMinutes / 1440);
+            return `${diffInDays}일 전`;
+        }
+    }
+
     useEffect(() => {
         const fetchPosts = async () => {
             try{
@@ -55,7 +72,7 @@ function Home(){
                                 <CommentIcon/>
                                 <p>{item.commentCount}</p>
                             </div>
-                            <p>{item.timestamp}</p>
+                            <p>{timeAgo(item.timestamp)}</p>
                         </div>
                     </Link>
                 )
