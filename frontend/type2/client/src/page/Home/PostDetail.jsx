@@ -30,9 +30,14 @@ function PostDetail(){
     const navigate = useNavigate();
     const { postId } = useParams();
 
+
     //뒤로가기버튼
     const goBack = () => {
         navigate(-1);
+    };
+
+    const goUpdate = () =>{
+      navigate(`/post/update/${postId}`)
     };
 
     //상세 게시글 불러오기
@@ -116,7 +121,7 @@ function PostDetail(){
                 </div>
                 {isKebabMenuOpen && (
                     <div className={styles.kebab_menu_area}>
-                        <button className={styles.post_edit_btn}>수정하기</button>
+                        <button className={styles.post_edit_btn} onClick={goUpdate}>수정하기</button>
                         <button
                             className={styles.post_delete_btn}
                             onClick={deletePost}>삭제하기
