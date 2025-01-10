@@ -18,32 +18,27 @@ public class PostController {
     @Autowired
     private PostService postService;
 
-    // 글 목록 조회 (페이징 지원)
+    // 글 목록 조회
     @GetMapping
     public ResponseEntity<Page<PostResponseDto>> getAllPosts(Pageable pageable) {
-        // 페이징 처리된 글 목록 반환
         Page<PostResponseDto> posts = postService.getAllPosts(pageable);
         return ResponseEntity.ok(posts);
     }
 
     @GetMapping("/{postId}")
     public ResponseEntity<PostResponseDto> getPostById(@PathVariable("postId")Long postId) {
-        // 서비스에서 해당 게시물을 가져옴
         PostResponseDto post = postService.getPostById(postId);
         return ResponseEntity.ok(post);
     }
     // 글 작성
     @PostMapping
     public ResponseEntity<PostResponseDto> createPost(@Valid @RequestBody PostRequestDto request) {
-        // 글 작성 후 응답
-        PostResponseDto post = postService.createPost(request);
-        return ResponseEntity.ok(post);
+        PostResponseDto response = postService.createPost(request);
+        return ResponseEntity.ok(response);
     }
-
     // 글 수정
     @PutMapping("/{postId}")
     public ResponseEntity<PostResponseDto> updatePost(@PathVariable("postId") Long postId, @Valid @RequestBody PostRequestDto request) {
-        // 글 수정 후 응답
         PostResponseDto updatedPost = postService.updatePost(postId, request);
         return ResponseEntity.ok(updatedPost);
     }

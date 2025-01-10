@@ -3,25 +3,44 @@ package org.example.server.service;
 import org.example.server.dto.PostRequestDto;
 import org.example.server.dto.PostResponseDto;
 import org.example.server.entities.Post;
+import org.example.server.entities.User;
 import org.example.server.repository.PostRepository;
+import org.example.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class PostService {
 
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    // 로그인된 사용자 정보 가져오기
+    private User getAuthenticatedUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            String email = ((UserDetails) principal).getUsername(); // Email을 username으로 사용
+            return userRepository.findByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("로그인된 사용자를 찾을 수 없습니다."));
+        }
+        throw new RuntimeException("인증 정보가 유효하지 않습니다.");
+    }
+
     // 모든 게시물 조회
     public Page<PostResponseDto> getAllPosts(Pageable pageable) {
         return postRepository.findAll(pageable).map(post -> PostResponseDto.builder()
                 .postId(post.getPostId())
-                .userId(post.getUserId())
+                .userPk(post.getUser().getId())
+                .nickname(post.getUser().getNickname())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .timestamp(post.getTimestamp())
@@ -29,13 +48,15 @@ public class PostService {
                 .commentCount(post.getCommentCount())
                 .build());
     }
-   // 게시물 상세 보기
+
+    // 게시물 상세 보기
     public PostResponseDto getPostById(Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다."));
         return PostResponseDto.builder()
                 .postId(post.getPostId())
-                .userId(post.getUserId())
+                .userPk(post.getUser().getId())
+                .nickname(post.getUser().getNickname())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .timestamp(post.getTimestamp())
@@ -46,16 +67,19 @@ public class PostService {
 
     // 글 쓰기
     public PostResponseDto createPost(PostRequestDto request) {
+        User user = getAuthenticatedUser(); // 로그인된 사용자 정보 가져오기
+
         Post post = new Post();
-        post.setUserId(request.getUserId());
+        post.setUser(user);
         post.setTitle(request.getTitle());
         post.setContent(request.getContent());
-        post.setTimestamp(LocalDateTime.now());
+
         post = postRepository.save(post);
 
         return PostResponseDto.builder()
                 .postId(post.getPostId())
-                .userId(post.getUserId())
+                .userPk(user.getId())
+                .nickname(user.getNickname())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .timestamp(post.getTimestamp())
@@ -64,17 +88,20 @@ public class PostService {
                 .build();
     }
 
-
-    // 글수정
+    // 글 수정
     public PostResponseDto updatePost(Long postId, PostRequestDto request) {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new RuntimeException("Post not found"));
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다."));
+
         post.setTitle(request.getTitle());
         post.setContent(request.getContent());
+
         post = postRepository.save(post);
 
         return PostResponseDto.builder()
                 .postId(post.getPostId())
-                .userId(post.getUserId())
+                .userPk(post.getUser().getId())
+                .nickname(post.getUser().getNickname())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .timestamp(post.getTimestamp())
@@ -88,15 +115,16 @@ public class PostService {
         postRepository.deleteById(postId);
     }
 
-    // 좋아요 개수
+    // 좋아요 증가
     public PostResponseDto increaseLike(Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다."));
         post.setPostLikeNum(post.getPostLikeNum() + 1);
         postRepository.save(post);
         return PostResponseDto.builder()
                 .postId(post.getPostId())
-                .userId(post.getUserId())
+                .userPk(post.getUser().getId())
+                .nickname(post.getUser().getNickname())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .timestamp(post.getTimestamp())
@@ -104,19 +132,21 @@ public class PostService {
                 .commentCount(post.getCommentCount())
                 .build();
     }
-    // 좋아요 취소
+
+    // 좋아요 감소
     public PostResponseDto decreaseLike(Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다."));
 
-        if (post.getPostLikeNum() > 0) { // 좋아요 개수가 0보다 클 때만 감소
+        if (post.getPostLikeNum() > 0) { // 좋아요가 0보다 클 때만 감소
             post.setPostLikeNum(post.getPostLikeNum() - 1);
             postRepository.save(post);
         }
 
         return PostResponseDto.builder()
                 .postId(post.getPostId())
-                .userId(post.getUserId())
+                .userPk(post.getUser().getId())
+                .nickname(post.getUser().getNickname())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .timestamp(post.getTimestamp())
@@ -124,5 +154,4 @@ public class PostService {
                 .commentCount(post.getCommentCount())
                 .build();
     }
-
 }
