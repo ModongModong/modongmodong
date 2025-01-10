@@ -10,7 +10,7 @@ function Login() {
     // 로그인 버튼 클릭 핸들러
     const handleLogin = async () => {
         if (!email || !password) {
-            alert("아이디와 비밀번호를 입력해주세요.");
+            alert("이메일과 비밀번호를 입력해주세요.");
             return;
         }
 
