@@ -6,13 +6,10 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PetResponseDto {
-    // 복합키들은 name이 같이 나타나게
+    private Long petId;
     private Long userId;
-    private String userName;
     private Long diseaseId;
-    private String diseaseName;
     private Long petTypeId;
-    private String petTypeName;
 
     private String name;
     private Integer age;
