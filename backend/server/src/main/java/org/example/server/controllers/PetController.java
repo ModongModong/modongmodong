@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/pets")
 public class PetController {
+
     @Autowired
     private PetService petService;
 
@@ -24,33 +25,25 @@ public class PetController {
     }
 
     // 등록페이지 - 반려동물 조회
-    @GetMapping("/{userId}/{diseaseId}/{petTypeId}")
-    public ResponseEntity<PetResponseDto> getPet(
-            @PathVariable Long userId,
-            @PathVariable Long diseaseId,
-            @PathVariable Long petTypeId) {
-
-        PetResponseDto petResponseDto = petService.getPet(userId, diseaseId, petTypeId);
+    @GetMapping("/{petId}")
+    public ResponseEntity<PetResponseDto> getPet(@PathVariable Long petId) {
+        PetResponseDto petResponseDto = petService.getPet(petId);
         return ResponseEntity.ok(petResponseDto);
     }
 
     // 등록페이지 - 반려동물 수정
-    @PutMapping("/{userId}/{diseaseId}/{petTypeId}")
+    @PutMapping("/{petId}")
     public ResponseEntity<PetResponseDto> updatePet(
-            @PathVariable Long userId,
-            @PathVariable Long diseaseId,
-            @PathVariable Long petTypeId,
+            @PathVariable Long petId,
             @RequestBody PetRequestDto request) {
 
-        PetResponseDto petResponseDto = petService.updatePet(userId, diseaseId, petTypeId, request);
-
+        PetResponseDto petResponseDto = petService.updatePet(petId, request);
         return ResponseEntity.ok(petResponseDto);
     }
 
-    // 마이페이지 반려동물 목록 조회
-    @GetMapping("/{userId}")
+    // 마이페이지 - 반려동물 목록 조회
+    @GetMapping("/user/{userId}")
     public List<PetResponseDto> getPetsByUserId(@PathVariable Long userId) {
         return petService.getPetsByUserId(userId);
     }
-
 }

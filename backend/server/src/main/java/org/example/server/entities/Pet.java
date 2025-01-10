@@ -10,33 +10,33 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@IdClass(PetId.class)  // 복합 키 클래스
 public class Pet {
-
-    // 복합키 필드
     @Id
-    @Column(name = "user_pk")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "pet_pk")
+    private Long petId;
+
+    // 외래키 필드
+    @Column(name = "user_pk", nullable = false)
     private Long userId;
 
-    @Id
-    @Column(name = "disease_pk")
+    @Column(name = "disease_pk", nullable = false)
     private Long diseaseId;
 
-    @Id
-    @Column(name = "type_pk")
+    @Column(name = "type_pk", nullable = false)
     private Long petTypeId;
 
     // 연관 관계 매핑
     @ManyToOne
-    @JoinColumn(name = "user_pk", insertable = false, updatable = false)
+    @JoinColumn(name = "user_pk", referencedColumnName = "user_pk", insertable = false, updatable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "disease_pk", insertable = false, updatable = false)
+    @JoinColumn(name = "disease_pk", referencedColumnName = "disease_pk", insertable = false, updatable = false)
     private Disease disease;
 
     @ManyToOne
-    @JoinColumn(name = "type_pk", insertable = false, updatable = false)
+    @JoinColumn(name = "type_pk", referencedColumnName = "type_pk", insertable = false, updatable = false)
     private PetType petType;
 
     // 일반 컬럼
