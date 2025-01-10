@@ -34,7 +34,7 @@ function Login() {
                 console.log(result);
 
                 alert("로그인 성공!");
-                window.location.href = "/mypage"; // 마이페이지로 이동
+                window.location.href = "/"; // 메인화면으로 이동
             } else {
                 const errorResult = await response.json();
                 alert(errorResult.message || "로그인 실패..");
