@@ -73,9 +73,9 @@ function Signup() {
                 return;
             }
 
-            console.log(response); //
+            console.log(response);
             const result = await response.json();
-            console.log(result); //
+            console.log(result);
 
             // 응답 처리
             if (result.code == 1) {
