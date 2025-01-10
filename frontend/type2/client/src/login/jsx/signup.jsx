@@ -73,14 +73,14 @@ function Signup() {
                 return;
             }
 
-            console.log(response); //
+            console.log(response);
             const result = await response.json();
-            console.log(result); //
+            console.log(result);
 
             // 응답 처리
             if (result.code == 1) {
                 alert("회원가입 성공! 로그인 페이지로 이동합니다.");
-                window.location.href = "/"; // 로그인 페이지로 이동
+                window.location.href = "/login.jsx"; // 로그인 페이지로 이동
             } else {
                 alert(result.message || "회원가입 실패. 다시 시도해주세요.");
             }

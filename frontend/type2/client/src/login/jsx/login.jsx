@@ -10,7 +10,7 @@ function Login() {
     // 로그인 버튼 클릭 핸들러
     const handleLogin = async () => {
         if (!email || !password) {
-            alert("아이디와 비밀번호를 입력해주세요.");
+            alert("이메일과 비밀번호를 입력해주세요.");
             return;
         }
 
@@ -33,8 +33,8 @@ function Login() {
                 const result = await response.json();
                 console.log(result);
 
-                alert("로그인 성공.");
-                window.location.href = "/mypage"; // 마이페이지로 이동
+                alert("로그인 성공!");
+                window.location.href = "/"; // 메인화면으로 이동
             } else {
                 const errorResult = await response.json();
                 alert(errorResult.message || "로그인 실패..");
@@ -53,13 +53,13 @@ function Login() {
                 <h1>모동모동</h1>
 
                 <div className={styles.input_group}>
-                    <label htmlFor="userID">아이디</label>
+                    <label htmlFor="userID">이메일</label>
                     <input
                         type="text"
                         id="userID"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)} // 상태 업데이트
-                        placeholder="아이디를 입력하세요"
+                        placeholder="이메일을 입력하세요"
                     />
                 </div>
 
