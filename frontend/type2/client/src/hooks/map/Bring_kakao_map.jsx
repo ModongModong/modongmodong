@@ -20,7 +20,7 @@ const KakaoMap = ({ center, markers, level = 3, onMapCreate, moveLatLng }) => {
             center={center}
             style={{
                 width: "100%",
-                height: "410px",
+                height: "460px",
             }}
             level={level}
             onCreate={onMapCreate}

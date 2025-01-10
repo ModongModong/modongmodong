@@ -151,20 +151,22 @@ function SearchPharmacy() {
                 </div>
             </div>
             <div className={styles.map_area}>
-                <KakaoMap
-                    center={state.center}
-                    markers={searchResults}
-                    level={3}
-                    onMapCreate={onMapCreate}
-                    openMarkerId={openMarkerId}
-                    setOpenMarkerId={setOpenMarkerId}
-                    moveLatLng={moveLatLng}
-                />
-                <SearchResultsSidebar
-                    searchResults={searchResults}
-                    isSidebarOpen={isSidebarOpen}
-                    setIsSidebarOpen={setIsSidebarOpen}
-                />
+                <div className={styles.map_wrppaer}>
+                    <KakaoMap
+                        center={state.center}
+                        markers={searchResults}
+                        level={3}
+                        onMapCreate={onMapCreate}
+                        openMarkerId={openMarkerId}
+                        setOpenMarkerId={setOpenMarkerId}
+                        moveLatLng={moveLatLng}
+                    />
+                    <SearchResultsSidebar
+                        searchResults={searchResults}
+                        isSidebarOpen={isSidebarOpen}
+                        setIsSidebarOpen={setIsSidebarOpen}
+                    />
+                </div>
                 <div className={styles.btn_wrapper}>
                     {SEARCH_KEYWORD.map((keyword) => (
                         <KeywordBtn

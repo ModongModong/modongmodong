@@ -1,5 +1,5 @@
 import styles from "./Search_results_sidebar.module.css";
-import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
+import { BsDashLg } from "react-icons/bs";
 
 const SearchResultsSidebar = ({ searchResults, isSidebarOpen, setIsSidebarOpen}) => {
     return (
@@ -28,7 +28,7 @@ const SearchResultsSidebar = ({ searchResults, isSidebarOpen, setIsSidebarOpen})
                 className={styles.sidebar_open_btn}
                 onClick={() => setIsSidebarOpen(prev => !prev)}
             >
-                {isSidebarOpen ? <FaArrowLeft/> : <FaArrowRight/>}
+               <BsDashLg/>
             </button>
         </div>
     )

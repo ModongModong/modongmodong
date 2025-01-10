@@ -14,18 +14,20 @@ import UpdatePost from "./page/Home/Update_post.jsx";
 function App() {
     return (
        <>
-           <Routes>
-               {/*<Route path="/" element={<Login />} />*/}
-               <Route path="/login" element={<Login />} />
-               <Route path="/signup" element={<Signup />} />
-               <Route path="/search" element={<SearchPharmacy/>} />
-               <Route path="/mypage" element={<MyPage />} />
-               <Route path="/recommend" element={<NsRecommendation />} />
-               <Route path="/" element={<Home/>} />
-               <Route path="/post" element={<AddPost/>} />
-               <Route path="/post/update/:postId" element={<UpdatePost/>} />
-               <Route path="/post/:postId" element={<PostDetail/>} />
-           </Routes>
+           <div>
+               <Routes>
+                   <Route path="/" element={<Login />} />
+                   <Route path="/login" element={<Login />} />
+                   <Route path="/signup" element={<Signup />} />
+                   <Route path="/search" element={<SearchPharmacy/>} />
+                   <Route path="/mypage" element={<MyPage />} />
+                   <Route path="/recommend" element={<NsRecommendation />} />
+                   <Route path="/" element={<Home/>} />
+                   <Route path="/post" element={<AddPost/>} />
+                   <Route path="/post/update/:postId" element={<UpdatePost/>} />
+                   <Route path="/post/:postId" element={<PostDetail/>} />
+               </Routes>
+           </div>
            <Navigation/>
        </>
     );
