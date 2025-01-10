@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from "react";
+// import React, {useEffect, useState} from "react";
+import {useState} from "react";
 import "../css/login.css";
 
 function Login() {
@@ -6,12 +7,12 @@ function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    // 환경변수에서 API URL 가져오기
-    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-    useEffect(() => {
-        console.log(API_BASE_URL); // 환경 변수 확인
-    }, []);
+    // // 환경변수에서 API URL 가져오기
+    // const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+    //
+    // useEffect(() => {
+    //     console.log(API_BASE_URL); // 환경 변수 확인
+    // }, []);
 
     // 로그인 버튼 클릭 핸들러
     const handleLogin = async () => {
@@ -38,7 +39,7 @@ function Login() {
 
             if (!response.ok) {
                 const errorResult = await response.json();
-                alert(errorResult.messgae || "로그인 실패.."); // 에러 메시지 팝업창에 표시
+                alert(errorResult.message || "로그인 실패.."); // 에러 메시지 팝업창에 표시
                 console.log(errorResult)
                 return;
             }

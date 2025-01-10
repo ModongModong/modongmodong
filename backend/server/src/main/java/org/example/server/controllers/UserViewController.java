@@ -1,21 +1,21 @@
-//package org.example.server.controllers;
-//
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.GetMapping;
-//
-//@Controller
-//public class UserViewController {
-//    @GetMapping("/login")
-//    public String login() {
-//        return "login";
+package org.example.server.controllers;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class UserViewController {
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+    @GetMapping("/signup")
+    public String signup() {
+        return "signup";
+    }
+
+//    @GetMapping("/main")
+//    public String mainPage() {
+//        return "main";
 //    }
-//    @GetMapping("/signup")
-//    public String signup() {
-//        return "signup";
-//    }
-//
-////    @GetMapping("/main")
-////    public String mainPage() {
-////        return "main";
-////    }
-//}
+}

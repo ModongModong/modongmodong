@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import {useState} from "react";
 import "../css/Signup.css";
 import { IoClose } from "react-icons/io5";
 
@@ -12,7 +12,11 @@ function Signup() {
     const [address, setAddress] = useState("");
 
     // 환경변수에서 API URL 가져오기
-    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ; // 환경 변수에서 API URL 가져오기
+    // const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // 환경 변수에서 API URL 가져오기
+    //
+    // useEffect(() => {
+    //     console.log(API_BASE_URL); // 환경 변수 확인
+    // }, []);
 
     // 회원가입 버튼 클릭 핸들러
     const handleSignup = async () => {
@@ -69,10 +73,10 @@ function Signup() {
                 return;
             }
 
-            // 이메일, 닉네입 중복 응답 처리
+            // 이메일, 닉네임 중복 응답 처리
             if (!response.ok) {
                 const errorResult = await response.json();
-                alert(errorResult.messgae || "회원가입 실패.."); // 에러 메시지 팝업창에 표시
+                alert(errorResult.message || "회원가입 실패.."); // 에러 메시지 팝업창에 표시
                 console.log(errorResult)
                 return;
             }
