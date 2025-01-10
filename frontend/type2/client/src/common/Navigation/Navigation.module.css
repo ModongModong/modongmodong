@@ -1,29 +1,37 @@
-.navBar{
-    /*background-color: pink;*/
+.navBar_wrapper {
+    width: 100%;
+    bottom: 0;
+    /* 추가 스타일 없이 기본 컨테이너 역할만 */
+}
+
+.navBar {
+    position: fixed; /* fixed를 여기로 이동 */
+    width: 100%;
+    bottom: 0;
+    background-color: #ffffff;
     text-decoration: none;
 }
 
 .navBar ul {
-    width: 100%;
     display: flex;
+    margin: 0;
+    padding: 20px 10px;
+    list-style: none;
 }
 
 .navBar li {
-    position: relative;
     flex: 1;
     text-align: center;
-}
-
-.navBar li.active{
     position: relative;
 }
 
 .navBar li.active::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
+    bottom: -6px;
+    left: 50%;
     width: 100%;
-    height: 3px;
+    height: 4px;
     background-color: #ff6f61;
+    transform: translateX(-50%);
 }
