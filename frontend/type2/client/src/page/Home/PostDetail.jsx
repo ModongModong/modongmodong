@@ -1,6 +1,5 @@
 import styles from './PostDetail.module.css'
 import KebabIcon from "../../assets/icons/KebabIcon.jsx";
-import HeartIcon from "../../assets/icons/heart_icon.jsx";
 import CommentIcon from "../../assets/icons/comment_icon.jsx";
 import UpdateIcon from "../../assets/icons/Update_icon.jsx";
 import DeleteIcon from "../../assets/icons/Delete_Icon.jsx";
@@ -12,7 +11,10 @@ import {
     FaThumbsUp,
     FaRegThumbsDown,
     FaThumbsDown,
+    FaHeart,
+    FaRegHeart,
 } from "react-icons/fa";
+import { IoIosAddCircleOutline } from "react-icons/io";
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
@@ -23,10 +25,13 @@ function PostDetail(){
     const [error, setError] = useState(null);
     const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
     const [isFavorite, setIsFavorite] = useState(false);
+    const [likePost, setLiksePost]= useState(false);
+    const [likePostCount, setLikePostCount] = useState(false);
     const [isLike, setIsLike] = useState(false);
     const [isDislike, setIsDislike] = useState(false);
     const [likeCount, setLikeCount] = useState();
     const [dislikeCount, setDislikeCount] = useState();
+    const [comment, setComment] = useState([]);
     const navigate = useNavigate();
     const { postId } = useParams();
 
@@ -40,7 +45,7 @@ function PostDetail(){
       navigate(`/post/update/${postId}`)
     };
 
-    //상세 게시글 불러오기
+    //상세 게시글 불러오기 + 댓글불러오기
     useEffect(() => {
         console.log(postId);
 
@@ -49,6 +54,11 @@ function PostDetail(){
                 const res = await axios.get(`/api/posts/${postId}`)
                 console.log(res.data)
                 setPostDetail(res.data);
+                setLikePostCount(res.data.postLikeNum);
+
+                const commentRes = await axios.get(`/api/comments/post/${postId}`)
+                console.log(commentRes.data);
+                setComment(commentRes.data);
             } catch(err) {
                alert(err);
             }
@@ -76,23 +86,32 @@ function PostDetail(){
         setIsFavorite((prev) => !prev);
     }
 
-    const toggleLike = () => {
-        if(isLike){
-            setIsLike(false);
-            setLikeCount((prev) => prev - 1);
-        } else{
-            setIsLike(true);
-            setLikeCount((prev) => prev + 1)
 
-            // 싫어요가 활성화된 경우 취소
-            if (isDislike) {
-                setIsDislike(false);
-                setDislikeCount((prev) => prev - 1);
+    // 게시글 좋아요 기능
+    const togglePostLike = async () => {
+        try {
+            if(likePost) {
+                //DELETE like
+                await axios.delete(`/api/posts/${postId}/like`);
+                setLiksePost(false);
+                setLikePostCount((prev) => prev - 1);
+            } else {
+                // POST like
+                await axios.post(`/api/posts/${postId}/like`);
+                setLiksePost(true);
+                setLikePostCount((prev) => prev + 1);
+
+                // 싫어요가 활성화된 경우 취소
+                if(isDislike) {
+                    setLiksePost(false);
+                    setLikePostCount((prev) => prev - 1);
+                }
             }
-
+        }catch(err) {
+            alert("에러발생🚨🚨")
+            console.log(err);
         }
-
-    }
+    };
 
     const toggleDislike = () => {
         if (isDislike) {
@@ -110,12 +129,12 @@ function PostDetail(){
     };
 
     return (
-        <>
+        <div className={styles.detail_post_wrapper}>
             <div className={styles.top_area}>
-                <div onClick={goBack}>
+                <div onClick={goBack} className={styles.goback_icon}>
                     <GobackIcon/>
                 </div>
-                <p>{postDetail.title}</p>
+                <h3>{postDetail.title}</h3>
                 <div className={styles.kebab_icon} onClick={toggleKebabMenu}>
                     <KebabIcon/>
                 </div>
@@ -132,9 +151,9 @@ function PostDetail(){
             <div className={styles.content_area}>
                 <div className={styles.content}>{postDetail.content}</div>
                 <div className={styles.icon_area}>
-                    <div className={styles.heart_icon}>
-                    <HeartIcon/>
-                        <p>{postDetail.postLikeNum}</p>
+                    <div className={styles.heart_icon} onClick={togglePostLike}>
+                        {likePost ? <FaHeart/> : <FaRegHeart/>}
+                        <p>{likePostCount}</p>
                     </div>
                     <div className={styles.comment_icon}>
                         <CommentIcon/>
@@ -146,24 +165,37 @@ function PostDetail(){
                 </div>
             </div>
             <div className={styles.comment_area}>
-                <div className={styles.nickname_area}>
-                    <p>댓글 단 유저의 닉네임</p>
-                    <div className={styles.thums_up_area} onClick={toggleLike}>
-                        {isLike ? <FaThumbsUp/>  : <FaRegThumbsUp/>}
-                        <span>{likeCount}</span>
-                    </div>
-                    <div className={styles.thums_down_area} onClick={toggleDislike}>
-                        {isDislike ? <FaThumbsDown/> : <FaRegThumbsDown/>}
-                        <span>{dislikeCount}</span>
-                    </div>
-                </div>
-                <div className={styles.comment_rud_area}>
-                    <p>댓글내용</p>
-                    <UpdateIcon/>
-                    <DeleteIcon/>
+                {comment.length > 0 ?(
+                    comment.map((commentItem, index) => (
+                        <div key={index}>
+                            <div className={styles.nickname_area}>
+                                <p>{commentItem.userId}</p>
+                                <div className={styles.thums_up_area}>
+                                    {isLike ? <FaThumbsUp /> : <FaRegThumbsUp />}
+                                    <span>{commentItem.commentLikeNum}</span>
+                                </div>
+                                <div className={styles.thums_down_area} onClick={toggleDislike}>
+                                    {isDislike ? <FaThumbsDown /> : <FaRegThumbsDown />}
+                                    <span>{commentItem.dislikeNum}</span>
+                                </div>
+                            </div>
+                            <div className={styles.comment_rud_area}>
+                                <p>{commentItem.content}</p>
+                                <UpdateIcon />
+                                <DeleteIcon />
+                            </div>
+                        </div>
+                    ))
+                )  : (
+                    <div>댓글이 없습니다</div>
+                )}
+                <div className={styles.comment_c_area}>
+                    <input type="text" placeholder="댓글을 입력하세요"/>
+                    <IoIosAddCircleOutline />
                 </div>
             </div>
-        </>
+
+        </div>
     )
 }
 
