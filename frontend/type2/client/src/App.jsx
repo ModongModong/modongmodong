@@ -1,4 +1,6 @@
 import './App.css';
+import Login from "./login/jsx/login.jsx";
+import Signup from "./login/jsx/signup.jsx";
 import Navigation from "./common/Navigation/Navigation.jsx";
 import Home from "./page/Home/Home.jsx";
 import AddPost from "./page/Home/Add_post.jsx";
@@ -13,6 +15,9 @@ function App() {
     return (
        <>
            <Routes>
+               <Route path="/" element={<Login />} />
+               <Route path="/login" element={<Login />} />
+               <Route path="/signup" element={<Signup />} />
                <Route path="/search" element={<SearchPharmacy/>} />
                <Route path="/mypage" element={<MyPage />} />
                <Route path="/recommend" element={<NsRecommendation />} />
