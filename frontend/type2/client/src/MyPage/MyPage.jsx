@@ -1,14 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {useState} from "react";
 import styles from './MyPage.module.css';
 import GobackIcon from "../assets/icons/goback_icon.jsx";
 import MyPageIcon from "../assets/icons/mypage_icon.jsx"; // 유저이미지데이터 들어오면 삭제
 
 function MyPage() {
     // 유저 정보와 반려동물 정보를 데이터로 처리
-    const user = {
-        name: '유저 이름',
-        image: 'user-image-url',
-    };
+    const [user, setUser] = useState(null);
 
     const pets = [
         {
@@ -31,6 +29,35 @@ function MyPage() {
         },
     ];
 
+    // 마이페이지 로드 시 로그인된 유저 정보 가져오기
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await fetch("http://localhost:8080/api/myinfo", {
+                    method: "GET",
+                    credentials: "include", // 세션 정보와 쿠키를 포함하여 요청
+                });
+
+                if (!response.ok) {
+                    alert("로그인되지 않았습니다.");
+                    window.location.href = "/login";
+                    return;
+                }
+
+                const userData = await response.json();
+                setUser(userData);
+            } catch (error) {
+                console.error("유저 정보 로딩 중 오류 발생:", error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
+
+    if (!user) {
+        return <div>로딩 중...</div>;
+    }
+
     return (
         <div className={styles.container}>
             {/* 뒤로가기 버튼 */}
@@ -48,7 +75,8 @@ function MyPage() {
 
                     {/* 유저이름 */}
                     <div className={styles.userNameContainer}>
-                        <div className={styles.userName}>{user.name}</div>
+                        <div className={styles.userName}>{user.nickname}</div>
+                        {/* 유저 이름 */}
                     </div>
                 </div>
             </div>

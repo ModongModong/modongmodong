@@ -1,6 +1,6 @@
 import {useState} from "react";
-import "../css/Signup.css";
-import { IoClose } from "react-icons/io5";
+import styles from "../css/signup.module.css";
+import {IoClose} from "react-icons/io5";
 
 
 function Signup() {
@@ -10,13 +10,6 @@ function Signup() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [nickname, setNickname] = useState("");
     const [address, setAddress] = useState("");
-
-    // 환경변수에서 API URL 가져오기
-    // const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // 환경 변수에서 API URL 가져오기
-    //
-    // useEffect(() => {
-    //     console.log(API_BASE_URL); // 환경 변수 확인
-    // }, []);
 
     // 회원가입 버튼 클릭 핸들러
     const handleSignup = async () => {
@@ -50,7 +43,6 @@ function Signup() {
 
         try {
             // 서버로 회원가입 요청
-            // url을 정확하게 표현
             const response = await fetch(`http://localhost:8080/api/users`, {
                 method: "POST",
                 headers: {
@@ -81,16 +73,15 @@ function Signup() {
                 return;
             }
 
-            console.log( response ); //
+            console.log(response); //
             const result = await response.json();
-            console.log( result ); //
+            console.log(result); //
 
             // 응답 처리
             if (result.code == 1) {
                 alert("회원가입 성공! 로그인 페이지로 이동합니다.");
                 window.location.href = "/"; // 로그인 페이지로 이동
-            }
-            else {
+            } else {
                 alert(result.message || "회원가입 실패. 다시 시도해주세요.");
             }
         } catch (error) {
@@ -100,60 +91,62 @@ function Signup() {
     };
 
     return (
-        <div className="signup-container">
-            <button className="closeIcon" onClick={() => window.history.back()}>
-                <IoClose size={28} />
-            </button>
-            <h1>회원가입</h1>
-            <div className="input-group">
-                <label>이메일</label>
-                <input
-                    type="email"
-                    placeholder="이메일을 입력하세요"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
+        <div className={styles.signup_wrapper}>
+            <div className={styles.signup_container}>
+                <button className={styles.closeIcon} onClick={() => window.history.back()}>
+                    <IoClose size={28}/>
+                </button>
+                <h1>회원가입</h1>
+                <div className={styles.input_group}>
+                    <label>이메일</label>
+                    <input
+                        type="email"
+                        placeholder="이메일을 입력하세요"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
+                <div className={styles.input_group}>
+                    <label>비밀번호</label>
+                    <input
+                        type="password"
+                        placeholder="비밀번호를 입력하세요"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
+                <div className={styles.input_group}>
+                    <label>비밀번호 확인</label>
+                    <input
+                        type="password"
+                        placeholder="비밀번호를 다시 입력하세요"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
+                </div>
+                <div className={styles.input_group}>
+                    <label>닉네임</label>
+                    <input
+                        type="text"
+                        id="nickname"
+                        placeholder="닉네임을 입력하세요"
+                        value={nickname}
+                        onChange={(e) => setNickname(e.target.value)}
+                    />
+                </div>
+                <div className={styles.input_group}>
+                    <label>주소</label>
+                    <input
+                        type="text"
+                        placeholder="주소를 입력하세요"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                    />
+                </div>
+                <button className={styles.signup_button} onClick={handleSignup}>
+                    회원가입
+                </button>
             </div>
-            <div className="input-group">
-                <label>비밀번호</label>
-                <input
-                    type="password"
-                    placeholder="비밀번호를 입력하세요"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-            </div>
-            <div className="input-group">
-                <label>비밀번호 확인</label>
-                <input
-                    type="password"
-                    placeholder="비밀번호를 다시 입력하세요"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-            </div>
-            <div className="input-group">
-                <label>닉네임</label>
-                <input
-                    type="text"
-                    id="nickname" // 추가
-                    placeholder="닉네임을 입력하세요"
-                    value={nickname}
-                    onChange={(e) => setNickname(e.target.value)}
-                />
-            </div>
-            <div className="input-group">
-                <label>주소</label>
-                <input
-                    type="text"
-                    placeholder="주소를 입력하세요"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                />
-            </div>
-            <button className="signup-button" onClick={handleSignup}>
-                회원가입
-            </button>
         </div>
     );
 }
