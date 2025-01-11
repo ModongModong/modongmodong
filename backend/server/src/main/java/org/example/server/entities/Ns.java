@@ -25,13 +25,13 @@ public class Ns {
     @JoinColumn(name = "type_name", referencedColumnName = "type_pk", nullable = false)
     private PetType petType;
 
-    @Column(name = "ns_name", length = 255)
+    @Column(name = "ns_name",)
     private String name;
 
     @Column(name = "ns_price")
     private Integer price;
 
-    @Column(name = "ns_ex", length = 255)
+    @Column(name = "ns_ex")
     private String explanation;
 
 }
