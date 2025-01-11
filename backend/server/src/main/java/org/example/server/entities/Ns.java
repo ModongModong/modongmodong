@@ -25,7 +25,7 @@ public class Ns {
     @JoinColumn(name = "type_name", referencedColumnName = "type_pk", nullable = false)
     private PetType petType;
 
-    @Column(name = "ns_name",)
+    @Column(name = "ns_name")
     private String name;
 
     @Column(name = "ns_price")
