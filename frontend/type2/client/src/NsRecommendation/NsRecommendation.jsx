@@ -1,11 +1,14 @@
 import React from 'react';
 import styles from './NsRecommendation.module.css';
 import GobackIcon from "../assets/icons/goback_icon.jsx";
+import {useNavigate} from "react-router-dom";
 
 function NsRecommendation() {
+    const navigate = useNavigate();
+
     // 뒤로가기 동작
-    const handleGoBack = () => {
-        window.history.back();
+    const goBack = () => {
+        navigate(-1);
     };
 
     // 영양제 데이터
@@ -26,13 +29,17 @@ function NsRecommendation() {
 
     return (
         <div className={styles.container}>
-            {/* 뒤로가기 버튼 */}
-            <div className={styles.backButtonContainer}>
-                <GobackIcon className={styles.backButton}  onClick={handleGoBack}/>
-            </div>
+            {/* 헤더 */}
+            <div className={styles.headerContainer}>
+                {/* 뒤로가기 버튼 */}
+                <div className={styles.backButtonContainer} onClick={goBack}>
+                    <GobackIcon className={styles.backButton} />
+                </div>
 
-            <div className={styles.title}>
-                <h1>영양제 추천</h1>
+                {/* 영양제 추천 제목 */}
+                <div className={styles.title}>
+                    영양제 추천
+                </div>
             </div>
 
             {/* 영양제 목록 */}

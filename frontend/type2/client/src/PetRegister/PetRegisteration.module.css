@@ -1,21 +1,33 @@
 .container {
     width: 100%;
     margin: 0 auto;
-    padding: 20px;
+    padding: 20px 20px 70px 20px;
     background-color: #D9D9D9;
-    position: relative; /* 위치 조정용 */
+    position: relative;
+}
+.header {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.pageTitle {
+    font-size: 24px;
+    font-weight: bold;
+    width: 80%;
+    text-align: center;
 }
 
 .buttonContainer {
     display: flex;
     justify-content: center;
     align-items: center;
+    width:20%;
 }
 
 .radioLabelContainer {
     width: 50%;
     text-align: left;
-    padding: 10px;
 }
 
 .radioContainer {
@@ -24,7 +36,10 @@
     padding: 10px;
     margin-bottom: 10px;
 }
-
+.formContainer {
+    width: 100%; /* 화면 전체 너비를 사용 */
+    margin: 0 auto; /* 화면 중앙에 정렬 */
+}
 .form {
     display: flex;
     flex-direction: column;
@@ -41,9 +56,11 @@
 
 .input {
     border: none;
+    background-color: white;
     width: 80%;
     padding: 8px;
     margin-bottom: 10px;
+    margin: 0 auto; /* 중앙 정렬 */
 }
 
 .inputRadio {
@@ -52,6 +69,12 @@
 
 .radioGroup {
     display: flex;
+}
+
+.submitContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .submitButton {

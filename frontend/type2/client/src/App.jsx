@@ -10,6 +10,7 @@ import NsRecommendation from "./NsRecommendation/NsRecommendation.jsx";
 import MyPage from "./MyPage/MyPage.jsx";
 import {Route, Routes} from "react-router-dom";
 import UpdatePost from "./page/Home/Update_post.jsx";
+import PetRegistrationForm from "./PetRegister/PetRegistrationForm.jsx";
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                    <Route path="/signup" element={<Signup />} />
                    <Route path="/search" element={<SearchPharmacy/>} />
                    <Route path="/mypage" element={<MyPage />} />
+                   <Route path="/petregister" element={<PetRegistrationForm/>}/>
                    <Route path="/recommend" element={<NsRecommendation />} />
                    <Route path="/" element={<Home/>} />
                    <Route path="/post" element={<AddPost/>} />
