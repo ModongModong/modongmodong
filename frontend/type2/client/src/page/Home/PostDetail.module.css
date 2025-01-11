@@ -253,3 +253,8 @@
     top: 30%;
     right: 2%;
 }
+
+.noncomment_area {
+    padding-top: 10px;
+    padding-left: 5px;
+}

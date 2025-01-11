@@ -32,6 +32,7 @@ function PostDetail(){
     const [comment, setComment] = useState([]);
     const navigate = useNavigate();
     const { postId } = useParams();
+    const [userPk, setUserPk] = useState(null);
 
     //뒤로가기버튼
     const goBack = () => {
@@ -40,19 +41,31 @@ function PostDetail(){
     const goUpdate = () =>{
         navigate(`/post/update/${postId}`)
     };
+    useEffect(() => {
+        const fetchPostDetail = async () => {
+            try {
+                const userRes = await axios.get("/api/myinfo", { withCredentials: true });
+                setUserPk(userRes.data.id);
+            } catch (err) {
+                console.error(err);
+                alert("에러 발생!");
+            }
+        };
 
+        fetchPostDetail();
+    }, []);
     //상세 게시글 불러오기 + 댓글불러오기
     useEffect(() => {
         console.log(postId);
 
         const fetchPostDetail = async () => {
             try{
-                const res = await axios.get(`/api/posts/${postId}`)
+                const res = await axios.get(`/api/posts/${postId}`, { withCredentials: true })
                 console.log(res.data)
                 setPostDetail(res.data);
                 setLikePostCount(res.data.postLikeNum);
 
-                const commentRes = await axios.get(`/api/comments/post/${postId}`)
+                const commentRes = await axios.get(`/api/comments/post/${postId}`, { withCredentials: true })
                 console.log(commentRes.data);
                 setComment(commentRes.data);
             } catch(err) {
@@ -64,7 +77,7 @@ function PostDetail(){
     //게시글 삭제
     const deletePost = async () => {
         try{
-            await axios.delete(`/api/posts/${postId}`);
+            await axios.delete(`/api/posts/${postId}`, { withCredentials: true });
             alert("게시글이 삭제되었습니다")
             navigate("/");
         }catch{
@@ -104,7 +117,9 @@ function PostDetail(){
             console.log(err);
         }
     };
+    // 댓글 수정
 
+    // 댓글 삭제
     const toggleDislike = () => {
         if (isDislike) {
             setIsDislike(false);
@@ -119,6 +134,7 @@ function PostDetail(){
             }
         }
     };
+    const isAuthor = userPk === postDetail.userPk;
 
     return (
         <div className={styles.detail_post_wrapper}>
@@ -127,16 +143,21 @@ function PostDetail(){
                     <GobackIcon/>
                 </div>
                 <h3>{postDetail.title}</h3>
-                <div className={styles.kebab_icon} onClick={toggleKebabMenu}>
-                    <KebabIcon/>
-                </div>
-                {isKebabMenuOpen && (
-                    <div className={styles.kebab_menu_area}>
-                        <button className={styles.post_edit_btn} onClick={goUpdate}>수정하기</button>
-                        <button
-                            className={styles.post_delete_btn}
-                            onClick={deletePost}>삭제하기
-                        </button>
+                {isAuthor && ( // 작성자만 메뉴 보이기
+                    <div>
+                        <div className={styles.kebab_icon} onClick={() => setIsKebabMenuOpen((prev) => !prev)}>
+                            <KebabIcon />
+                        </div>
+                        {isKebabMenuOpen && (
+                            <div className={styles.kebab_menu_area}>
+                                <button className={styles.post_edit_btn} onClick={goUpdate}>
+                                    수정하기
+                                </button>
+                                <button className={styles.post_delete_btn} onClick={deletePost}>
+                                    삭제하기
+                                </button>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
@@ -179,7 +200,7 @@ function PostDetail(){
                         </div>
                     ))
                 )  : (
-                    <div>댓글이 없습니다</div>
+                    <div className={styles.noncomment_area} >댓글이 없습니다</div>
                 )}
                 <div className={styles.comment_c_area}>
                     <input type="text" placeholder="댓글을 입력하세요"/>
