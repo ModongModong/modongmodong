@@ -1,16 +1,19 @@
+.detail_post_wrapper{
+    margin: 20px;
+}
+
 .top_area{
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 30px;
-
     position: relative;
 }
 
-.top_area p{
+.top_area h3{
     flex-grow: 1;
     text-align: center;
-    font-size: 32px;
+    font-size: 24px;
     font-weight: 600;
 }
 
@@ -18,14 +21,20 @@
     cursor: pointer;
 }
 
+.goback_icon svg{
+    width: 34px;
+    height: 34px;
+}
 .kebab_icon{
     padding: 5px;
+    width: 8px;
+    height: 25px;
 }
 
 .content_area{
     display: flex;
     flex-direction: column;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 
 .content{
@@ -49,6 +58,9 @@
     margin-right: 20px;
 }
 .heart_icon svg{
+    stroke-width: 19px;
+    width: 30px;
+    height: 30px;
     margin-right: 5px;
 }
 .comment_icon{
@@ -204,4 +216,40 @@
     border-radius: 5px;
     padding: 10px 20px;
     cursor: pointer;
+}
+
+.comment_area{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 270px;
+    border-top: 1px solid #888888;
+    margin-bottom: 15px;
+    flex-grow: 1;
+}
+
+.comment_c_area input {
+    width: 100%;
+    border: 1px solid gray;
+    border-radius: 6px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.comment_c_area input:focus {
+    outline: none;
+}
+
+.comment_c_area {
+    margin-top: auto;
+    padding-top: 10px;
+    position: relative;
+}
+
+.comment_c_area svg{
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 30%;
+    right: 2%;
 }
