@@ -19,8 +19,10 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
-    @Column(name = "user_pk", nullable = false)
-    private Long userId;
+
+    @ManyToOne
+    @JoinColumn(name = "user_pk", nullable = false)
+    private User user;
 
     @Column(nullable = false)
     private String title;
@@ -40,20 +42,23 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-    public Post(Long userId, String title, String content) {
-        this.userId = userId;
-        this.title = title;
-        this.content = content;
+
+    @PrePersist
+    protected void onCreate() {
         this.timestamp = LocalDateTime.now();
     }
-
     public void addComment(Comment comment) {
+        if (comments == null) {
+            comments = new ArrayList<>();
+        }
         comments.add(comment);
         comment.setPost(this);
     }
 
     public void removeComment(Comment comment) {
-        comments.remove(comment);
-        comment.setPost(null);
+        if (comments != null) {
+            comments.remove(comment);
+            comment.setPost(null);
+        }
     }
 }

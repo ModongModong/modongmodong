@@ -4,8 +4,10 @@ import org.example.server.dto.CommentRequestDto;
 import org.example.server.dto.CommentResponseDto;
 import org.example.server.entities.Comment;
 import org.example.server.entities.Post;
+import org.example.server.entities.User;
 import org.example.server.repository.CommentRepository;
 import org.example.server.repository.PostRepository;
+import org.example.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,15 +23,19 @@ public class CommentService {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     // 댓글 생성
     public CommentResponseDto createComment(CommentRequestDto request) {
         // 게시물 확인
         Post post = postRepository.findById(request.getPostId())
                 .orElseThrow(() -> new RuntimeException("Post not found"));
-
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
         // 댓글 생성
         Comment comment = new Comment();
-        comment.setUserId(request.getUserId());
+        comment.setPost(post); // Post 설정
         comment.setContent(request.getContent());
 
         post.addComment(comment);
@@ -110,23 +116,27 @@ public class CommentService {
 
     // 댓글 삭제
     public void deleteComment(Long id) {
+
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
 
+
         Post post = comment.getPost();
-        commentRepository.delete(comment);
+        post.removeComment(comment);
+
+
         if (post.getCommentCount() > 0) {
             post.setCommentCount(post.getCommentCount() - 1);
-            postRepository.save(post);
         }
+        postRepository.save(post);
+        commentRepository.delete(comment);
     }
-
     // Comment 엔티티 -> CommentResponseDto 변환
     private CommentResponseDto toResponseDto(Comment comment) {
         return CommentResponseDto.builder()
                 .commentId(comment.getCommentId())
                 .postId(comment.getPost().getPostId())
-                .userId(comment.getUserId())
+                .nickname(comment.getUser().getNickname())
                 .content(comment.getContent())
                 .commentLikeNum(comment.getCommentLikeNum())
                 .dislikeNum(comment.getDislikeNum())

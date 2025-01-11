@@ -19,31 +19,31 @@ public class CommentController {
 
     // 댓글 생성
     @PostMapping
-    public ResponseEntity<CommentResponseDto> createComment(@RequestBody CommentRequestDto commentRequestDto) {
-        CommentResponseDto createdComment = commentService.createComment(commentRequestDto);
+    public ResponseEntity<CommentResponseDto> createComment(@RequestBody CommentRequestDto request) {
+        CommentResponseDto createdComment = commentService.createComment(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdComment);
     }
 
     // 특정 게시물의 댓글 목록 조회
-    @GetMapping("/post/{postId}")
-    public ResponseEntity<List<CommentResponseDto>> getCommentsByPostId(@PathVariable("postId")Long postId) {
+    @GetMapping("/api/posts/{postId}/comments")
+    public ResponseEntity<List<CommentResponseDto>> getCommentsByPostId(@PathVariable("postId") Long postId) {
         List<CommentResponseDto> comments = commentService.getCommentsByPostId(postId);
         return ResponseEntity.ok(comments);
     }
 
     // 좋아요 증가
     @PostMapping("/{id}/like")
-    public CommentResponseDto increaseLike(@PathVariable("id") Long id) {
-        return commentService.increaseLike(id);
+    public ResponseEntity<CommentResponseDto> increaseLike(@PathVariable("id") Long id) {
+        CommentResponseDto response = commentService.increaseLike(id);
+        return ResponseEntity.ok(response);
     }
-
 
     // 좋아요 취소
     @DeleteMapping("/{id}/like")
-    public CommentResponseDto decreaseLike(@PathVariable("id") Long id) {
-        return commentService.decreaseLike(id);
+    public ResponseEntity<CommentResponseDto> decreaseLike(@PathVariable("id") Long id) {
+        CommentResponseDto response = commentService.decreaseLike(id);
+        return ResponseEntity.ok(response);
     }
-
 
     // 싫어요 증가
     @PostMapping("/{id}/dislike")

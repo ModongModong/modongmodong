@@ -14,8 +14,4 @@ public class Post {
     private Integer commentCounter;
     private String timestamp;
 
-    // 좋아요 증가
-    public void incrementLikes() {
-        this.likeNum++;
-    }
 }
