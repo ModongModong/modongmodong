@@ -7,7 +7,6 @@ import lombok.Setter;
 @Setter
 
 public class PetRequestDto {
-    private Long petId;
     private Long userId;
     private Long diseaseId;
     private Long petTypeId;
