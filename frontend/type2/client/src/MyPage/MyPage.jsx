@@ -3,10 +3,12 @@ import {useState} from "react";
 import styles from './MyPage.module.css';
 import GobackIcon from "../assets/icons/goback_icon.jsx";
 import MyPageIcon from "../assets/icons/mypage_icon.jsx"; // 유저이미지데이터 들어오면 삭제
+import {useNavigate} from "react-router-dom";
 
 function MyPage() {
     // 유저 정보와 반려동물 정보를 데이터로 처리
     const [user, setUser] = useState(null);
+    const navigate = useNavigate();
 
     const pets = [
         {
@@ -28,6 +30,16 @@ function MyPage() {
             weight: '8.8'
         },
     ];
+
+    //뒤로가기 버튼
+    const goBack = () => {
+        navigate(-1);
+    };
+
+    // 등록페이지 이동
+    const handlePetClick = () => {
+        navigate('/petregister');  // 반려동물 등록 페이지로 이동
+    };
 
     // 마이페이지 로드 시 로그인된 유저 정보 가져오기
     useEffect(() => {
@@ -60,9 +72,17 @@ function MyPage() {
 
     return (
         <div className={styles.container}>
-            {/* 뒤로가기 버튼 */}
-            <div className={styles.backButtonContainer}>
-                <GobackIcon className={styles.backButton}/>
+            {/* 헤더 */}
+            <div className={styles.headerContainer}>
+                {/* 뒤로가기 버튼 */}
+                <div className={styles.backButtonContainer} onClick={goBack}>
+                    <GobackIcon className={styles.backButton}/>
+                </div>
+
+                {/* 마이페이지 제목 */}
+                <div className={styles.pageTitle}>
+                    마이페이지
+                </div>
             </div>
 
             {/* 유저 정보 */}
@@ -70,7 +90,7 @@ function MyPage() {
                 <div className={styles.userContent}>
                     {/* 유저이미지 */}
                     <div className={styles.userImageContainer}>
-                        <MyPageIcon className={styles.userImage} /> {/* 향후 유저이미지로 대체*/}
+                        <MyPageIcon className={styles.userImage}/> {/* 향후 유저이미지로 대체*/}
                     </div>
 
                     {/* 유저이름 */}
@@ -113,7 +133,7 @@ function MyPage() {
                                         <span>{pet.neuteuring_yn === 'Y' ? '예' : '아니오'}</span></li>
                                 </ul>
                                 <div className={styles.editInfoButtonContainer}>
-                                    <button className={styles.editInfoButton}>정보 수정</button>
+                                    <button className={styles.editInfoButton} onClick={handlePetClick}>정보 수정</button>
                                 </div>
                             </div>
 
@@ -122,10 +142,9 @@ function MyPage() {
                 ))}
             </div>
 
-
             {/* 반려동물 추가등록 버튼 */}
             <div className={styles.addPetButtonContainer}>
-                <button className={styles.addPetButton}>반려동물 추가등록</button>
+                <button className={styles.addPetButton} onClick={handlePetClick}>반려동물 추가등록</button>
             </div>
         </div>
     );
