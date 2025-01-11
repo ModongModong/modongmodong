@@ -57,7 +57,7 @@ function Home(){
                        <Link to={`/post/${item.postId}`} className={styles.post} >
                            <div className={styles.top_area}>
                                <p className={styles.title}>{item.title}</p>
-                               <p>{item.userId}</p>
+                               <p>{item.nickname}</p>
                            </div>
                            <div className={styles.content}>
                                <p>

@@ -1,5 +1,6 @@
 package org.example.server.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.example.server.dto.PostRequestDto;
 import org.example.server.dto.PostResponseDto;
 import org.example.server.entities.Post;
@@ -7,8 +8,6 @@ import org.example.server.entities.User;
 import org.example.server.repository.PostRepository;
 import org.example.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,16 +23,6 @@ public class PostService {
     @Autowired
     private UserRepository userRepository;
 
-    // 로그인된 사용자 정보 가져오기
-    private User getAuthenticatedUser() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserDetails) {
-            String email = ((UserDetails) principal).getUsername(); // Email을 username으로 사용
-            return userRepository.findByEmail(email)
-                    .orElseThrow(() -> new RuntimeException("로그인된 사용자를 찾을 수 없습니다."));
-        }
-        throw new RuntimeException("인증 정보가 유효하지 않습니다.");
-    }
 
     // 모든 게시물 조회
     public Page<PostResponseDto> getAllPosts(Pageable pageable) {
@@ -66,8 +55,12 @@ public class PostService {
     }
 
     // 글 쓰기
-    public PostResponseDto createPost(PostRequestDto request) {
-        User user = getAuthenticatedUser(); // 로그인된 사용자 정보 가져오기
+    public PostResponseDto createPost(PostRequestDto request, HttpServletRequest httpRequest) {
+        User user = (User) httpRequest.getSession().getAttribute("user");
+
+        if (user == null) {
+            throw new RuntimeException("로그인된 사용자가 없습니다.");
+        }
 
         Post post = new Post();
         post.setUser(user);
@@ -89,9 +82,19 @@ public class PostService {
     }
 
     // 글 수정
-    public PostResponseDto updatePost(Long postId, PostRequestDto request) {
+    public PostResponseDto updatePost(Long postId, PostRequestDto request, HttpServletRequest httpRequest) {
+        User user = (User) httpRequest.getSession().getAttribute("user");
+
+        if (user == null) {
+            throw new RuntimeException("로그인된 사용자가 없습니다.");
+        }
+
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다."));
+
+        if (!post.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("수정 권한이 없습니다.");
+        }
 
         post.setTitle(request.getTitle());
         post.setContent(request.getContent());
@@ -111,16 +114,37 @@ public class PostService {
     }
 
     // 글 삭제
-    public void deletePost(Long postId) {
-        postRepository.deleteById(postId);
+    public void deletePost(Long postId, HttpServletRequest httpRequest) {
+        User user = (User) httpRequest.getSession().getAttribute("user");
+
+        if (user == null) {
+            throw new RuntimeException("로그인된 사용자가 없습니다.");
+        }
+
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다."));
+
+        if (!post.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("삭제 권한이 없습니다.");
+        }
+
+        postRepository.delete(post);
     }
 
     // 좋아요 증가
-    public PostResponseDto increaseLike(Long postId) {
+    public PostResponseDto increaseLike(Long postId, HttpServletRequest httpRequest) {
+        User user = (User) httpRequest.getSession().getAttribute("user");
+
+        if (user == null) {
+            throw new RuntimeException("로그인된 사용자가 없습니다.");
+        }
+
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다."));
+
         post.setPostLikeNum(post.getPostLikeNum() + 1);
         postRepository.save(post);
+
         return PostResponseDto.builder()
                 .postId(post.getPostId())
                 .userPk(post.getUser().getId())
@@ -132,13 +156,18 @@ public class PostService {
                 .commentCount(post.getCommentCount())
                 .build();
     }
-
     // 좋아요 감소
-    public PostResponseDto decreaseLike(Long postId) {
+    public PostResponseDto decreaseLike(Long postId, HttpServletRequest httpRequest) {
+        User user = (User) httpRequest.getSession().getAttribute("user");
+
+        if (user == null) {
+            throw new RuntimeException("로그인된 사용자가 없습니다.");
+        }
+
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다."));
 
-        if (post.getPostLikeNum() > 0) { // 좋아요가 0보다 클 때만 감소
+        if (post.getPostLikeNum() > 0) {
             post.setPostLikeNum(post.getPostLikeNum() - 1);
             postRepository.save(post);
         }
