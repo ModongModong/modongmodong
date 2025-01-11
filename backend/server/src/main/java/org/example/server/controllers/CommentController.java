@@ -1,5 +1,5 @@
 package org.example.server.controllers;
-
+import jakarta.servlet.http.HttpServletRequest;
 import org.example.server.dto.CommentRequestDto;
 import org.example.server.dto.CommentResponseDto;
 import org.example.server.service.CommentService;
@@ -19,8 +19,8 @@ public class CommentController {
 
     // 댓글 생성
     @PostMapping
-    public ResponseEntity<CommentResponseDto> createComment(@RequestBody CommentRequestDto request) {
-        CommentResponseDto createdComment = commentService.createComment(request);
+    public ResponseEntity<CommentResponseDto> createComment(@RequestBody CommentRequestDto request, HttpServletRequest httpRequest) {
+        CommentResponseDto createdComment = commentService.createComment(request, httpRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdComment);
     }
 
@@ -62,15 +62,15 @@ public class CommentController {
     @PutMapping("/{id}")
     public ResponseEntity<CommentResponseDto> updateComment(
             @PathVariable("id") Long id,
-            @RequestBody CommentRequestDto request) {
-        CommentResponseDto updatedComment = commentService.updateComment(id, request);
+            @RequestBody CommentRequestDto request,  HttpServletRequest httpRequest) {
+        CommentResponseDto updatedComment = commentService.updateComment(id, request, httpRequest);
         return ResponseEntity.ok(updatedComment);
     }
 
     // 댓글 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable("id") Long id) {
-        commentService.deleteComment(id);
+    public ResponseEntity<Void> deleteComment(@PathVariable("id") Long id, HttpServletRequest  httpRequest) {
+        commentService.deleteComment(id,httpRequest);
         return ResponseEntity.noContent().build();
     }
 }

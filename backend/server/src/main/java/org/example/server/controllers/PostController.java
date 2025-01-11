@@ -10,7 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
-
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @RestController
 @RequestMapping("/api/posts")
@@ -21,14 +23,17 @@ public class PostController {
 
     // 글 목록 조회
     @GetMapping
-    public ResponseEntity<Page<PostResponseDto>> getAllPosts(Pageable pageable) {
+    public ResponseEntity<Page<PostResponseDto>> getAllPosts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "timestamp")); // 내림차순 정렬
         Page<PostResponseDto> posts = postService.getAllPosts(pageable);
         return ResponseEntity.ok(posts);
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<PostResponseDto> getPostById(@PathVariable("postId")Long postId) {
-        PostResponseDto post = postService.getPostById(postId);
+    public ResponseEntity<PostResponseDto> getPostById(@PathVariable("postId")Long postId ,HttpServletRequest httpRequest) {
+        PostResponseDto post = postService.getPostById(postId, httpRequest);
         return ResponseEntity.ok(post);
     }
     // 글 작성

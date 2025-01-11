@@ -39,9 +39,18 @@ public class PostService {
     }
 
     // 게시물 상세 보기
-    public PostResponseDto getPostById(Long postId) {
+    public PostResponseDto getPostById(Long postId , HttpServletRequest httpRequest) {
+        User user = (User) httpRequest.getSession().getAttribute("user");
+
+        if (user == null) {
+            throw new RuntimeException("로그인된 사용자가 없습니다.");
+        }
+
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다."));
+
+        boolean isAuthor = post.getUser().getId().equals(user.getId());
+
         return PostResponseDto.builder()
                 .postId(post.getPostId())
                 .userPk(post.getUser().getId())
