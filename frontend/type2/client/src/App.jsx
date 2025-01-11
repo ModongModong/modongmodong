@@ -10,13 +10,15 @@ import NsRecommendation from "./NsRecommendation/NsRecommendation.jsx";
 import MyPage from "./MyPage/MyPage.jsx";
 import {Route, Routes} from "react-router-dom";
 import UpdatePost from "./page/Home/Update_post.jsx";
-
+import axios from "axios";
+axios.defaults.baseURL = "http://localhost:8080";
+axios.defaults.withCredentials = true;
 function App() {
     return (
        <>
            <div>
                <Routes>
-                   <Route path="/" element={<Login />} />
+                   {/*<Route path="/" element={<Login />} />*/}
                    <Route path="/login" element={<Login />} />
                    <Route path="/signup" element={<Signup />} />
                    <Route path="/search" element={<SearchPharmacy/>} />
