@@ -1,5 +1,5 @@
 package org.example.server.service;
-
+import jakarta.servlet.http.HttpServletRequest;
 import org.example.server.dto.CommentRequestDto;
 import org.example.server.dto.CommentResponseDto;
 import org.example.server.entities.Comment;
@@ -27,17 +27,19 @@ public class CommentService {
     private UserRepository userRepository;
 
     // 댓글 생성
-    public CommentResponseDto createComment(CommentRequestDto request) {
+    public CommentResponseDto createComment(CommentRequestDto request , HttpServletRequest httpRequest) {
+        User user = (User) httpRequest.getSession().getAttribute("user");
+        if (user == null) {
+            throw new RuntimeException("로그인된 사용자가 없습니다.");
+        }
         // 게시물 확인
         Post post = postRepository.findById(request.getPostId())
                 .orElseThrow(() -> new RuntimeException("Post not found"));
-        User user = userRepository.findById(request.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
         // 댓글 생성
         Comment comment = new Comment();
         comment.setPost(post); // Post 설정
         comment.setContent(request.getContent());
-
+        comment.setUser(user);
         post.addComment(comment);
 
         // 저장
@@ -100,8 +102,12 @@ public class CommentService {
         return toResponseDto(comment);
     }
     // 댓글 수정
-    public CommentResponseDto updateComment(Long id, CommentRequestDto request) {
+    public CommentResponseDto updateComment(Long id, CommentRequestDto request , HttpServletRequest httpRequest) {
+        User user = (User) httpRequest.getSession().getAttribute("user");
 
+        if (user == null) {
+            throw new RuntimeException("로그인된 사용자가 없습니다.");
+        }
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
 
@@ -115,9 +121,13 @@ public class CommentService {
 
 
     // 댓글 삭제
-    public void deleteComment(Long id) {
+    public void deleteComment(Long id, HttpServletRequest httpRequest) {
+        User user = (User) httpRequest.getSession().getAttribute("user");
 
-        Comment comment = commentRepository.findById(id)
+        if (user == null) {
+            throw new RuntimeException("로그인된 사용자가 없습니다.");
+        }
+        Comment comment = commentRepository.findById(id )
                 .orElseThrow(() -> new RuntimeException("Comment not found"));
 
 
