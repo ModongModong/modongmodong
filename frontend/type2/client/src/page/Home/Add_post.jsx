@@ -22,7 +22,7 @@ function AddPost(){
 
       try{
           const res = await axios.post("/api/posts",{
-              userId:99,
+              userPk:99,
               title,
               content,
           })
