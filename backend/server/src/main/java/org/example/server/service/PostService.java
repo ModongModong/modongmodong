@@ -7,6 +7,7 @@ import org.example.server.entities.User;
 import org.example.server.repository.PostRepository;
 import org.example.server.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.data.domain.Page;
@@ -26,15 +27,23 @@ public class PostService {
 
     // 로그인된 사용자 정보 가져오기
     private User getAuthenticatedUser() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated() ||
+                "anonymousUser".equals(authentication.getPrincipal())) {
+            throw new RuntimeException("인증 정보가 유효하지 않습니다.");
+        }
+
+        Object principal = authentication.getPrincipal();
         if (principal instanceof UserDetails) {
-            String email = ((UserDetails) principal).getUsername(); // Email을 username으로 사용
+            // UserDetails에서 userPk를 가져오기
+            String email = ((UserDetails) principal).getUsername();
             return userRepository.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("로그인된 사용자를 찾을 수 없습니다."));
         }
-        throw new RuntimeException("인증 정보가 유효하지 않습니다.");
-    }
 
+        throw new RuntimeException("알 수 없는 인증 정보 유형입니다.");
+    }
     // 모든 게시물 조회
     public Page<PostResponseDto> getAllPosts(Pageable pageable) {
         return postRepository.findAll(pageable).map(post -> PostResponseDto.builder()
