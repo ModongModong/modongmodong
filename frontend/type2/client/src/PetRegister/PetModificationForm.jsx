@@ -131,7 +131,7 @@ function PetModificationForm() {
 
         if (errors.length > 0) {
             setErrorMessages(errors);
-            return;
+            
         } else {
             try {
                 const response = await fetch(`http://localhost:8080/api/pets/${petId}`, {
@@ -151,7 +151,6 @@ function PetModificationForm() {
                     return;
                 }
 
-                const result = await response.json();
                 alert("수정 성공");
                 navigate(`/mypage`);
 
