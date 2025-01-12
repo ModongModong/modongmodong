@@ -84,7 +84,6 @@ function PostDetail(){
     const deletePost = async () => {
         try{
             await axios.delete(`/api/posts/${postId}`, { withCredentials: true });
-            alert("게시글이 삭제되었습니다")
             navigate("/");
         }catch{
             alert("에러가 발생했어요ㅠ")
@@ -119,7 +118,7 @@ function PostDetail(){
         try {
             await axios.delete(`/api/comments/${commentId}`);
             setComment((prevComments) => prevComments.filter((c) => c.commentId !== commentId));
-            alert("댓글이 삭제되었습니다.");
+
         } catch (err) {
             console.error("댓글 삭제 실패", err);
             alert("댓글 삭제 중 오류가 발생했습니다.");
@@ -180,7 +179,6 @@ function PostDetail(){
                     )
                 );
                 setEditCommentId(null);
-                alert("댓글이 수정되었습니다.");
             }
         }catch(err){
             console.log(err)

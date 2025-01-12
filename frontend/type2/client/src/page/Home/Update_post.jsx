@@ -43,7 +43,7 @@ function UpdatePost(){
       try{
           const res = await axios.put(`/api/posts/${postId}`, updatedPost)
           if(res.status === 200) {
-              alert("게시글이 성공적으로 등록되었습니다")
+
               navigate("/");
           }
       } catch(err) {
