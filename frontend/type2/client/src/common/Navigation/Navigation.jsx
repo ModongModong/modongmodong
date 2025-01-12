@@ -12,7 +12,7 @@ function Navigation() {
 
     const menuItmes = [
         {id: 3, icon: <SearchIcon/>, path: "/search", label: "Search"},
-        {id: 2, icon: <SupplementsIcon/>, path: "/recommend", label: "Supplements"},
+        {id: 2, icon: <SupplementsIcon/>, path: "/recommend/:userPk", label: "Supplements"},
         {id: 1, icon: <HomeIcon/>, path: "/", label: "Home"},
         {id: 4, icon: <FavoriteIcon/>, path: "/", label: "Favorite"},
         {id: 5, icon: <MyPageIcon/>, path: "/mypage", label: "MyPage"}

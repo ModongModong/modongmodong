@@ -25,7 +25,7 @@ function App() {
                    <Route path="/mypage" element={<MyPage />} />
                    <Route path="/petregister" element={<PetRegistrationForm/>}/>
                    <Route path="/petmodify/:petId" element={<PetModificationForm/>}/>
-                   <Route path="/recommend" element={<NsRecommendation />} />
+                   <Route path="/recommend/:userPk" element={<NsRecommendation />} />
                    <Route path="/" element={<Home/>} />
                    <Route path="/post" element={<AddPost/>} />
                    <Route path="/post/update/:postId" element={<UpdatePost/>} />
