@@ -129,7 +129,10 @@ function PetRegistrationForm() {
                 });
 
                 if (!response.ok) {
-                    throw new Error("데이터 전송 실패");
+                    // 예외를 던지는 대신 사용자에게 오류를 표시
+                    const errorData = await response.json();
+                    setErrorMessages([<span><span className={styles.highlight}>오류:</span> {errorData.message || "데이터 전송 실패"}</span>]);
+                    return;
                 }
 
                 const result = await response.json();
