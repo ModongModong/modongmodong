@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styles from './PetRegisteration.module.css';
 import Goback_icon from "../assets/icons/goback_icon.jsx";
 import PetRegErrorPopup from './PetRegErrorPopup';
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
-function PetRegistrationForm() {
+function PetModificationForm() {
     const [petData, setPetData] = useState({
         name: '',
         age: '',
@@ -18,61 +18,7 @@ function PetRegistrationForm() {
     });
 
     const [errorMessages, setErrorMessages] = useState([]);
-    const [user, setUser] = useState(null); // 사용자 정보
-    const [petTypes, setPetTypes] = useState([]); // 품종 목록
-    const [diseases, setDiseases] = useState([]); // 질병 목록
     const navigate = useNavigate();
-
-    // 사용자 정보 가져오기
-    useEffect(() => {
-        const fetchUserData = async () => {
-            try {
-                const response = await fetch("http://localhost:8080/api/myinfo", {
-                    method: "GET",
-                    credentials: "include", // 세션 정보와 쿠키를 포함하여 요청
-                });
-
-                if (!response.ok) {
-                    alert("로그인되지 않았습니다.");
-                    window.location.href = "/login";
-                    return;
-                }
-
-                const userData = await response.json();
-                setUser(userData);
-            } catch (error) {
-                console.error("유저 정보 로딩 중 오류 발생:", error);
-            }
-        };
-
-        fetchUserData();
-    }, []);
-
-    // 품종 목록과 질병 목록 불러오기
-    useEffect(() => {
-        const fetchDropdownData = async () => {
-            try {
-                const petTypesResponse = await fetch("http://localhost:8080/api/get-list/pet_type", {
-                    method: "GET",
-                    credentials: "include",
-                });
-                const diseasesResponse = await fetch("http://localhost:8080/api/get-list/disease", {
-                    method: "GET",
-                    credentials: "include",
-                });
-
-                const petTypesData = await petTypesResponse.json();
-                const diseasesData = await diseasesResponse.json();
-
-                setPetTypes(petTypesData);
-                setDiseases(diseasesData);
-            } catch (error) {
-                console.error("품종/질병 목록 로딩 중 오류 발생:", error);
-            }
-        };
-
-        fetchDropdownData();
-    }, []);
 
     // 뒤로가기
     const goBack = () => {
@@ -89,7 +35,7 @@ function PetRegistrationForm() {
     };
 
     // 폼 제출
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         // 유효성검사
         const errors = [];
@@ -105,59 +51,31 @@ function PetRegistrationForm() {
         if (!petData.disease) errors.push(<span><span className={styles.highlight}>질병</span>을 입력하세요</span>);
 
         if (errors.length > 0) {
-            setErrorMessages(errors);
+            setErrorMessages(errors);  // 오류 메시지 상태 업데이트
         } else {
-            try {
-                const response = await fetch("http://localhost:8080/api/pets", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    credentials: "include", // 세션 정보와 쿠키를 포함하여 요청
-                    body: JSON.stringify({
-                        userId: user?.id,  // 유저 ID
-                        diseaseId: petData.disease,
-                        petTypeId: petData.type,
-                        name: petData.name,
-                        age: petData.age,
-                        gender: petData.gender,
-                        neuteringYn: petData.neuteuring_yn,
-                        animalNumber: petData.animal_number,
-                        weight: petData.weight,
-                        surgery: petData.surgery,
-                    }),
-                });
-
-                if (!response.ok) {
-                    throw new Error("데이터 전송 실패");
-                }
-
-                const result = await response.json();
-                console.log("반려동물 등록 성공:", result);
-                alert("반려동물을 등록했습니다.")
-                navigate("/mypage");
-
-            } catch (error) {
-                console.error("반려동물 등록 중 오류 발생:", error);
-                setErrorMessages([<span><span className={styles.highlight}>등록 중 오류 발생</span>했습니다. 다시 시도해주세요.</span>]);
-            }
+            console.log('Pet Data Submitted:', petData);
         }
     };
 
     return (
         <div className={styles.container}>
             <div className={styles.header}>
+                {/* 뒤로가기 버튼 */}
                 <div className={styles.arrowBack} onClick={goBack}>
-                    <Goback_icon />
+                    <Goback_icon/>
                 </div>
-                <div className={styles.pageTitle}>반려동물 등록/수정</div>
+                {/* 제목 */}
+                <div className={styles.pageTitle}>
+                    반려동물 등록/수정
+                </div>
             </div>
 
+            {/* 오류메시지 팝업 */}
             {errorMessages.length > 0 && (
-                <PetRegErrorPopup messages={errorMessages} onClose={() => setErrorMessages([])} />
+                <PetRegErrorPopup messages={errorMessages} onClose={() => setErrorMessages([])}/>
             )}
-
             <div className="formContainer">
+                {/* 폼 */}
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <label className={styles.label}>
                         <div className={styles.labelName}>반려동물 이름</div>
@@ -236,17 +154,13 @@ function PetRegistrationForm() {
 
                     <label className={styles.label}>
                         <div className={styles.labelName}>품종</div>
-                        <select
+                        <input
+                            type="text"
                             name="type"
                             value={petData.type}
                             onChange={handleChange}
                             className={styles.input}
-                        >
-                            <option value="">품종을 선택하세요</option>
-                            {petTypes.map((type) => (
-                                <option key={type.id} value={type.id}>{type.name}</option>
-                            ))}
-                        </select>
+                        />
                     </label>
 
                     <label className={styles.label}>
@@ -273,19 +187,16 @@ function PetRegistrationForm() {
 
                     <label className={styles.label}>
                         <div className={styles.labelName}>질병</div>
-                        <select
+                        <input
+                            type="text"
                             name="disease"
                             value={petData.disease}
                             onChange={handleChange}
                             className={styles.input}
-                        >
-                            <option value="">질병을 선택하세요</option>
-                            {diseases.map((disease) => (
-                                <option key={disease.id} value={disease.id}>{disease.name}</option>
-                            ))}
-                        </select>
+                        />
                     </label>
 
+                    {/* 폼 제출 버튼 */}
                     <div className={styles.submitContainer}>
                         <button type="submit" className={styles.submitButton}>
                             반려동물 등록 완료
@@ -297,4 +208,4 @@ function PetRegistrationForm() {
     );
 }
 
-export default PetRegistrationForm;
+export default PetModificationForm;

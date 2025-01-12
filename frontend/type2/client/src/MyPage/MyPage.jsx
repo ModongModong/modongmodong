@@ -1,5 +1,4 @@
-import React, {useEffect} from 'react';
-import {useState} from "react";
+import React, {useEffect, useState} from 'react';
 import styles from './MyPage.module.css';
 import GobackIcon from "../assets/icons/goback_icon.jsx";
 import MyPageIcon from "../assets/icons/mypage_icon.jsx"; // 유저이미지데이터 들어오면 삭제
@@ -8,28 +7,8 @@ import {useNavigate} from "react-router-dom";
 function MyPage() {
     // 유저 정보와 반려동물 정보를 데이터로 처리
     const [user, setUser] = useState(null);
+    const [pets, setPets] = useState([]);
     const navigate = useNavigate();
-
-    const pets = [
-        {
-            name: '이름1',
-            age: '1',
-            gender: '남',
-            neuteuring_yn: 'Y',
-            animal_number: '34221324',
-            type: '고양이',
-            weight: '5.3'
-        },
-        {
-            name: '이름2',
-            age: '2',
-            gender: '여',
-            neuteuring_yn: 'N',
-            animal_number: '45746745',
-            type: '강아지',
-            weight: '8.8'
-        },
-    ];
 
     //뒤로가기 버튼
     const goBack = () => {
@@ -37,8 +16,13 @@ function MyPage() {
     };
 
     // 등록페이지 이동
-    const handlePetClick = () => {
+    const handlePetRegClick = () => {
         navigate('/petregister');  // 반려동물 등록 페이지로 이동
+    };
+
+    // 수정페이지 이동
+    const handlePetModClick = (petId) => {
+        navigate(`/petmodify/${petId}`);  // petId를 URL에 포함시켜 경로 변경
     };
 
     // 마이페이지 로드 시 로그인된 유저 정보 가져오기
@@ -65,6 +49,36 @@ function MyPage() {
 
         fetchUserData();
     }, []);
+
+    useEffect(() => {
+        if (user) {
+            const fetchPetData = async (userId) => {
+                try {
+                    const response = await fetch(`http://localhost:8080/api/pets/user/${userId}`, {
+                        method: "GET",
+                        credentials: "include",
+                    });
+
+                    if (response.ok) {
+                        const petsData = await response.json();
+                        console.log("반려동물 데이터:", petsData);  // API 응답을 확인
+                        // 데이터 매핑
+                        const mappedPets = petsData.map(pet => ({
+                            ...pet
+                        }));
+                        // mappedPets 상태에 설정
+                        setPets(mappedPets);
+                    } else {
+                        console.error("반려동물 정보를 가져오지 못했습니다.");
+                    }
+                } catch (error) {
+                    console.error("반려동물 정보 로딩 중 오류 발생:", error);
+                }
+            };
+
+            fetchPetData(user.id);
+        }
+    }, [user]); // user가 변경될 때마다 실행
 
     if (!user) {
         return <div>로딩 중...</div>;
@@ -95,7 +109,7 @@ function MyPage() {
 
                     {/* 유저이름 */}
                     <div className={styles.userNameContainer}>
-                        <div className={styles.userName}>{user.nickname}</div>
+                        <div >{user.nickname}</div>
                         {/* 유저 이름 */}
                     </div>
                 </div>
@@ -109,42 +123,48 @@ function MyPage() {
                 </div>
             </div>
 
-            {/* 유저가 등록한 반려동물 목록 */}
+            {/* 반려동물 목록 */}
             <div className={styles.petDetailsContainer}>
-                {pets.map((pet, index) => (
-                    <div className={styles.petContainer} key={index}>
-                        <h3>{pet.name}</h3>
-                        <div className={styles.petDetails}>
+                {pets.length === 0 ? (
+                    <div>등록된 반려동물이 없습니다. 반려동물을 새로 등록해보세요!</div>
+                ) : (
+                    pets.map((pet, index) => (
+                        <div className={styles.petContainer} key={index}>
+                            <h3>{pet.name}</h3>
+                            <div className={styles.petDetails}>
+                                <div className={styles.leftColumn}>
+                                    <ul>
+                                        <li><span className={styles.boldText}>나이</span> <span>{pet.age}세</span></li>
+                                        <li><span className={styles.boldText}>성별</span>
+                                            <span>{pet.gender === 'M' ? '남' : '여'}</span></li>
+                                        <li><span className={styles.boldText}>등록번호</span>
+                                            <span>{pet.animalNumber}</span></li>
+                                        <li><span className={styles.boldText}>품종</span> <span>{pet.petType}</span></li>
+                                        <li><span className={styles.boldText}>수술이력</span> <span>{pet.surgery}</span></li>
 
-                            <div className={styles.leftColumn}>
-                                <ul>
-                                    <li><span className={styles.boldText}>나이</span> <span>{pet.age}세</span></li>
-                                    <li><span className={styles.boldText}>성별</span> <span>{pet.gender}</span></li>
-                                    <li><span className={styles.boldText}>등록번호</span> <span>{pet.animal_number}</span>
-                                    </li>
-                                    <li><span className={styles.boldText}>품종</span> <span>{pet.type}</span></li>
-                                </ul>
-                            </div>
-
-                            <div className={styles.rightColumn}>
-                                <ul>
-                                    <li><span className={styles.boldText}>체중</span> <span>{pet.weight}kg</span></li>
-                                    <li><span className={styles.boldText}>중성화 여부</span>
-                                        <span>{pet.neuteuring_yn === 'Y' ? '예' : '아니오'}</span></li>
-                                </ul>
-                                <div className={styles.editInfoButtonContainer}>
-                                    <button className={styles.editInfoButton} onClick={handlePetClick}>정보 수정</button>
+                                    </ul>
+                                </div>
+                                <div className={styles.rightColumn}>
+                                    <ul>
+                                        <li><span className={styles.boldText}>체중</span> <span>{pet.weight}kg</span></li>
+                                        <li><span className={styles.boldText}>중성화 여부</span>
+                                            <span>{pet.neuteringYn === 'Y' ? '예' : '아니오'}</span></li>
+                                        <li><span className={styles.boldText}>질병</span> <span
+                                            className={styles.diseaseText}>{pet.disease}</span></li>
+                                    </ul>
+                                    <div className={styles.editInfoButtonContainer}>
+                                        <button className={styles.editInfoButton} onClick={() => handlePetModClick(pet.petId)}>정보 수정</button>
+                                    </div>
                                 </div>
                             </div>
-
                         </div>
-                    </div>
-                ))}
+                    ))
+                )}
             </div>
 
             {/* 반려동물 추가등록 버튼 */}
             <div className={styles.addPetButtonContainer}>
-                <button className={styles.addPetButton} onClick={handlePetClick}>반려동물 추가등록</button>
+                <button className={styles.addPetButton} onClick={handlePetRegClick}>반려동물 추가등록</button>
             </div>
         </div>
     );

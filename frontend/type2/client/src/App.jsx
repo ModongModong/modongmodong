@@ -11,6 +11,7 @@ import MyPage from "./MyPage/MyPage.jsx";
 import {Route, Routes} from "react-router-dom";
 import UpdatePost from "./page/Home/Update_post.jsx";
 import PetRegistrationForm from "./PetRegister/PetRegistrationForm.jsx";
+import PetModificationForm from "./PetRegister/PetModificationForm.jsx";
 
 function App() {
     return (
@@ -23,6 +24,7 @@ function App() {
                    <Route path="/search" element={<SearchPharmacy/>} />
                    <Route path="/mypage" element={<MyPage />} />
                    <Route path="/petregister" element={<PetRegistrationForm/>}/>
+                   <Route path="/petmodify/:petId" element={<PetModificationForm/>}/>
                    <Route path="/recommend" element={<NsRecommendation />} />
                    <Route path="/" element={<Home/>} />
                    <Route path="/post" element={<AddPost/>} />
