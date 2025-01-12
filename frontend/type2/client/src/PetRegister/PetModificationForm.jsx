@@ -151,7 +151,7 @@ function PetModificationForm() {
                     throw new Error(`수정 실패: ${response.status} ${response.statusText}`);
                 }
 
-                const result = await response.json();
+
                 alert("수정 성공");
                 navigate(`/mypage`);
             } catch (error) {
