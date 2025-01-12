@@ -131,9 +131,9 @@ function PetModificationForm() {
 
         if (errors.length > 0) {
             setErrorMessages(errors);
+            return;
         } else {
             try {
-                console.log("요청 시작"); // 요청 시작 로그
                 const response = await fetch(`http://localhost:8080/api/pets/${petId}`, {
                     method: "PUT",
                     headers: {
@@ -142,18 +142,19 @@ function PetModificationForm() {
                     credentials: "include",
                     body: JSON.stringify(petData),
                 });
-                console.log("요청 성공", response); // 요청 성공 로그
 
                 if (!response.ok) {
                     const errorDetails = await response.text();
                     console.error("응답 상태:", response.status, response.statusText);
                     console.error("응답 본문:", errorDetails);
-                    throw new Error(`수정 실패: ${response.status} ${response.statusText}`);
+                    alert("수정 실패");
+                    return;
                 }
 
-
+                const result = await response.json();
                 alert("수정 성공");
                 navigate(`/mypage`);
+
             } catch (error) {
                 console.error("수정 중 오류 발생:", error);
                 alert("수정 중 오류 발생");
