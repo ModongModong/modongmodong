@@ -153,7 +153,7 @@ function PetRegistrationForm() {
                 <div className={styles.arrowBack} onClick={goBack}>
                     <Goback_icon />
                 </div>
-                <div className={styles.pageTitle}>반려동물 등록/수정</div>
+                <div className={styles.pageTitle}>반려동물 등록</div>
             </div>
 
             {errorMessages.length > 0 && (
