@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommentRequestDto {
     private Long postId;
-    private Long userId;
+    private Long userPk;
     private String content;
 }

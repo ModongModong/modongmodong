@@ -33,6 +33,7 @@ function PostDetail(){
     const navigate = useNavigate();
     const { postId } = useParams();
     const [userPk, setUserPk] = useState(null);
+    const [newComment, setNewComment] = useState("");
 
     //뒤로가기버튼
     const goBack = () => {
@@ -65,11 +66,11 @@ function PostDetail(){
                 setPostDetail(res.data);
                 setLikePostCount(res.data.postLikeNum);
 
-                const commentRes = await axios.get(`/api/comments/post/${postId}`, { withCredentials: true })
+                const commentRes = await axios.get(`/api/comments/${postId}`, { withCredentials: true })
                 console.log(commentRes.data);
                 setComment(commentRes.data);
             } catch(err) {
-                alert(err);
+                console.error("게시글/댓글 가져오기 실패", err);
             }
         };
         fetchPostDetail();
@@ -90,7 +91,35 @@ function PostDetail(){
     const toggleFavorite = () => {
         setIsFavorite((prev) => !prev);
     }
+    // 댓글 생성
+    const commentSubmit = async () => {
+        try {
+            const res = await axios.post(
+                "/api/comments",
+                { postId, content: newComment },
+                { withCredentials: true }
+            );
+            if (res.status === 201) {
+                setComment([...comment, res.data]); // 새 댓글 추가
+                setNewComment(""); // 입력 필드 초기화
+            }
+        } catch (err) {
+            console.error("댓글 생성 실패", err);
+            alert("댓글 작성 중 오류가 발생했습니다.");
+        }
+    };
 
+    //댓글 삭제
+    const deleteComment = async (commentId) => {
+        try {
+            await axios.delete(`/api/comments/${commentId}`);
+            setComment((prevComments) => prevComments.filter((c) => c.commentId !== commentId));
+            alert("댓글이 삭제되었습니다.");
+        } catch (err) {
+            console.error("댓글 삭제 실패", err);
+            alert("댓글 삭제 중 오류가 발생했습니다.");
+        }
+    };
 
     // 게시글 좋아요 기능
     const togglePostLike = async () => {
@@ -134,8 +163,11 @@ function PostDetail(){
             }
         }
     };
-    const isAuthor = userPk === postDetail.userPk;
+    // 게시글 작성자인지 확인
+    const isPostAuthor = userPk === postDetail.userPk;
 
+    // 댓글 작성자인지 확인
+    const isCommentAuthor = (commentUserPk) => userPk === commentUserPk;
     return (
         <div className={styles.detail_post_wrapper}>
             <div className={styles.top_area}>
@@ -143,7 +175,7 @@ function PostDetail(){
                     <GobackIcon/>
                 </div>
                 <h3>{postDetail.title}</h3>
-                {isAuthor && ( // 작성자만 메뉴 보이기
+                {isPostAuthor && ( // 작성자만 메뉴 보이기
                     <div>
                         <div className={styles.kebab_icon} onClick={() => setIsKebabMenuOpen((prev) => !prev)}>
                             <KebabIcon />
@@ -182,7 +214,7 @@ function PostDetail(){
                     comment.map((commentItem, index) => (
                         <div key={index}>
                             <div className={styles.nickname_area}>
-                                <p>{commentItem.userId}</p>
+                                <p>{commentItem.nickname}</p>
                                 <div className={styles.thums_up_area}>
                                     {isLike ? <FaThumbsUp /> : <FaRegThumbsUp />}
                                     <span>{commentItem.commentLikeNum}</span>
@@ -194,8 +226,14 @@ function PostDetail(){
                             </div>
                             <div className={styles.comment_rud_area}>
                                 <p>{commentItem.content}</p>
-                                <UpdateIcon />
-                                <DeleteIcon />
+                                {isCommentAuthor(commentItem.userPk) && (
+                                    <>
+                                        <UpdateIcon />
+                                        <div onClick={() => deleteComment(commentItem.commentId)} >
+                                            <DeleteIcon />
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         </div>
                     ))
@@ -203,8 +241,13 @@ function PostDetail(){
                     <div className={styles.noncomment_area} >댓글이 없습니다</div>
                 )}
                 <div className={styles.comment_c_area}>
-                    <input type="text" placeholder="댓글을 입력하세요"/>
-                    <IoIosAddCircleOutline />
+                    <input type="text" placeholder="댓글을 입력하세요"
+                           value={newComment}
+                           onChange={(e) => setNewComment(e.target.value)}
+                    />
+                    <button className={styles.add_btn} onClick={commentSubmit}>
+                        <IoIosAddCircleOutline/>
+                    </button>
                 </div>
             </div>
 
