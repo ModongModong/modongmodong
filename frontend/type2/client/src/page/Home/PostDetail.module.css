@@ -222,7 +222,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
-    height: 270px;
+    height: 290px;
     border-top: 1px solid #888888;
     margin-bottom: 15px;
     flex-grow: 1;
@@ -246,15 +246,40 @@
     position: relative;
 }
 
-.comment_c_area svg{
+.comment_c_area svg {
     width: 30px;
     height: 30px;
     position: absolute;
-    top: 30%;
+    top: 39%;
     right: 2%;
+    transform: translateY(-50%);
 }
 
 .noncomment_area {
     padding-top: 10px;
     padding-left: 5px;
+}
+
+.comment_rud_area input,
+.comment_rud_area p {
+    flex: 1;
+    margin-left: 10px;
+    padding: 8px; /* input과 p 태그의 높이를 일치시키기 위해 설정 */
+    border: none; /* input의 기본 테두리를 제거 */
+    background: transparent; /* 배경을 투명하게 설정 */
+    box-sizing: border-box; /* 동일한 크기 계산 방식 */
+}
+.comment_rud_area input:focus {
+    outline: none; /* 포커스 시 발생하는 외곽선을 제거 */
+}
+.comment_rud_area p {
+    overflow: hidden; /* 텍스트가 길 경우 넘어가도록 설정 */
+    white-space: nowrap; /* 텍스트가 한 줄로 유지되도록 설정 */
+    text-overflow: ellipsis; /* 긴 텍스트에 생략(...) 추가 */
+}
+.comment_rud_area {
+    display: flex;
+    align-items: center;
+    background-color: #FFDAD7;
+    border-radius: 6px;
 }

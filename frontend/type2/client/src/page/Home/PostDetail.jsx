@@ -14,6 +14,7 @@ import {
     FaHeart,
     FaRegHeart,
 } from "react-icons/fa";
+import { IoIosSend } from "react-icons/io";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
@@ -34,6 +35,8 @@ function PostDetail(){
     const { postId } = useParams();
     const [userPk, setUserPk] = useState(null);
     const [newComment, setNewComment] = useState("");
+    const [editCommentId, setEditCommentId] = useState(null);
+    const [editCommentContent, setEditCommentContent] = useState("");
 
     //뒤로가기버튼
     const goBack = () => {
@@ -42,6 +45,8 @@ function PostDetail(){
     const goUpdate = () =>{
         navigate(`/post/update/${postId}`)
     };
+
+    //userPK 저장
     useEffect(() => {
         const fetchPostDetail = async () => {
             try {
@@ -146,7 +151,45 @@ function PostDetail(){
             console.log(err);
         }
     };
-    // 댓글 수정
+
+    // 댓글 수정 시작
+    const startEditComment = (commentId, currentContent) => {
+        setEditCommentId(commentId);
+        setEditCommentContent(currentContent); // 현재 댓글 내용을 초기값으로 설정
+    };
+
+    // 댓글 수정 완료
+    const updateComment = async () => {
+        if(!editCommentContent) {
+            alert("내용을 입력해주세요");
+            return;
+        }
+        try{
+            const updateRes = await axios.put(`/api/comments/${editCommentId}`,{
+                postId,
+                userId: userPk,
+                content: editCommentContent
+            });
+
+            if(updateRes.status === 200) {
+                setComment((prevComments) =>
+                    prevComments.map((i) =>
+                        i.commentId === editCommentId
+                            ? { ...i, content: editCommentContent }
+                            : i
+                    )
+                );
+                setEditCommentId(null);
+                alert("댓글이 수정되었습니다.");
+            }
+        }catch(err){
+            console.log(err)
+            alert("오류가 발생했습니다.");
+
+        }
+
+    }
+
 
     // 댓글 삭제
     const toggleDislike = () => {
@@ -168,6 +211,7 @@ function PostDetail(){
 
     // 댓글 작성자인지 확인
     const isCommentAuthor = (commentUserPk) => userPk === commentUserPk;
+
     return (
         <div className={styles.detail_post_wrapper}>
             <div className={styles.top_area}>
@@ -225,14 +269,34 @@ function PostDetail(){
                                 </div>
                             </div>
                             <div className={styles.comment_rud_area}>
-                                <p>{commentItem.content}</p>
+                                {editCommentId === commentItem.commentId ? (
+                                    // 수정 모드
+                                    <input
+                                        type="text"
+                                        value={editCommentContent}
+                                        onChange={(e) => setEditCommentContent(e.target.value)}
+                                    />
+                                ) : (
+                                    // 일반 모드
+                                    <p>{commentItem.content}</p>
+                                )}
                                 {isCommentAuthor(commentItem.userPk) && (
-                                    <>
-                                        <UpdateIcon />
-                                        <div onClick={() => deleteComment(commentItem.commentId)} >
-                                            <DeleteIcon />
+                                    <div onClick={() => {
+                                        if (editCommentId === commentItem.commentId) {
+                                            updateComment(); // 업데이트 처리
+                                        } else {
+                                            startEditComment(commentItem.commentId, commentItem.content); // 수정 모드 시작
+                                        }
+                                    }}>
+                                        <div>
+                                            {editCommentId === commentItem.commentId ? <IoIosSend/> : <UpdateIcon />}
                                         </div>
-                                    </>
+                                    </div>
+                                )}
+                                {isCommentAuthor(commentItem.userPk) && (
+                                    <div onClick={() => deleteComment(commentItem.commentId)}>
+                                        <DeleteIcon />
+                                    </div>
                                 )}
                             </div>
                         </div>
