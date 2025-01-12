@@ -49,7 +49,6 @@ function AddPost(){
               content,
           })
           if(res.status === 200) {
-              alert("게시글이 성공적으로 등록되었습니다")
               navigate("/");
           }
       } catch(err) {
