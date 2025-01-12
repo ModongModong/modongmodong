@@ -2,6 +2,7 @@ package org.example.server.controllers;
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.server.dto.CommentRequestDto;
 import org.example.server.dto.CommentResponseDto;
+import org.example.server.entities.User;
 import org.example.server.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,8 +26,18 @@ public class CommentController {
     }
 
     // 특정 게시물의 댓글 목록 조회
-    @GetMapping("/api/posts/{postId}/comments")
-    public ResponseEntity<List<CommentResponseDto>> getCommentsByPostId(@PathVariable("postId") Long postId) {
+    @GetMapping("/{postId}")
+    public ResponseEntity<List<CommentResponseDto>> getCommentsByPostId(
+            @PathVariable("postId") Long postId,
+            HttpServletRequest httpRequest
+    ) {
+        User user = (User) httpRequest.getSession().getAttribute("user");
+        if (user == null) {
+            // 로그인 안 됐다면 401
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        // 로그인 O → 모든 댓글 반환
         List<CommentResponseDto> comments = commentService.getCommentsByPostId(postId);
         return ResponseEntity.ok(comments);
     }

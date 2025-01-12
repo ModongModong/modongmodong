@@ -150,6 +150,7 @@ public class CommentService {
                 .content(comment.getContent())
                 .commentLikeNum(comment.getCommentLikeNum())
                 .dislikeNum(comment.getDislikeNum())
+                .userPk(comment.getUser().getId())
                 .build();
     }
 }

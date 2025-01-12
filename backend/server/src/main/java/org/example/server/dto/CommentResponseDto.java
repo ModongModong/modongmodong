@@ -14,4 +14,5 @@ public class CommentResponseDto {
     private String content;
     private Integer commentLikeNum;
     private Integer dislikeNum;
+    private Long userPk;
 }
