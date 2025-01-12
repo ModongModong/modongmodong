@@ -24,14 +24,14 @@ public class PetController {
         return ResponseEntity.ok(pet);
     }
 
-    // 등록페이지 - 반려동물 조회
+    // 수정페이지 - 반려동물 조회
     @GetMapping("/{petId}")
     public ResponseEntity<PetResponseDto> getPet(@PathVariable Long petId) {
         PetResponseDto petResponseDto = petService.getPet(petId);
         return ResponseEntity.ok(petResponseDto);
     }
 
-    // 등록페이지 - 반려동물 수정
+    // 수정페이지 - 반려동물 수정
     @PutMapping("/{petId}")
     public ResponseEntity<PetResponseDto> updatePet(
             @PathVariable Long petId,

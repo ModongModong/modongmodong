@@ -9,7 +9,9 @@ public class PetResponseDto {
     private Long petId;
     private Long userId;
     private Long diseaseId;
+    private String disease;
     private Long petTypeId;
+    private String petType;
 
     private String name;
     private Integer age;
