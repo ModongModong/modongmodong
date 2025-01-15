@@ -7,7 +7,6 @@ import org.example.server.entities.Pet;
 import org.example.server.entities.User;
 import org.example.server.repository.NsRepository;
 import org.example.server.repository.PetRepository;
-import org.example.server.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
