@@ -1,13 +1,11 @@
 package org.example.server.dto;
 
 import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Setter
-
+@NoArgsConstructor
 public class PetRequestDto {
-    private Long userId;
     private Long diseaseId;
     private Long petTypeId;
     private String name;

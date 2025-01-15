@@ -1,13 +1,14 @@
 package org.example.server.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.example.server.dto.PetRequestDto;
 import org.example.server.dto.PetResponseDto;
 import org.example.server.entities.Pet;
+import org.example.server.entities.User;
 import org.example.server.repository.PetRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,8 +20,13 @@ public class PetService {
     private PetRepository petRepository;
 
     // 등록페이지 - 반려동물 추가
-    @Transactional
-    public PetResponseDto createPet(PetRequestDto request) {
+    public PetResponseDto createPet(PetRequestDto request, HttpServletRequest httpRequest) {
+        User user = (User) httpRequest.getSession().getAttribute("user");
+
+        if (user == null) {
+            throw new RuntimeException("로그인된 사용자가 없습니다.");
+        }
+
         // Pet 객체 설정
         Pet pet = new Pet();
         setPetDetails(pet, request);
@@ -33,22 +39,35 @@ public class PetService {
     }
 
     // 등록페이지 - 반려동물 조회
-    @Transactional
-    public PetResponseDto getPet(Long petId) {
+    public PetResponseDto getPet(Long petId, HttpServletRequest httpRequest) {
+        User user = (User) httpRequest.getSession().getAttribute("user");
+
+        if (user == null) {
+            throw new RuntimeException("로그인된 사용자가 없습니다.");
+        }
+
         // petId로 Pet 조회
         Pet pet = petRepository.findById(petId)
-                .orElseThrow(() -> new RuntimeException("Pet not found with id " + petId));
+                .orElseThrow(() -> new RuntimeException("반려동물을 찾을 수 없습니다:" + petId));
 
         // PetResponseDto 반환
         return convertToPetResponseDto(pet);
     }
 
     // 등록페이지 - 반려동물 수정
-    @Transactional
-    public PetResponseDto updatePet(Long petId, PetRequestDto request) {
+    public PetResponseDto updatePet(Long petId, PetRequestDto request, HttpServletRequest httpRequest) {
+        User user = (User) httpRequest.getSession().getAttribute("user");
+
+        if (user == null) {
+            throw new RuntimeException("로그인된 사용자가 없습니다.");
+        }
         // 기존 Pet을 petId로 조회
         Pet pet = petRepository.findById(petId)
-                .orElseThrow(() -> new RuntimeException("Pet not found with id " + petId));
+                .orElseThrow(() -> new RuntimeException("반려동물을 찾을 수 없습니다:" + petId));
+
+        if (!pet.getUser().getId().equals(user.getId())) {
+            throw new RuntimeException("수정 권한이 없습니다.");
+        }
 
         // 수정할 값 설정
         setPetDetails(pet, request);
@@ -69,7 +88,6 @@ public class PetService {
     }
 
     private void setPetDetails(Pet pet, PetRequestDto request) {
-        pet.setUserId(request.getUserId());
         pet.setDiseaseId(request.getDiseaseId());
         pet.setPetTypeId(request.getPetTypeId());
         pet.setName(request.getName());

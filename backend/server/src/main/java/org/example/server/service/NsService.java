@@ -1,10 +1,13 @@
 package org.example.server.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.example.server.dto.NsResponseDto;
 import org.example.server.entities.Ns;
 import org.example.server.entities.Pet;
+import org.example.server.entities.User;
 import org.example.server.repository.NsRepository;
 import org.example.server.repository.PetRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,17 +17,19 @@ import java.util.stream.Collectors;
 @Service
 public class NsService {
 
-    private final PetRepository petRepository;
-    private final NsRepository nsRepository;
+    @Autowired
+    private NsRepository nsRepository;
+    private PetRepository petRepository;
 
-    public NsService(PetRepository petRepository, NsRepository nsRepository) {
-        this.petRepository = petRepository;
-        this.nsRepository = nsRepository;
-    }
+    public List<NsResponseDto> getNs(Long nsId, HttpServletRequest httpRequest) {
+        User user = (User) httpRequest.getSession().getAttribute("user");
 
-    public List<NsResponseDto> getNs(Long userId) {
+        if (user == null) {
+            throw new RuntimeException("로그인된 사용자가 없습니다.");
+        }
+
         // 1. userPk에 해당하는 반려동물 조회
-        List<Pet> pets = petRepository.findByUserId(userId);
+        List<Pet> pets = petRepository.findByUserId(user.getId());
 
         // 2. 반려동물이 없으면 빈 리스트 반환
         if (pets.isEmpty()) {

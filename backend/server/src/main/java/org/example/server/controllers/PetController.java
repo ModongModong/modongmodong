@@ -1,5 +1,6 @@
 package org.example.server.controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.example.server.dto.PetRequestDto;
 import org.example.server.dto.PetResponseDto;
@@ -12,33 +13,39 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/pets")
-@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class PetController {
     @Autowired
     private PetService petService;
 
     // 등록페이지 - 반려동물 추가
     @PostMapping
-    public ResponseEntity<PetResponseDto> createPet(@Valid @RequestBody PetRequestDto request) {
-        PetResponseDto pet = petService.createPet(request);
+    public ResponseEntity<PetResponseDto> createPet(
+            @Valid @RequestBody PetRequestDto request,
+            HttpServletRequest httpRequest) {
+
+        PetResponseDto pet = petService.createPet(request, httpRequest);
         return ResponseEntity.ok(pet);
     }
 
     // 수정페이지 - 반려동물 조회
     @GetMapping("/{petId}")
-    public ResponseEntity<PetResponseDto> getPet(@PathVariable Long petId) {
-        PetResponseDto petResponseDto = petService.getPet(petId);
+    public ResponseEntity<PetResponseDto> getPet(
+            @PathVariable("petId") Long petId,
+            HttpServletRequest httpRequest) {
+
+        PetResponseDto petResponseDto = petService.getPet(petId, httpRequest);
         return ResponseEntity.ok(petResponseDto);
     }
 
     // 수정페이지 - 반려동물 수정
     @PutMapping("/{petId}")
     public ResponseEntity<PetResponseDto> updatePet(
-            @PathVariable Long petId,
-            @RequestBody PetRequestDto request) {
+            @PathVariable("petId") Long petId,
+            @RequestBody PetRequestDto request,
+            HttpServletRequest httpRequest) {
 
-        PetResponseDto petResponseDto = petService.updatePet(petId, request);
-        return ResponseEntity.ok(petResponseDto);
+        PetResponseDto updatedPet = petService.updatePet(petId, request, httpRequest);
+        return ResponseEntity.ok(updatedPet);
     }
 
     // 마이페이지 - 반려동물 목록 조회
