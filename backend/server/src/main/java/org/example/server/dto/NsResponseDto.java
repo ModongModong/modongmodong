@@ -1,10 +1,12 @@
 package org.example.server.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
+@AllArgsConstructor
 public class NsResponseDto {
     private Long userId;
     private Long petId;

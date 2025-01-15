@@ -17,26 +17,26 @@ public class Pet {
     private Long petId;
 
     // 외래키 필드
-    @Column(name = "user_pk", nullable = false)
+    @Column(name = "user_pk", nullable = false, insertable = false, updatable = false)
     private Long userId;
 
-    @Column(name = "disease_pk", nullable = false)
+    @Column(name = "disease_pk", nullable = false, insertable = false, updatable = false)
     private Long diseaseId;
 
-    @Column(name = "type_pk", nullable = false)
+    @Column(name = "type_pk", nullable = false, insertable = false, updatable = false)
     private Long petTypeId;
 
     // 연관 관계 매핑
     @ManyToOne
-    @JoinColumn(name = "user_pk", referencedColumnName = "user_pk", insertable = false, updatable = false)
+    @JoinColumn(name = "user_pk", referencedColumnName = "user_pk")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "disease_pk", referencedColumnName = "disease_pk", insertable = false, updatable = false)
+    @JoinColumn(name = "disease_pk", referencedColumnName = "disease_pk")
     private Disease disease;
 
     @ManyToOne
-    @JoinColumn(name = "type_pk", referencedColumnName = "type_pk", insertable = false, updatable = false)
+    @JoinColumn(name = "type_pk", referencedColumnName = "type_pk")
     private PetType petType;
 
     // 일반 컬럼
