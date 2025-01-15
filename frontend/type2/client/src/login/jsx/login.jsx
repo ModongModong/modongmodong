@@ -1,16 +1,25 @@
 // import React, {useEffect, useState} from "react";
 import {useState} from "react";
 import styles from "../css/login.module.css";
+import ErrorPopup  from "./ErrorPopup.jsx";
 
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [popupMessage, setPopupMessage] = useState("");
+    const [showPopup, setShowPopup] = useState(false);
 
+    const handleClosePopup = () => {
+        setShowPopup(false);
+        setPopupMessage("");
+    };
 
     // 로그인 버튼 클릭 핸들러
     const handleLogin = async () => {
         if (!email || !password) {
-            alert("이메일과 비밀번호를 입력해주세요.");
+            // alert("이메일과 비밀번호를 입력해주세요.");
+            setPopupMessage("이메일과 비밀번호를 입력해주세요.");
+            setShowPopup(true);
             return;
         }
 
@@ -33,16 +42,20 @@ function Login() {
                 const result = await response.json();
                 console.log(result);
 
-                alert("로그인 성공!");
+                // alert("로그인 성공!");
                 window.location.href = "/"; // 메인화면으로 이동
             } else {
                 const errorResult = await response.json();
-                alert(errorResult.message || "로그인 실패..");
+                // alert(errorResult.message || "로그인 실패..");
+                setPopupMessage(errorResult.message || "로그인 실패..");
+                setShowPopup(true);
                 console.log(errorResult);
             }
         } catch (error) {
             console.error("로그인 요청 중 오류 발생:", error);
-            alert("로그인 요청 중 오류가 발생했습니다. 다시 시도해주세요.");
+            // alert("로그인 요청 중 오류가 발생했습니다. 다시 시도해주세요.");
+            setPopupMessage("로그인 요청 중 오류가 발생했습니다. 다시 시도해주세요.");
+            setShowPopup(true);
         }
     };
 
@@ -87,6 +100,7 @@ function Login() {
                     <a href="/signup">회원가입</a>
                 </div>
             </div>
+            {showPopup && <ErrorPopup message={popupMessage} onClose={handleClosePopup} />}
         </div>
 
     );
