@@ -25,6 +25,29 @@ function MyPage() {
         navigate(`/petmodify/${petId}`);  // petId를 URL에 포함시켜 경로 변경
     };
 
+    // 로그아웃
+    const logoutHandler = async () => {
+        try {
+            const response = await fetch('/logout', {
+                method: 'GET',
+                credentials: 'include',
+            });
+
+            if (response.redirected) {
+                // 리다이렉트된 경로로 이동
+                window.location.href = response.url;
+            } else if (response.ok) {
+                // 리다이렉트가 없는 경우
+                console.log('로그아웃 성공');
+                navigate('/login'); // 로그인페이지로 리다이렉트
+            } else {
+                console.error('로그아웃 실패: ', response.statusText);
+            }
+        } catch (error) {
+            console.error('로그아웃 중 오류 발생: ', error);
+        }
+    };
+
     // 마이페이지 로드 시 로그인된 유저 정보 가져오기
     useEffect(() => {
         const fetchUserData = async () => {
@@ -80,6 +103,8 @@ function MyPage() {
         }
     }, [user]); // user가 변경될 때마다 실행
 
+
+
     if (!user) {
         return <div>로딩 중...</div>;
     }
@@ -106,13 +131,17 @@ function MyPage() {
                     <div className={styles.userImageContainer}>
                         <MyPageIcon className={styles.userImage}/> {/* 향후 유저이미지로 대체*/}
                     </div>
-
                     {/* 유저이름 */}
                     <div className={styles.userNameContainer}>
-                        <div >{user.nickname}</div>
-                        {/* 유저 이름 */}
+                        <div>{user.nickname}</div>
                     </div>
                 </div>
+            </div>
+            <div className={styles.LogoutCon}>
+            <div className={styles.logoutEmpty}></div>
+            <div className={styles.logoutButtonCon}>
+                <button className={styles.logoutButton} onClick={logoutHandler}>로그아웃</button>
+            </div>
             </div>
             <hr className={styles.divider}/>
 
@@ -140,7 +169,8 @@ function MyPage() {
                                         <li><span className={styles.boldText}>등록번호</span>
                                             <span>{pet.animalNumber}</span></li>
                                         <li><span className={styles.boldText}>품종</span> <span>{pet.petType}</span></li>
-                                        <li><span className={styles.boldText}>수술이력</span> <span>{pet.surgery}</span></li>
+                                        <li><span className={styles.boldText}>수술이력</span> <span>{pet.surgery}</span>
+                                        </li>
 
                                     </ul>
                                 </div>
@@ -153,7 +183,9 @@ function MyPage() {
                                             className={styles.diseaseText}>{pet.disease}</span></li>
                                     </ul>
                                     <div className={styles.editInfoButtonContainer}>
-                                        <button className={styles.editInfoButton} onClick={() => handlePetModClick(pet.petId)}>정보 수정</button>
+                                        <button className={styles.editInfoButton}
+                                                onClick={() => handlePetModClick(pet.petId)}>정보 수정
+                                        </button>
                                     </div>
                                 </div>
                             </div>

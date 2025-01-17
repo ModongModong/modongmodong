@@ -41,7 +41,7 @@ function NsRecommendation() {
     // 유저 정보가 로드되었을 때 영양제 데이터 불러오기
     useEffect(() => {
         const fetchNutritionalSupplements = async () => {
-            if (user) {  // user가 존재할 때만 API 호출
+            if (user) {
                 try {
                     const response = await fetch(`http://localhost:8080/api/ns/recommend/${user.userPk}`, {
                         method: "GET",
@@ -49,7 +49,6 @@ function NsRecommendation() {
                     });
                     const data = await response.json();
 
-                    // 여러 영양제 데이터를 배열로 처리
                     setNutritionalSupplementData(data || []);
                 } catch (error) {
                     console.error("영양제 데이터 로딩 중 오류 발생:", error);
@@ -94,7 +93,7 @@ function NsRecommendation() {
                         </div>
                     ))
                 ) : (
-                    <div className={styles.noDataMessage}>추천 영양제가 없습니다.</div>
+                    <div >추천 영양제가 없습니다.</div>
                 )}
             </div>
         </div>

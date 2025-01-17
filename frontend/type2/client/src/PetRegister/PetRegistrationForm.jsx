@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './PetRegisteration.module.css';
 import Goback_icon from "../assets/icons/goback_icon.jsx";
 import PetRegErrorPopup from './PetRegErrorPopup';
