@@ -194,3 +194,29 @@
     font-size: 16px;
     cursor: pointer;
 }
+
+.LogoutCon {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.logoutEmpty {
+    display: flex;
+    justify-content: center; /* 콘텐츠 가운데 정렬 */
+    width: 70%; /* 80% 너비 */
+}
+
+.logoutButtonCon {
+    display: flex;
+    justify-content: center; /* 버튼 가운데 정렬 */
+    width: 30%; /* 20% 너비 */
+}
+
+.logoutButton {
+    background-color: #FF4747;
+    color: black;
+    border: none;
+    cursor: pointer;
+    font-size: 13px;
+}
