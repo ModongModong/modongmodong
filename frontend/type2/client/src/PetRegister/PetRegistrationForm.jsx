@@ -151,13 +151,13 @@ function PetRegistrationForm() {
         <div className={styles.container}>
             <div className={styles.header}>
                 <div className={styles.arrowBack} onClick={goBack}>
-                    <Goback_icon />
+                    <Goback_icon/>
                 </div>
                 <div className={styles.pageTitle}>반려동물 등록</div>
             </div>
 
             {errorMessages.length > 0 && (
-                <PetRegErrorPopup messages={errorMessages} onClose={() => setErrorMessages([])} />
+                <PetRegErrorPopup messages={errorMessages} onClose={() => setErrorMessages([])}/>
             )}
 
             <div className="formContainer">
@@ -188,116 +188,126 @@ function PetRegistrationForm() {
                         <div className={styles.radioLabelContainer}>
                             <div className={styles.labelName}>성별</div>
                             <div className={styles.radioContainer}>
-                                <input
-                                    type="radio"
-                                    name="gender"
-                                    value="M"
-                                    onChange={handleChange}
-                                    className={styles.radio}
-                                /> 남
-                                <input
-                                    type="radio"
-                                    name="gender"
-                                    value="F"
-                                    onChange={handleChange}
-                                    className={styles.radio}
-                                /> 여
+                                <div className={styles.radio}>
+                                    <input
+                                        type="radio"
+                                        name="gender"
+                                        value="M"
+                                        onChange={handleChange}
+                                        checked={petData.gender === 'M'}
+                                    /> 남
+                                </div>
+                                <div className={styles.radio}>
+                                    <input
+                                        type="radio"
+                                        name="gender"
+                                        value="F"
+                                        onChange={handleChange}
+                                        checked={petData.gender === 'F'}
+                                    /> 여
+                                </div>
                             </div>
                         </div>
 
                         <div className={styles.radioLabelContainer}>
                             <div className={styles.labelName}>중성화여부</div>
                             <div className={styles.radioContainer}>
-                                <input
-                                    type="radio"
-                                    name="neuteuring_yn"
-                                    value="Y"
-                                    onChange={handleChange}
-                                    className={styles.radio}
-                                /> 예
-                                <input
-                                    type="radio"
-                                    name="neuteuring_yn"
-                                    value="N"
-                                    onChange={handleChange}
-                                    className={styles.radio}
-                                /> 아니오
+                                <div className={styles.radio}>
+                                    <input
+                                        type="radio"
+                                        name="neuteuringYn"
+                                        value="Y"
+                                        onChange={handleChange}
+                                        checked={petData.neuteuringYn === 'Y'} // 여기서 값을 확인하고 체크 상태를 설정
+                                    /> O
+                                </div>
+                                <div className={styles.radio}>
+                                    <input
+                                        type="radio"
+                                        name="neuteuringYn"
+                                        value="N"
+                                        onChange={handleChange}
+                                        checked={petData.neuteuringYn === 'N'} // 여기서 값을 확인하고 체크 상태를 설정
+                                    /> X
+                                </div>
                             </div>
                         </div>
                     </label>
 
-                    <label className={styles.label}>
-                        <div className={styles.labelName}>등록번호</div>
-                        <input
-                            type="number"
-                            name="animal_number"
-                            value={petData.animal_number}
-                            onChange={handleChange}
-                            className={styles.input}
-                        />
-                    </label>
 
-                    <label className={styles.label}>
-                        <div className={styles.labelName}>품종</div>
-                        <select
-                            name="type"
-                            value={petData.type}
-                            onChange={handleChange}
-                            className={styles.input}
-                        >
-                            <option value="">품종을 선택하세요</option>
-                            {petTypes.map((type) => (
-                                <option key={type.id} value={type.id}>{type.name}</option>
-                            ))}
-                        </select>
-                    </label>
+            <label className={styles.label}>
+                <div className={styles.labelName}>등록번호</div>
+                <input
+                    type="number"
+                    name="animal_number"
+                    value={petData.animal_number}
+                    onChange={handleChange}
+                    className={styles.input}
+                />
+            </label>
 
-                    <label className={styles.label}>
-                        <div className={styles.labelName}>체중</div>
-                        <input
-                            type="number"
-                            name="weight"
-                            value={petData.weight}
-                            onChange={handleChange}
-                            className={styles.input}
-                        />
-                    </label>
+            <label className={styles.label}>
+                <div className={styles.labelName}>품종</div>
+                <select
+                    name="type"
+                    value={petData.type}
+                    onChange={handleChange}
+                    className={styles.input}
+                >
+                    <option value="">품종을 선택하세요</option>
+                    {petTypes.map((type) => (
+                        <option key={type.id} value={type.id}>{type.name}</option>
+                    ))}
+                </select>
+            </label>
 
-                    <label className={styles.label}>
-                        <div className={styles.labelName}>수술 이력</div>
-                        <input
-                            type="text"
-                            name="surgery"
-                            value={petData.surgery}
-                            onChange={handleChange}
-                            className={styles.input}
-                        />
-                    </label>
+            <label className={styles.label}>
+                <div className={styles.labelName}>체중</div>
+                <input
+                    type="number"
+                    name="weight"
+                    value={petData.weight}
+                    onChange={handleChange}
+                    className={styles.input}
+                />
+            </label>
 
-                    <label className={styles.label}>
-                        <div className={styles.labelName}>질병</div>
-                        <select
-                            name="disease"
-                            value={petData.disease}
-                            onChange={handleChange}
-                            className={styles.input}
-                        >
-                            <option value="">질병을 선택하세요</option>
-                            {diseases.map((disease) => (
-                                <option key={disease.id} value={disease.id}>{disease.name}</option>
-                            ))}
-                        </select>
-                    </label>
+            <label className={styles.label}>
+                <div className={styles.labelName}>수술 이력</div>
+                <input
+                    type="text"
+                    name="surgery"
+                    value={petData.surgery}
+                    onChange={handleChange}
+                    className={styles.input}
+                />
+            </label>
 
-                    <div className={styles.submitContainer}>
-                        <button type="submit" className={styles.submitButton}>
-                            반려동물 등록 완료
-                        </button>
-                    </div>
-                </form>
+            <label className={styles.label}>
+                <div className={styles.labelName}>질병</div>
+                <select
+                    name="disease"
+                    value={petData.disease}
+                    onChange={handleChange}
+                    className={styles.input}
+                >
+                    <option value="">질병을 선택하세요</option>
+                    {diseases.map((disease) => (
+                        <option key={disease.id} value={disease.id}>{disease.name}</option>
+                    ))}
+                </select>
+            </label>
+
+            <div className={styles.submitContainer}>
+                <button type="submit" className={styles.submitButton}>
+                    반려동물 등록 완료
+                </button>
             </div>
-        </div>
-    );
+        </form>
+</div>
+</div>
+)
+    ;
 }
 
 export default PetRegistrationForm;

@@ -196,53 +196,58 @@ function PetModificationForm() {
                         />
                     </label>
 
-                    <label className={styles.radioGroup}>
+                    <div className={styles.radioGroup}>
                         <div className={styles.radioLabelContainer}>
                             <div className={styles.labelName}>성별</div>
                             <div className={styles.radioContainer}>
-                                <input
-                                    type="radio"
-                                    name="gender"
-                                    value="M"
-                                    onChange={handleChange}
-                                    className={styles.radio}
-                                    checked={petData.gender === 'M'}
-                                /> 남
-                                <input
-                                    type="radio"
-                                    name="gender"
-                                    value="F"
-                                    onChange={handleChange}
-                                    className={styles.radio}
-                                    checked={petData.gender === 'F'}
-                                /> 여
+                                <div className={styles.radio}>
+                                    <input
+                                        type="radio"
+                                        name="gender"
+                                        value="M"
+                                        onChange={handleChange}
+                                        checked={petData.gender === 'M'}
+                                    /> 남
+                                </div>
+                                <div className={styles.radio}>
+                                    <input
+                                        type="radio"
+                                        name="gender"
+                                        value="F"
+                                        onChange={handleChange}
+                                        checked={petData.gender === 'F'}
+                                    /> 여
+                                </div>
                             </div>
                         </div>
+
 
                         <div className={styles.radioLabelContainer}>
                             <div className={styles.labelName}>중성화여부</div>
                             <div className={styles.radioContainer}>
-                                <input
-                                    type="radio"
-                                    name="neuteuringYn"
-                                    value="Y"
-                                    onChange={handleChange}
-                                    className={styles.radio}
-                                    checked={petData.neuteuringYn === 'Y'} // 여기서 값을 확인하고 체크 상태를 설정
-                                /> 예
-                                <input
-                                    type="radio"
-                                    name="neuteuringYn"
-                                    value="N"
-                                    onChange={handleChange}
-                                    className={styles.radio}
-                                    checked={petData.neuteuringYn === 'N'} // 여기서 값을 확인하고 체크 상태를 설정
-                                /> 아니오
+                                <div className={styles.radio}>
+                                    <input
+                                        type="radio"
+                                        name="neuteuringYn"
+                                        value="Y"
+                                        onChange={handleChange}
+                                        checked={petData.neuteuringYn === 'Y'} // 여기서 값을 확인하고 체크 상태를 설정
+                                    /> O
+                                </div>
+                                <div className={styles.radio}>
+                                    <input
+                                        type="radio"
+                                        name="neuteuringYn"
+                                        value="N"
+                                        onChange={handleChange}
+                                        checked={petData.neuteuringYn === 'N'} // 여기서 값을 확인하고 체크 상태를 설정
+                                    /> X
+                                </div>
+                                </div>
                             </div>
                         </div>
-                    </label>
 
-                    <label className={styles.label}>
+                        <label className={styles.label}>
                         <div className={styles.labelName}>등록번호</div>
                         <input
                             type="number"
