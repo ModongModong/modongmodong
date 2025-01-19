@@ -6,15 +6,19 @@ import { useNavigate } from "react-router-dom";
 
 function PetRegistrationForm() {
     const [petData, setPetData] = useState({
+        petId: '',
+        userId: '',
+        diseaseId: '',
+        disease: '',
+        petTypeId: '',
+        petType: '',
         name: '',
         age: '',
         gender: '',
-        neuteuring_yn: '',
-        animal_number: '',
-        type: '',
+        neuteuringYn: '',
+        animalNumber: '',
         weight: '',
-        surgery: '',
-        disease: ''
+        surgery: ''
     });
 
     const [errorMessages, setErrorMessages] = useState([]);
@@ -82,10 +86,27 @@ function PetRegistrationForm() {
     // 입력 처리
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setPetData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
+
+        setPetData((prevData) => {
+            const updatedData = {
+                ...prevData,
+                [name]: value,
+            };
+
+            // petTypeId가 변경되었을 때 petType도 동기화
+            if (name === "petTypeId") {
+                const selectedPetType = petTypes.find((type) => type.id === parseInt(value));
+                updatedData.petType = selectedPetType ? selectedPetType.name : "";
+            }
+
+            // diseaseId가 변경되었을 때 disease도 동기화
+            if (name === "diseaseId") {
+                const selectedDisease = diseases.find((type) => type.id === parseInt(value));
+                updatedData.disease = selectedDisease ? selectedDisease.name : "";
+            }
+
+            return updatedData;
+        });
     };
 
     // 폼 제출
@@ -97,51 +118,48 @@ function PetRegistrationForm() {
         if (!petData.name) errors.push(<span><span className={styles.highlight}>반려동물 이름</span>을 입력하세요</span>);
         if (!petData.age) errors.push(<span><span className={styles.highlight}>나이</span>를 입력하세요</span>);
         if (!petData.gender) errors.push(<span><span className={styles.highlight}>성별</span>을 선택하세요</span>);
-        if (!petData.neuteuring_yn) errors.push(<span><span className={styles.highlight}>중성화 여부</span>를 선택하세요</span>);
-        if (!petData.animal_number) errors.push(<span><span className={styles.highlight}>등록번호</span>를 입력하세요</span>);
-        if (!petData.type) errors.push(<span><span className={styles.highlight}>품종</span>을 입력하세요</span>);
+        if (!petData.neuteuringYn) errors.push(<span><span className={styles.highlight}>중성화 여부</span>를 선택하세요</span>);
+        if (!petData.animalNumber) errors.push(<span><span className={styles.highlight}>등록번호</span>를 입력하세요</span>);
+        if (!petData.petTypeId || !petData.petType) errors.push(<span><span className={styles.highlight}>품종</span>을 입력하세요</span>);
         if (!petData.weight) errors.push(<span><span className={styles.highlight}>체중</span>을 입력하세요</span>);
         if (!petData.surgery) errors.push(<span><span className={styles.highlight}>수술 이력</span>을 입력하세요</span>);
-        if (!petData.disease) errors.push(<span><span className={styles.highlight}>질병</span>을 입력하세요</span>);
+        if (!petData.diseaseId || !petData.disease) errors.push(<span><span className={styles.highlight}>질병</span>을 입력하세요</span>);
 
         if (errors.length > 0) {
             setErrorMessages(errors);
         } else {
             try {
+                const { petId, userId, disease, petType, ...petRequestData } = petData;
                 const response = await fetch("http://localhost:8080/api/pets", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     credentials: "include", // 세션 정보와 쿠키를 포함하여 요청
-                    body: JSON.stringify({
-                        diseaseId: petData.disease,
-                        petTypeId: petData.type,
-                        name: petData.name,
-                        age: petData.age,
-                        gender: petData.gender,
-                        neuteringYn: petData.neuteuring_yn,
-                        animalNumber: petData.animal_number,
-                        weight: petData.weight,
-                        surgery: petData.surgery,
-                    }),
+                    body: JSON.stringify(petRequestData),
                 });
 
                 if (!response.ok) {
-                    // 예외를 던지는 대신 사용자에게 오류를 표시
-                    const errorData = await response.json();
-                    setErrorMessages([<span><span className={styles.highlight}>오류:</span> {errorData.message || "데이터 전송 실패"}</span>]);
+                    const errorDetails = await response.text();
+                    console.error("응답 상태:", response.status, response.statusText);
+                    console.error("응답 본문:", errorDetails);
+                    alert("등록 실패");
                     return;
                 }
 
                 const result = await response.json();
                 console.log("반려동물 등록 성공:", result);
+                setPetData((prevData) => ({
+                    ...prevData,
+                    petId: result.petId,
+                    userId: result.userId,
+                }));
                 alert("반려동물을 등록했습니다.")
                 navigate("/mypage");
 
             } catch (error) {
-                console.error("반려동물 등록 중 오류 발생:", error);
-                setErrorMessages([<span><span className={styles.highlight}>등록 중 오류 발생</span>했습니다. 다시 시도해주세요.</span>]);
+                console.error("등록 중 오류 발생:", error);
+                alert("등록 중 오류 발생");
             }
         }
     };
@@ -214,19 +232,19 @@ function PetRegistrationForm() {
                                 <div className={styles.radio}>
                                     <input
                                         type="radio"
-                                        name="neuteuring_yn"
+                                        name="neuteuringYn"
                                         value="Y"
                                         onChange={handleChange}
-                                        checked={petData.neuteuring_yn === 'Y'} // 여기서 값을 확인하고 체크 상태를 설정
+                                        checked={petData.neuteuringYn === 'Y'} // 여기서 값을 확인하고 체크 상태를 설정
                                     /> O
                                 </div>
                                 <div className={styles.radio}>
                                     <input
                                         type="radio"
-                                        name="neuteuring_yn"
+                                        name="neuteuringYn"
                                         value="N"
                                         onChange={handleChange}
-                                        checked={petData.neuteuring_yn === 'N'} // 여기서 값을 확인하고 체크 상태를 설정
+                                        checked={petData.neuteuringYn === 'N'} // 여기서 값을 확인하고 체크 상태를 설정
                                     /> X
                                 </div>
                             </div>
@@ -234,79 +252,79 @@ function PetRegistrationForm() {
                     </label>
 
 
-            <label className={styles.label}>
-                <div className={styles.labelName}>등록번호</div>
-                <input
-                    type="number"
-                    name="animal_number"
-                    value={petData.animal_number}
-                    onChange={handleChange}
-                    className={styles.input}
-                />
-            </label>
+                    <label className={styles.label}>
+                        <div className={styles.labelName}>등록번호</div>
+                        <input
+                            type="number"
+                            name="animalNumber"
+                            value={petData.animalNumber}
+                            onChange={handleChange}
+                            className={styles.input}
+                        />
+                    </label>
 
-            <label className={styles.label}>
-                <div className={styles.labelName}>품종</div>
-                <select
-                    name="type"
-                    value={petData.type}
-                    onChange={handleChange}
-                    className={styles.input}
-                >
-                    <option value="">품종을 선택하세요</option>
-                    {petTypes.map((type) => (
-                        <option key={type.id} value={type.id}>{type.name}</option>
-                    ))}
-                </select>
-            </label>
+                    <label className={styles.label}>
+                        <div className={styles.labelName}>품종</div>
+                        <select
+                            name="petTypeId"
+                            value={petData.petTypeId}
+                            onChange={handleChange}
+                            className={styles.input}
+                        >
+                            <option value="">품종을 선택하세요</option>
+                            {petTypes.map((type) => (
+                                <option key={type.id} value={type.id}>{type.name}</option>
+                            ))}
+                        </select>
+                    </label>
 
-            <label className={styles.label}>
-                <div className={styles.labelName}>체중</div>
-                <input
-                    type="number"
-                    name="weight"
-                    value={petData.weight}
-                    onChange={handleChange}
-                    className={styles.input}
-                />
-            </label>
+                    <label className={styles.label}>
+                        <div className={styles.labelName}>체중</div>
+                        <input
+                            type="number"
+                            name="weight"
+                            value={petData.weight}
+                            onChange={handleChange}
+                            className={styles.input}
+                        />
+                    </label>
 
-            <label className={styles.label}>
-                <div className={styles.labelName}>수술 이력</div>
-                <input
-                    type="text"
-                    name="surgery"
-                    value={petData.surgery}
-                    onChange={handleChange}
-                    className={styles.input}
-                />
-            </label>
+                    <label className={styles.label}>
+                        <div className={styles.labelName}>수술 이력</div>
+                        <input
+                            type="text"
+                            name="surgery"
+                            value={petData.surgery}
+                            onChange={handleChange}
+                            className={styles.input}
+                        />
+                    </label>
 
-            <label className={styles.label}>
-                <div className={styles.labelName}>질병</div>
-                <select
-                    name="disease"
-                    value={petData.disease}
-                    onChange={handleChange}
-                    className={styles.input}
-                >
-                    <option value="">질병을 선택하세요</option>
-                    {diseases.map((disease) => (
-                        <option key={disease.id} value={disease.id}>{disease.name}</option>
-                    ))}
-                </select>
-            </label>
+                    <label className={styles.label}>
+                        <div className={styles.labelName}>질병</div>
+                        <select
+                            name="diseaseId"
+                            value={petData.diseaseId}
+                            onChange={handleChange}
+                            className={styles.input}
+                        >
+                            <option value="">질병을 선택하세요</option>
+                            {diseases.map((disease) => (
+                                <option key={disease.id} value={disease.id}>{disease.name}</option>
+                            ))}
+                        </select>
+                    </label>
 
-            <div className={styles.submitContainer}>
-                <button type="submit" className={styles.submitButton}>
-                    반려동물 등록 완료
-                </button>
+                    <div className={styles.submitContainer}>
+                        <button type="submit" className={styles.submitButton}>
+                            반려동물 등록 완료
+                        </button>
+                    </div>
+                </form>
             </div>
-        </form>
-</div>
-</div>
-)
-    ;
+        </div>
+    )
+        ;
 }
 
 export default PetRegistrationForm;
