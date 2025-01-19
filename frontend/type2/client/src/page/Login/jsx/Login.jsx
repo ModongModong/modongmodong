@@ -1,6 +1,6 @@
 // import React, {useEffect, useState} from "react";
 import {useState} from "react";
-import styles from "../css/login.module.css";
+import styles from "../css/Login.module.css";
 import ErrorPopup  from "./ErrorPopup.jsx";
 
 function Login() {
@@ -97,7 +97,7 @@ function Login() {
                 </div>
 
                 <div className={styles.signup_link}>
-                    <a href="/signup">회원가입</a>
+                    <a href="/type2/client/src/page/Login/jsx/Signup">회원가입</a>
                 </div>
             </div>
             {showPopup && <ErrorPopup message={popupMessage} onClose={handleClosePopup} />}

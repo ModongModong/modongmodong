@@ -1,4 +1,4 @@
-import styles from "./Search_results_sidebar.module.css";
+import styles from "./SearchResultsSidebar.module.css";
 import { BsDashLg } from "react-icons/bs";
 
 const SearchResultsSidebar = ({ searchResults, isSidebarOpen, setIsSidebarOpen}) => {

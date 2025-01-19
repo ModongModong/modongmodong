@@ -1,5 +1,5 @@
 import {CustomOverlayMap, MapMarker} from "react-kakao-maps-sdk";
-import markerImage from "../../assets/images/marker.png";
+import markerImage from "../../assets/Images/marker.png";
 import styles from "./Search_marker.module.css";
 import React from "react";
 

@@ -1,4 +1,4 @@
-import Goback_icon from "../../assets/icons/goback_icon.jsx";
+import Goback_icon from "../../assets/Icons/goback_icon.jsx";
 //포스트등록(Add_post페이지와 같은 css 사용)
 import styles from "./Add_post.module.css"
 import {useNavigate, useParams} from "react-router-dom";

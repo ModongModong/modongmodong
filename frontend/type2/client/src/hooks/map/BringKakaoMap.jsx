@@ -1,6 +1,6 @@
 import { Map } from "react-kakao-maps-sdk";
-import CurrentLocationMarker from "./Current_location_marker.jsx";
-import SearchMarker from "./Search_marker.jsx";
+import CurrentLocationMarker from "./CurrentLocationMarker.jsx";
+import SearchMarker from "./SearchMarker.jsx";
 import {useState} from "react";
 
 const KakaoMap = ({ center, markers, level = 3, onMapCreate, moveLatLng }) => {

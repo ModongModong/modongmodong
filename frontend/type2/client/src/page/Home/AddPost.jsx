@@ -1,4 +1,4 @@
-import Goback_icon from "../../assets/icons/goback_icon.jsx";
+import Goback_icon from "../../assets/Icons/goback_icon.jsx";
 import styles from "./Add_post.module.css"
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";

@@ -1,9 +1,9 @@
-import styles from "./Search_pharmacy.module.css";
-import GobackIcon from "../../assets/icons/goback_icon.jsx";
+import styles from "./SearchPharmacy.module.css";
+import GobackIcon from "../../assets/Icons/goback_icon.jsx";
 import { useEffect, useState } from "react";
-import KakaoMap from "../../hooks/map/Bring_kakao_map.jsx";
-import SearchResultsSidebar from "./Search_results_sidebar.jsx";
-import KeywordBtn from "./Keyword_btn.jsx";
+import KakaoMap from "../../hooks/map/BringKakaoMap.jsx";
+import SearchResultsSidebar from "./SearchResultsSidebar.jsx";
+import KeywordBtn from "./KeywordBtn.jsx";
 import {useNavigate} from "react-router-dom";
 
 const SEARCH_KEYWORD = [

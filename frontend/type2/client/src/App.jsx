@@ -1,17 +1,17 @@
 import './App.css';
-import Login from "./login/jsx/login.jsx";
-import Signup from "./login/jsx/signup.jsx";
+import Login from "./page/Login/jsx/Login.jsx";
+import Signup from "./page/Login/jsx/Signup.jsx";
 import Navigation from "./common/Navigation/Navigation.jsx";
 import Home from "./page/Home/Home.jsx";
-import AddPost from "./page/Home/Add_post.jsx";
+import AddPost from "./page/Home/AddPost.jsx";
 import PostDetail from "./page/Home/PostDetail.jsx";
-import SearchPharmacy from "./page/Search/Search_pharmacy.jsx";
-import NsRecommendation from "./NsRecommendation/NsRecommendation.jsx";
-import MyPage from "./MyPage/MyPage.jsx";
+import SearchPharmacy from "./page/Search/SearchPharmacy.jsx";
+import NsRecommendation from "./page/NsRecommendation/NsRecommendation.jsx";
+import MyPage from "./page/MyPage/MyPage.jsx";
 import {Route, Routes} from "react-router-dom";
-import UpdatePost from "./page/Home/Update_post.jsx";
-import PetRegistrationForm from "./PetRegister/PetRegistrationForm.jsx";
-import PetModificationForm from "./PetRegister/PetModificationForm.jsx";
+import UpdatePost from "./page/Home/UpdatePost.jsx";
+import PetRegistrationForm from "./page/PetRegister/PetRegistrationForm.jsx";
+import PetModificationForm from "./page/PetRegister/PetModificationForm.jsx";
 
 function App() {
     return (
