@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import styles from './MyPage.module.css';
 import GobackIcon from "../assets/icons/goback_icon.jsx";
 import MyPageIcon from "../assets/icons/mypage_icon.jsx"; // 유저이미지데이터 들어오면 삭제
@@ -178,7 +178,7 @@ function MyPage() {
                                     <ul>
                                         <li><span className={styles.boldText}>체중</span> <span>{pet.weight}kg</span></li>
                                         <li><span className={styles.boldText}>중성화 여부</span>
-                                            <span>{pet.neuteringYn === 'Y' ? '예' : '아니오'}</span></li>
+                                            <span>{pet.neuteuringYn === 'Y' ? '예' : '아니오'}</span></li>
                                         <li><span className={styles.boldText}>질병</span> <span
                                             className={styles.diseaseText}>{pet.disease}</span></li>
                                     </ul>
