@@ -11,7 +11,7 @@ function PetModificationForm() {
         name: '',
         age: '',
         gender: '',
-        neuteuringYn: 'Y',
+        neuteuringYn: '',
         animalNumber: '',
         type: '',
         weight: '',

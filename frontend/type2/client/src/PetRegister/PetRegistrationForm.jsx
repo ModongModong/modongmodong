@@ -115,7 +115,6 @@ function PetRegistrationForm() {
                     },
                     credentials: "include", // 세션 정보와 쿠키를 포함하여 요청
                     body: JSON.stringify({
-                        userId: user?.id,  // 유저 ID
                         diseaseId: petData.disease,
                         petTypeId: petData.type,
                         name: petData.name,
@@ -215,19 +214,19 @@ function PetRegistrationForm() {
                                 <div className={styles.radio}>
                                     <input
                                         type="radio"
-                                        name="neuteuringYn"
+                                        name="neuteuring_yn"
                                         value="Y"
                                         onChange={handleChange}
-                                        checked={petData.neuteuringYn === 'Y'} // 여기서 값을 확인하고 체크 상태를 설정
+                                        checked={petData.neuteuring_yn === 'Y'} // 여기서 값을 확인하고 체크 상태를 설정
                                     /> O
                                 </div>
                                 <div className={styles.radio}>
                                     <input
                                         type="radio"
-                                        name="neuteuringYn"
+                                        name="neuteuring_yn"
                                         value="N"
                                         onChange={handleChange}
-                                        checked={petData.neuteuringYn === 'N'} // 여기서 값을 확인하고 체크 상태를 설정
+                                        checked={petData.neuteuring_yn === 'N'} // 여기서 값을 확인하고 체크 상태를 설정
                                     /> X
                                 </div>
                             </div>

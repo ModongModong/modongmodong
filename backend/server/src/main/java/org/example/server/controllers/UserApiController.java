@@ -1,5 +1,6 @@
 package org.example.server.controllers;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -83,8 +84,24 @@ public class UserApiController {
 
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
+
+        // Spring Security에서 세션 무효화
         new SecurityContextLogoutHandler().logout(request, response,
                 SecurityContextHolder.getContext().getAuthentication());
+        /*
+        SecurityContextHolder.clearContext();
+
+        // 세션 무효화
+        request.getSession().invalidate();
+
+        // 쿠키 삭제
+        Cookie cookie = new Cookie("JSESSIONID", null);
+        cookie.setPath("/");  // 쿠키 경로 설정
+        cookie.setMaxAge(0);  // 쿠키 만료 시간 0으로 설정 (삭제)
+        response.addCookie(cookie);
+        */
+
+
         return "redirect:/login";
     }
 }

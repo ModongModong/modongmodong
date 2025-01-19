@@ -28,7 +28,7 @@ function MyPage() {
     // 로그아웃
     const logoutHandler = async () => {
         try {
-            const response = await fetch('/logout', {
+            const response = await fetch('http://localhost:8080/api/logout', {
                 method: 'GET',
                 credentials: 'include',
             });
