@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './NsRecommendation.module.css';
 import GobackIcon from "../../assets/Icons/goback_icon.jsx";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 function NsRecommendation() {
     const navigate = useNavigate();
@@ -43,7 +43,8 @@ function NsRecommendation() {
         const fetchNutritionalSupplements = async () => {
             if (user) {
                 try {
-                    const response = await fetch(`http://localhost:8080/api/ns/recommend/${user.userPk}`, {
+                    console.log("userid", user.id);
+                    const response = await fetch(`http://localhost:8080/api/ns/recommend/${user.id}`, {
                         method: "GET",
                         credentials: "include",
                     });
