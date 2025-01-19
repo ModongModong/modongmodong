@@ -124,7 +124,7 @@ function PetModificationForm() {
         if (!petData.petTypeId || !petData.petType) errors.push(<span><span className={styles.highlight}>품종</span>을 입력하세요</span>);
         if (!petData.weight) errors.push(<span><span className={styles.highlight}>체중</span>을 입력하세요</span>);
         if (!petData.surgery) errors.push(<span><span className={styles.highlight}>수술 이력</span>을 입력하세요</span>);
-        if (!petData.diseaseId|| !petData.disease) errors.push(<span><span className={styles.highlight}>질병</span>을 입력하세요</span>);
+        if (!petData.diseaseId || !petData.disease) errors.push(<span><span className={styles.highlight}>질병</span>을 입력하세요</span>);
 
         if (errors.length > 0) {
             setErrorMessages(errors);
