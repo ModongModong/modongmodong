@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import styles from './MyPage.module.css';
-import GobackIcon from "../assets/icons/goback_icon.jsx";
-import MyPageIcon from "../assets/icons/mypage_icon.jsx"; // 유저이미지데이터 들어오면 삭제
+import GobackIcon from "../../assets/Icons/goback_icon.jsx";
+import MyPageIcon from "../../assets/Icons/MypageIcon.jsx"; // 유저이미지데이터 들어오면 삭제
 import {useNavigate} from "react-router-dom";
 
 function MyPage() {

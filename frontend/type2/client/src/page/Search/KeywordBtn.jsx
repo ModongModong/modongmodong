@@ -1,4 +1,4 @@
-import styles from "./Keyword_btn.module.css";
+import styles from "./KeywordBtn.module.css";
 
 const KeywordBtn = ({keyword, activeKeywordId,searchPlaces}) => {
     return (

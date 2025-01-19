@@ -1,5 +1,5 @@
 import {useState} from "react";
-import styles from "../css/signup.module.css";
+import styles from "../css/Signup.module.css";
 import {IoClose} from "react-icons/io5";
 import ErrorPopup  from "./ErrorPopup.jsx";
 

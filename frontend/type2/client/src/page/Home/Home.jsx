@@ -1,7 +1,7 @@
 import styles from "./Home.module.css"
-import HeartIcon from "../../assets/icons/heart_icon.jsx";
-import CommentIcon from "../../assets/icons/comment_icon.jsx";
-import FloatingBtn from "../../assets/FloatingBtn/Floating_btn.jsx";
+import HeartIcon from "../../assets/Icons/HeartIcon.jsx";
+import CommentIcon from "../../assets/Icons/CommentIcon.jsx";
+import FloatingBtn from "../../assets/FloatingBtn/Floatingbtn.jsx";
 import {Link} from "react-router-dom";
 import  {useEffect, useState} from "react";
 import axios from "axios";

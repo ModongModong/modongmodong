@@ -1,9 +1,9 @@
 import styles from './Navigation.module.css';
-import FavoriteIcon from "../../assets/icons/favorite_icon.jsx";
-import HomeIcon from "../../assets/icons/home_icon.jsx";
-import MyPageIcon from "../../assets/icons/mypage_icon.jsx";
-import SearchIcon from "../../assets/icons/search_icon.jsx";
-import SupplementsIcon from "../../assets/icons/supplements_icon.jsx";
+import FavoriteIcon from "../../assets/Icons/FavoriteIcon.jsx";
+import HomeIcon from "../../assets/Icons/HomeIcon.jsx";
+import MyPageIcon from "../../assets/Icons/MypageIcon.jsx";
+import SearchIcon from "../../assets/Icons/SearchIcon.jsx";
+import SupplementsIcon from "../../assets/Icons/SupplementsIcon.jsx";
 import {useState} from "react";
 import {Link} from "react-router-dom";
 

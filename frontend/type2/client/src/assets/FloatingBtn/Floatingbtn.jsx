@@ -1,5 +1,5 @@
 import styles from "./FloatingBtn.module.css"
-import Add_icon from "../icons/add_icon.jsx";
+import Add_icon from "../Icons/AddIcon.jsx";
 import {Link} from "react-router-dom";
 
 function FloatingBtn(){

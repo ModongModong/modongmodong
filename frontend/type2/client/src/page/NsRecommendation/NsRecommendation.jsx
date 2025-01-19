@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './NsRecommendation.module.css';
-import GobackIcon from "../assets/icons/goback_icon.jsx";
+import GobackIcon from "../../assets/Icons/goback_icon.jsx";
 import { useNavigate } from "react-router-dom";
 
 function NsRecommendation() {

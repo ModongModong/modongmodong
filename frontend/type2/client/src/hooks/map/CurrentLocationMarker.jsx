@@ -1,5 +1,5 @@
 import {MapMarker} from "react-kakao-maps-sdk";
-import myLoactionBlue from "../../assets/images/my_location_ blue.png";
+import myLoactionBlue from "../../assets/Images/my_location_ blue.png";
 
 const CurrentLocationMarker = ({position}) =>(
     <MapMarker

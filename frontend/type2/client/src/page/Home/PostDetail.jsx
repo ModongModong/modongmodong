@@ -1,9 +1,9 @@
 import styles from './PostDetail.module.css'
-import KebabIcon from "../../assets/icons/KebabIcon.jsx";
-import CommentIcon from "../../assets/icons/comment_icon.jsx";
-import UpdateIcon from "../../assets/icons/Update_icon.jsx";
-import DeleteIcon from "../../assets/icons/Delete_Icon.jsx";
-import GobackIcon from "../../assets/icons/goback_icon.jsx";
+import KebabIcon from "../../assets/Icons/KebabIcon.jsx";
+import CommentIcon from "../../assets/Icons/CommentIcon.jsx";
+import UpdateIcon from "../../assets/Icons/UpdateIcon.jsx";
+import DeleteIcon from "../../assets/Icons/DeleteIcon.jsx";
+import GobackIcon from "../../assets/Icons/goback_icon.jsx";
 import {
     FaRegStar,
     FaStar,
