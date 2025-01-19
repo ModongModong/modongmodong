@@ -3,6 +3,7 @@ import styles from "./Add_post.module.css"
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import MainModal from "./MainModal.jsx";
 
 function AddPost(){
     const [title, setTitle] = useState("");
@@ -10,6 +11,8 @@ function AddPost(){
     const [error, setError] = useState(null);
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
+    const [showModal, setShowModal] = useState(false); // 모달 표시 상태
+    const [modalMessage, setModalMessage] = useState(""); // 모달 메시지 상태
 
     const goBack = () => {
         navigate(-1);
@@ -38,23 +41,29 @@ function AddPost(){
         fetchUserData();
     }, []);
     const handleSubmit = async () => {
-      if(!title||!content){
-          alert("제목과 내용을 모두 입력해주세요");
-          return;
-      }
+        if(!title||!content){
+            alert("제목과 내용을 모두 입력해주세요");
+            return;
+        }
 
-      try{
-          const res = await axios.post("/api/posts",{
-              title,
-              content,
-          })
-          if(res.status === 200) {
-              navigate("/");
-          }
-      } catch(err) {
-        setError("오류가 발생했어요ㅠ");
-        console.log(err);
-      }
+        try{
+            const res = await axios.post("/api/posts",{
+                title,
+                content,
+            })
+            if(res.status === 200) {
+                setModalMessage("등록이 완료되었습니다!"); // 성공 메시지
+                setShowModal(true);
+            }
+        } catch(err) {
+            setError("오류가 발생했어요ㅠ");
+            console.log(err);
+        }
+    };
+
+    const handleModalClose = () => {
+        setShowModal(false);
+        navigate("/");
     };
 
     return (
@@ -82,6 +91,7 @@ function AddPost(){
                     등록하기
                 </button>
             </div>
+            {showModal && <MainModal message={modalMessage} onClose={handleModalClose} />}
         </div>
     )
 }
