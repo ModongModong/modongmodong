@@ -19,6 +19,7 @@ import { IoIosAddCircleOutline } from "react-icons/io";
 import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
+import MainModal from "./MainModal.jsx";
 function PostDetail(){
     const [postDetail, setPostDetail] = useState([]);
     const [error, setError] = useState(null);
@@ -37,6 +38,11 @@ function PostDetail(){
     const [newComment, setNewComment] = useState("");
     const [editCommentId, setEditCommentId] = useState(null);
     const [editCommentContent, setEditCommentContent] = useState("");
+    const [showModal, setShowModal] = useState(false); // 모달 표시 상태
+    const [modalMessage, setModalMessage] = useState(""); // 모달 메시지 상태
+    const [commentLikes, setCommentLikes] = useState({}); // 각 댓글의 좋아요 상태
+    const [commentDislikes, setCommentDislikes] = useState({}); // 각 댓글의 싫어요 상태
+
 
     //뒤로가기버튼
     const goBack = () => {
@@ -80,11 +86,25 @@ function PostDetail(){
         };
         fetchPostDetail();
     }, []);
+
+    // 모달 열기
+    const openSuccessModal = (message) => {
+        setModalMessage(message); // 모달 메시지 설정
+        setShowModal(true);  // 모달 열기
+    };
+
+    // 모달 닫기
+    const handleModalClose = () => {
+        setShowModal(false); // 모달 닫기
+        navigate("/");
+    };
+
     //게시글 삭제
     const deletePost = async () => {
         try{
             await axios.delete(`/api/posts/${postId}`, { withCredentials: true });
-            navigate("/");
+            openSuccessModal("게시글이 삭제되었습니다")
+
         }catch{
             alert("에러가 발생했어요ㅠ")
         }
@@ -95,6 +115,7 @@ function PostDetail(){
     const toggleFavorite = () => {
         setIsFavorite((prev) => !prev);
     }
+
     // 댓글 생성
     const commentSubmit = async () => {
         try {
@@ -117,6 +138,7 @@ function PostDetail(){
     const deleteComment = async (commentId) => {
         try {
             await axios.delete(`/api/comments/${commentId}`);
+            openSuccessModal("댓글이 삭제되었습니다")
             setComment((prevComments) => prevComments.filter((c) => c.commentId !== commentId));
 
         } catch (err) {
@@ -160,7 +182,7 @@ function PostDetail(){
     // 댓글 수정 완료
     const updateComment = async () => {
         if(!editCommentContent) {
-            alert("내용을 입력해주세요");
+            openSuccessModal("댓글 내용을 입력해주세요")
             return;
         }
         try{
@@ -178,37 +200,68 @@ function PostDetail(){
                             : i
                     )
                 );
+                openSuccessModal("댓글 수정이 되었습니다")
                 setEditCommentId(null);
             }
         }catch(err){
             console.log(err)
             alert("오류가 발생했습니다.");
-
         }
 
     }
 
-
-    // 댓글 삭제
-    const toggleDislike = () => {
-        if (isDislike) {
-            setIsDislike(false);
-            setDislikeCount((prev) => prev - 1);
-        } else {
-            setIsDislike(true);
-            setDislikeCount((prev) => prev + 1);
-            if (isLike) {
-                // 좋아요가 활성화된 경우 취소
-                setIsLike(false);
-                setLikeCount((prev) => prev - 1);
-            }
-        }
-    };
     // 게시글 작성자인지 확인
     const isPostAuthor = userPk === postDetail.userPk;
 
     // 댓글 작성자인지 확인
     const isCommentAuthor = (commentUserPk) => userPk === commentUserPk;
+
+    //댓글 좋아요
+    const toggleCommentLike = async (commentId, commentLikeNum) => {
+        try{
+            if(commentLikes[commentId]){
+                await axios.delete(`/api/comments/${commentId}/like`);
+                setCommentLikes((prev) => ({ ...prev, [commentId]: false }));
+
+            }else{
+                await axios.post(`/api/comments/${commentId}/like`,{
+                    commentId:commentId,
+                    commentLikeNum:commentLikeNum
+                });
+                setCommentLikes((prev) => ({ ...prev, [commentId]: true }));
+
+                if(commentDislikes[commentId]){
+                    await axios.delete(`/api/comments/${commentId}/dislike`);
+                    setCommentDislikes((prev) => ({ ...prev, [commentId]: false }));
+                }
+            }
+        }catch(err){
+            console.error(err);
+        }
+    };
+
+    // 댓글 싫어요
+    const toggleCommentDislike = async (commentId, dislikeNum) => {
+        try{
+            if(commentDislikes[commentId]){
+                await axios.delete(`/api/comments/${commentId}/dislike`);
+                setCommentDislikes((prev) => ({ ...prev, [commentId]: false }));
+            }else{
+                await axios.post(`/api/comments/${commentId}/dislike`,{
+                    commentId: commentId,
+                    dislikeNum: dislikeNum
+                });
+                setCommentDislikes((prev) => ({ ...prev, [commentId]: true }));
+
+                if(commentLikes[commentId]){
+                    await axios.delete(`/api/comments/${commentId}/like`);
+                    setCommentLikes((prev) => ({ ...prev, [commentId]: false }));
+                }
+            }
+        }catch(err){
+            console.error(err);
+        }
+    };
 
     return (
         <div className={styles.detail_post_wrapper}>
@@ -227,7 +280,10 @@ function PostDetail(){
                                 <button className={styles.post_edit_btn} onClick={goUpdate}>
                                     수정하기
                                 </button>
-                                <button className={styles.post_delete_btn} onClick={deletePost}>
+                                <button className={styles.post_delete_btn} onClick={async () => {
+                                    await deletePost();
+                                    openSuccessModal("게시글이 삭제되었습니다");
+                                }}>
                                     삭제하기
                                 </button>
                             </div>
@@ -257,13 +313,30 @@ function PostDetail(){
                         <div key={index}>
                             <div className={styles.nickname_area}>
                                 <p>{commentItem.nickname}</p>
-                                <div className={styles.thums_up_area}>
-                                    {isLike ? <FaThumbsUp /> : <FaRegThumbsUp />}
-                                    <span>{commentItem.commentLikeNum}</span>
+                                <div className={styles.thums_up_area} onClick={() => toggleCommentLike(commentItem.commentId, commentItem.commentLikeNum)}>
+                                    {commentLikes[commentItem.commentId] ? (
+                                        <>
+                                            <FaThumbsUp/>
+                                            <span>{commentItem.commentLikeNum + 1}</span>
+                                        </>
+                                    ) :(
+                                        <>
+                                            <FaRegThumbsUp />
+                                            <span>{commentItem.commentLikeNum}</span></>
+                                    ) }
                                 </div>
-                                <div className={styles.thums_down_area} onClick={toggleDislike}>
-                                    {isDislike ? <FaThumbsDown /> : <FaRegThumbsDown />}
-                                    <span>{commentItem.dislikeNum}</span>
+                                <div className={styles.thums_down_area} onClick={()=>toggleCommentDislike(commentItem.commentId, commentItem.dislikeNum)}>
+                                    {commentDislikes[commentItem.commentId] ? (
+                                        <>
+                                            <FaThumbsDown/>
+                                            <span>{commentItem.dislikeNum + 1}</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <FaRegThumbsDown/>
+                                            <span>{commentItem.dislikeNum}</span>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                             <div className={styles.comment_rud_area}>
@@ -312,7 +385,12 @@ function PostDetail(){
                     </button>
                 </div>
             </div>
-
+            {showModal && (
+                <MainModal
+                    message={modalMessage}
+                    onClose={handleModalClose}
+                />
+            )}
         </div>
     )
 }
