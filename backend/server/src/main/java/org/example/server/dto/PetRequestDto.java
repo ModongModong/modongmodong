@@ -11,7 +11,7 @@ public class PetRequestDto {
     private String name;
     private Integer age;
     private String gender;
-    private String neuteringYn;
+    private String neuteuringYn;
     private Integer animalNumber;
     private Float weight;
     private String surgery;

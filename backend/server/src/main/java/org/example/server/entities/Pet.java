@@ -50,7 +50,7 @@ public class Pet {
     private String gender;
 
     @Column(name = "neutering_yn", length = 1)
-    private String neuteringYn;
+    private String neuteuringYn;
 
     @Column(name = "animal_number")
     private Integer animalNumber;
